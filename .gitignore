@@ -1,0 +1,14 @@
+
+node_modules/
+dist/
+.vite/
+
+.env
+.env.*
+!.env.example
+
+FOTOS/
+assets-portfolio/
+assets-portfolio.zip
+PROMPT SIte e CLAUDE. MD.txt
+teste-permissao/
