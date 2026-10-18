@@ -79,7 +79,8 @@ pnpm build          # build de produção (tsc -b && vite build)
 pnpm preview        # pré-visualizar o build
 pnpm lint           # ESLint
 pnpm format         # Prettier
-pnpm typecheck      # tsc --noEmit
+pnpm typecheck      # tsc --noEmit -p tsconfig.app.json
+pnpm exec supabase <cmd>   # CLI do Supabase (devDependency local, sem instalação global)
 ```
 
 Antes de cada commit: `pnpm lint && pnpm typecheck && pnpm build` devem passar.
@@ -480,6 +481,22 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 - Idiomas: `pt-BR` (padrão) e `en-US`.
 - Estética retro (K7, VHS, vinil): no **layout e em interações / easter eggs**, não nas cores.
 - Deploy na Vercel; código versionado no GitHub com Conventional Commits.
-- Repositório: `jeffersonme84-oss/portfolio-2027` (privado), com o projeto na raiz de `Portfolio 2027`. A cópia antiga em `portfolio-jefferson/` (git próprio) fica só no disco, ignorada.
-- Módulo 0: Tailwind v4 (`@tailwindcss/vite`, sem `tailwind.config`) com shadcn/ui estilo `new-york`; dependências entram por módulo. `src/lib/supabase.ts` falha com erro claro se faltarem as variáveis `VITE_*`. pnpm 10.34.7 fixado em `packageManager`; `esbuild` liberado em `pnpm.onlyBuiltDependencies`. Os estilos base (`bg-background`, `border-border`) entram no Módulo 1 junto com os tokens.
+- Repositório: `jeffersonme84-oss/portfolio-2027` (privado), com o projeto na raiz de `Portfolio 2027`. A cópia antiga em `portfolio-jefferson/` (git próprio, 3 commits) fica só no disco, ignorada.
 - Fotos com familiares já estão versionadas: o repositório deve continuar **privado** até a autorização deles.
+
+**Desvios técnicos (Módulo 0)**
+
+| Tema | Previsto | Como ficou | Motivo |
+| --- | --- | --- | --- |
+| Versões | não especificadas | React 19, Vite 6, TypeScript 5.7, Tailwind **v4** (`@tailwindcss/vite`, sem `tailwind.config`), shadcn/ui `new-york` | versões estáveis atuais; Tailwind v4 dispensa arquivo de config |
+| Variáveis do shadcn/ui | em `index.css` (seção 6) | `index.css` só importa Tailwind; tokens e estilos base (`bg-background`, `border-border`) vão para `src/styles/tokens.css` no Módulo 1 | o build quebrava com utilitários sem token definido |
+| pnpm | via corepack | pnpm 10.34.7 instalado com `npm i -g pnpm`; fixado em `packageManager` | o corepack local (0.29.4) falha na verificação de assinatura |
+| Build scripts | — | `pnpm.onlyBuiltDependencies: ['esbuild', 'supabase']` no `package.json` | o pnpm 10 bloqueia postinstall por padrão |
+| `typecheck` | `tsc --noEmit` | `tsc --noEmit -p tsconfig.app.json` | o `tsconfig.json` raiz só tem references |
+| Supabase CLI | não previsto | `supabase` 2.121 como **devDependency**; `supabase/config.toml` gerado por `supabase init` | migrations e edge functions (Módulo 8) sem CLI global |
+| Supabase | `src/lib/supabase.ts` | falha com erro claro se faltar `VITE_*`; ainda não é importado por nenhum componente | a página em branco não usa o banco |
+| `.env` | `.env.example` | `.env.example` só com os nomes; valores reais em `.env.local` (ignorado) | nunca versionar valores |
+| Lint/format | padrão | ESLint e Prettier ignoram `portfolio-jefferson/`, `assets-portfolio/`, `FOTOS/`, `teste-permissao/`, `.pnpm-store/` | pastas de origem e a cópia antiga ficam na raiz |
+| Nome do pacote | — | `package.json` ainda com `name: portfolio-jefferson` | herdado da cópia antiga; sem efeito no build |
+
+**Status do Módulo 0:** código, lint, typecheck e build concluídos (commits `afd1581`, `a04fd7e`). **Pendente:** deploy na Vercel (login no painel) e variáveis `VITE_*` na Vercel. `supabase link` só é necessário no Módulo 8.
