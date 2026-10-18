@@ -5,6 +5,7 @@ import { Header } from '@/components/layout/Header'
 import { TapeCounter } from '@/components/retro/TapeCounter'
 import { About } from '@/components/sections/About'
 import { Hero } from '@/components/sections/Hero'
+import { Projects } from '@/components/sections/Projects'
 import { SectionHeading } from '@/components/sections/SectionHeading'
 import { NAV_SECTIONS } from '@/lib/sections'
 
@@ -23,7 +24,8 @@ export default function App() {
       <main id="conteudo" tabIndex={-1}>
         <Hero />
         <About />
-        {NAV_SECTIONS.filter(({ id }) => !['inicio', 'sobre'].includes(id)).map(({ id, labelKey }) => (
+        <Projects />
+        {NAV_SECTIONS.filter(({ id }) => !['inicio', 'sobre', 'projetos'].includes(id)).map(({ id, labelKey }) => (
           <section
             key={id}
             id={id}

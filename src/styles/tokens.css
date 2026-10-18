@@ -11,6 +11,11 @@
   --palette-accent: #ff3d14;
   --palette-muted: #5b6168;
 
+  /* Parede da galeria de projetos: escura nos dois temas (contraste de seção). */
+  --wall: #161616;
+  --wall-foreground: #ededed;
+  --wall-muted: #a3a3a3;
+
   color-scheme: light;
 }
 
@@ -81,6 +86,9 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-wall: var(--wall);
+  --color-wall-foreground: var(--wall-foreground);
+  --color-wall-muted: var(--wall-muted);
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
