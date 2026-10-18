@@ -4,6 +4,18 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Jefferson Moreira Evangelista</title>
+    <script>
+      // Aplica tema e idioma salvos antes da primeira pintura (sem flash).
+      // Mesmas chaves de src/lib/theme.ts e src/i18n/index.ts.
+      try {
+        var t = localStorage.getItem('theme')
+        var dark =
+          t === 'dark' || (t !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
+        if (dark) document.documentElement.classList.add('dark')
+        var l = localStorage.getItem('lang')
+        if (l === 'pt-BR' || l === 'en-US') document.documentElement.lang = l
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
