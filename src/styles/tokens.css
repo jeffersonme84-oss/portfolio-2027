@@ -1,0 +1,98 @@
+/*
+ * Tokens de design (CLAUDE.md, seção 1.1). Para mudar a paleta, edite só o bloco "Paleta".
+ * O restante deriva dela e alimenta as variáveis do shadcn/ui.
+ * Neutros + UM acento. Temas retro não definem cores próprias.
+ */
+
+:root {
+  /* Paleta: claro */
+  --palette-background: #e9edf0;
+  --palette-foreground: #111111;
+  --palette-accent: #ff3d14;
+  --palette-muted: #5b6168;
+
+  color-scheme: light;
+}
+
+.dark {
+  /* Paleta: escuro */
+  --palette-background: #0d0d0d;
+  --palette-foreground: #f2f2f2;
+  --palette-accent: #ff5233;
+  --palette-muted: #9aa0a6;
+
+  color-scheme: dark;
+}
+
+:root,
+.dark {
+  /* Mapeamento shadcn/ui */
+  --background: var(--palette-background);
+  --foreground: var(--palette-foreground);
+
+  --card: var(--palette-background);
+  --card-foreground: var(--palette-foreground);
+  --popover: var(--palette-background);
+  --popover-foreground: var(--palette-foreground);
+
+  /* Acento só em texto grande e elementos gráficos; texto sobre ele é sempre #111 (AA). */
+  --primary: var(--palette-accent);
+  --primary-foreground: #111111;
+  --accent: var(--palette-accent);
+  --accent-foreground: #111111;
+
+  /* Superfícies e bordas neutras derivadas do texto sobre o fundo. */
+  --secondary: color-mix(in oklab, var(--palette-foreground) 8%, var(--palette-background));
+  --secondary-foreground: var(--palette-foreground);
+  --muted: color-mix(in oklab, var(--palette-foreground) 6%, var(--palette-background));
+  --muted-foreground: var(--palette-muted);
+  --border: color-mix(in oklab, var(--palette-foreground) 16%, var(--palette-background));
+  --input: color-mix(in oklab, var(--palette-foreground) 24%, var(--palette-background));
+
+  /* Foco visível com contraste máximo. */
+  --ring: var(--palette-foreground);
+
+  /* Erros derivam do acento (sem nova cor), escurecido no claro para texto pequeno. */
+  --destructive: color-mix(in oklab, var(--palette-accent) 70%, black);
+
+  --radius: 0.5rem;
+}
+
+.dark {
+  --destructive: var(--palette-accent);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Tipografia: display (títulos), texto e detalhes retro. Máximo de 3 famílias. */
+  --font-display: 'Archivo Variable', 'Arial Black', sans-serif;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
+
+  /* Display ultra-bold em caixa alta: tracking apertado e linhas coladas. */
+  --tracking-display: -0.04em;
+  --leading-display: 0.85;
+}

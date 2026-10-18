@@ -1,7 +1,17 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import './styles/tokens.css';
 
 @custom-variant dark (&:is(.dark *));
 
-/* Tokens de design, mapeamento shadcn/ui e estilos base (bg-background, border-border):
-   Módulo 1 (src/styles/tokens.css). */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+}
