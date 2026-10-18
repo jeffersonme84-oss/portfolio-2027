@@ -1,23 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useScrollY } from '@/hooks/useScrollY'
 
-// Seção visível no meio da tela, para destacar o link ativo do menu.
+// Seção que cruza o meio da tela, para destacar o link ativo do menu.
+// Recalcula a cada scroll lendo o DOM atual (não guarda referências antigas).
 export function useActiveSection(ids: readonly string[]) {
-  const [active, setActive] = useState(ids[0])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.find((entry) => entry.isIntersecting)
-        if (visible) setActive(visible.target.id)
-      },
-      { rootMargin: '-45% 0px -50% 0px' },
-    )
-    ids.forEach((id) => {
-      const element = document.getElementById(id)
-      if (element) observer.observe(element)
-    })
-    return () => observer.disconnect()
-  }, [ids])
-
+  useScrollY()
+  const middle = window.innerHeight / 2
+  let active = ids[0]
+  for (const id of ids) {
+    const element = document.getElementById(id)
+    if (element && element.getBoundingClientRect().top <= middle) active = id
+  }
   return active
 }
