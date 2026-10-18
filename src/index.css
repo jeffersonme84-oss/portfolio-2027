@@ -15,3 +15,15 @@
     @apply outline-2 outline-offset-2 outline-ring;
   }
 }
+
+@layer base {
+  html {
+    /* Compensa o header fixo ao rolar até as âncoras. */
+    scroll-padding-top: 4rem;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}

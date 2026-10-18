@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "Jefferson Moreira Evangelista · Desenvolvedor de Sistemas",
+    "description": "Portfólio de Jefferson Moreira Evangelista, desenvolvedor de sistemas em São Paulo: projetos, trajetória, habilidades e contato."
+  },
   "theme": {
     "dark": "Modo escuro",
     "light": "Modo claro",
@@ -12,5 +16,128 @@
       "pt-BR": "BR",
       "en-US": "US"
     }
+  },
+  "nav": {
+    "label": "Navegação principal",
+    "home": "Início",
+    "about": "Sobre",
+    "projects": "Projetos",
+    "skills": "Habilidades",
+    "contact": "Fale comigo",
+    "contactShort": "Contato",
+    "menu": "Menu",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "skipToContent": "Pular para o conteúdo",
+    "brand": "Jefferson Moreira Evangelista, ir para o início"
+  },
+  "cv": {
+    "download": "Baixar CV"
+  },
+  "social": {
+    "label": "Redes sociais",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "behance": "Behance",
+    "instagram": "Instagram",
+    "dribbble": "Dribbble",
+    "whatsapp": "WhatsApp",
+    "email": "E-mail",
+    "phone": "Telefone",
+    "newTab": "(abre em nova aba)"
+  },
+  "floating": {
+    "label": "Contato rápido",
+    "whatsapp": "Conversar no WhatsApp",
+    "linkedin": "Ver perfil no LinkedIn"
+  },
+  "footer": {
+    "rights": "Todos os direitos reservados.",
+    "backToTop": "Voltar ao topo"
+  },
+  "hero": {
+    "index": "Índice",
+    "experience": "anos de experiência",
+    "headline": "Sistemas sólidos. Web com propósito.",
+    "seeProjects": "Ver projetos",
+    "portraitAlt": "Retrato de Jefferson Moreira Evangelista, de terno cinza claro",
+    "reels": "Girar os carretéis da fita (duplo clique rebobina o nome)",
+    "side": "LADO A"
+  },
+  "about": {
+    "title": "Sobre",
+    "rec": "REC",
+    "timeline": "Linha do tempo",
+    "play": "PLAY",
+    "pause": "PAUSE",
+    "types": {
+      "work": "Experiência",
+      "education": "Formação",
+      "certification": "Certificação",
+      "award": "Prêmio",
+      "family": "Família"
+    },
+    "animated": "versão animada",
+    "keyboardHint": "Use as setas para navegar e Enter para abrir."
+  },
+  "projects": {
+    "title": "Projetos",
+    "deploy": "Deploy",
+    "github": "GitHub",
+    "unavailable": "indisponível",
+    "open": "Abrir estudo de caso",
+    "problem": "Problema",
+    "process": "Processo de criação",
+    "result": "Resultado final",
+    "technologies": "Tecnologias",
+    "close": "Fechar"
+  },
+  "skills": {
+    "title": "Habilidades",
+    "hard": "Hard skills",
+    "soft": "Soft skills"
+  },
+  "testimonials": {
+    "title": "Depoimentos",
+    "linkedin": "Ver no LinkedIn"
+  },
+  "contact": {
+    "title": "Fale comigo",
+    "intro": "Envie uma mensagem pelo formulário ou fale direto pelo WhatsApp.",
+    "direct": "Contato direto",
+    "networks": "Redes",
+    "form": {
+      "name": "Nome",
+      "email": "E-mail",
+      "message": "Mensagem",
+      "honeypot": "Deixe este campo em branco",
+      "submit": "Enviar mensagem",
+      "sending": "Enviando…",
+      "success": "Mensagem enviada. Obrigado pelo contato!",
+      "error": "Não foi possível enviar agora. Tente de novo ou fale pelo WhatsApp.",
+      "rateLimited": "Muitas mensagens em pouco tempo. Tente de novo em alguns minutos.",
+      "unavailable": "O formulário ainda não está disponível. Fale pelo WhatsApp ou e-mail."
+    },
+    "errors": {
+      "nameRequired": "Informe seu nome.",
+      "nameTooLong": "O nome pode ter até 100 caracteres.",
+      "emailInvalid": "Informe um e-mail válido.",
+      "messageTooShort": "A mensagem precisa ter pelo menos 10 caracteres.",
+      "messageTooLong": "A mensagem pode ter até 2000 caracteres."
+    }
+  },
+  "sound": {
+    "enable": "Ligar sons",
+    "disable": "Desligar sons"
+  },
+  "retro": {
+    "rewind": "REW",
+    "tracking": "TRACKING",
+    "console": "Olá, recrutador! Obrigado por inspecionar. Vamos conversar?"
+  },
+  "notFound": {
+    "title": "SEM SINAL",
+    "text": "Esta página não está gravada nesta fita.",
+    "back": "Voltar ao início"
   }
 }

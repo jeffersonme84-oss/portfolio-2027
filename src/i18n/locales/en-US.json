@@ -1,4 +1,8 @@
 {
+  "meta": {
+    "title": "Jefferson Moreira Evangelista · Systems Developer",
+    "description": "Portfolio of Jefferson Moreira Evangelista, systems developer in São Paulo: projects, journey, skills and contact."
+  },
   "theme": {
     "dark": "Dark mode",
     "light": "Light mode",
@@ -12,5 +16,128 @@
       "pt-BR": "BR",
       "en-US": "US"
     }
+  },
+  "nav": {
+    "label": "Main navigation",
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "skills": "Skills",
+    "contact": "Contact me",
+    "contactShort": "Contact",
+    "menu": "Menu",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to content",
+    "brand": "Jefferson Moreira Evangelista, go to home"
+  },
+  "cv": {
+    "download": "Download CV"
+  },
+  "social": {
+    "label": "Social networks",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "behance": "Behance",
+    "instagram": "Instagram",
+    "dribbble": "Dribbble",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "phone": "Phone",
+    "newTab": "(opens in a new tab)"
+  },
+  "floating": {
+    "label": "Quick contact",
+    "whatsapp": "Chat on WhatsApp",
+    "linkedin": "View LinkedIn profile"
+  },
+  "footer": {
+    "rights": "All rights reserved.",
+    "backToTop": "Back to top"
+  },
+  "hero": {
+    "index": "Index",
+    "experience": "years of experience",
+    "headline": "Solid systems. Purposeful web.",
+    "seeProjects": "See projects",
+    "portraitAlt": "Portrait of Jefferson Moreira Evangelista in a light gray suit",
+    "reels": "Spin the tape reels (double click rewinds the name)",
+    "side": "SIDE A"
+  },
+  "about": {
+    "title": "About",
+    "rec": "REC",
+    "timeline": "Timeline",
+    "play": "PLAY",
+    "pause": "PAUSE",
+    "types": {
+      "work": "Experience",
+      "education": "Education",
+      "certification": "Certification",
+      "award": "Award",
+      "family": "Family"
+    },
+    "animated": "animated version",
+    "keyboardHint": "Use the arrow keys to move and Enter to open."
+  },
+  "projects": {
+    "title": "Projects",
+    "deploy": "Deploy",
+    "github": "GitHub",
+    "unavailable": "unavailable",
+    "open": "Open case study",
+    "problem": "Problem",
+    "process": "Creative process",
+    "result": "Final result",
+    "technologies": "Technologies",
+    "close": "Close"
+  },
+  "skills": {
+    "title": "Skills",
+    "hard": "Hard skills",
+    "soft": "Soft skills"
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "linkedin": "View on LinkedIn"
+  },
+  "contact": {
+    "title": "Contact me",
+    "intro": "Send a message through the form or reach me directly on WhatsApp.",
+    "direct": "Direct contact",
+    "networks": "Networks",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "message": "Message",
+      "honeypot": "Leave this field empty",
+      "submit": "Send message",
+      "sending": "Sending…",
+      "success": "Message sent. Thanks for reaching out!",
+      "error": "Could not send right now. Please try again or reach me on WhatsApp.",
+      "rateLimited": "Too many messages in a short time. Please try again in a few minutes.",
+      "unavailable": "The form is not available yet. Please reach me on WhatsApp or email."
+    },
+    "errors": {
+      "nameRequired": "Please enter your name.",
+      "nameTooLong": "Name can be up to 100 characters.",
+      "emailInvalid": "Please enter a valid email.",
+      "messageTooShort": "Message must be at least 10 characters.",
+      "messageTooLong": "Message can be up to 2000 characters."
+    }
+  },
+  "sound": {
+    "enable": "Turn sounds on",
+    "disable": "Turn sounds off"
+  },
+  "retro": {
+    "rewind": "REW",
+    "tracking": "TRACKING",
+    "console": "Hi, recruiter! Thanks for inspecting. Shall we talk?"
+  },
+  "notFound": {
+    "title": "NO SIGNAL",
+    "text": "This page is not recorded on this tape.",
+    "back": "Back to home"
   }
 }
