@@ -459,7 +459,7 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 ## 10. Pendências e decisões
 
 **A definir pelo Jefferson**
-- [ ] Foto do hero (padrão: `hero-origem-terno-claro.webp`): enviar o **original em alta resolução** e gerar o recorte com `rembg`
+- [x] Recorte do hero gerado com `rembg` (`hero/jefferson-cutout.webp`). Pendente: **original em alta resolução** para refazer o recorte com mais nitidez
 - [ ] Arquivos originais no lugar dos prints de tela da pasta `reserva/`
 - [ ] Título profissional exato (placeholder: "Desenvolvedor de Sistemas")
 - [ ] E-mail profissional e GitHub (telefone, WhatsApp, LinkedIn e Instagram já estão em `site.ts`)
@@ -468,7 +468,10 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 - [ ] Fotos (hero, pessoais, família) e **confirmação de autorização dos familiares**
 - [ ] Conteúdo real: timeline, projetos, habilidades finais e depoimentos
 - [ ] Domínio próprio
-- [ ] Intensidade final dos efeitos retro (ajustar após ver o Módulo 3 rodando)
+- [ ] Intensidade final dos efeitos retro (ajustar após ver o site rodando)
+- [ ] Capas reais dos projetos (hoje placeholders abstratos em SVG em `public/images/projects/`)
+- [ ] Publicar o backend do contato (ver "Lançamento" abaixo) e testar o envio real (grava no Postgres + e-mail)
+- [ ] Revogar o Access Token `sbp_…` e trocar a senha do banco do Supabase (foram expostos no chat)
 
 **Decisões já tomadas**
 - Estilo principal: **editorial / pôster** (referência `estilo-principal-editorial.jpg`); o blob amarelo da referência `home-estrutura.jpg` não é usado.
@@ -495,9 +498,44 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | Build scripts | — | `pnpm.onlyBuiltDependencies: ['esbuild', 'supabase']` no `package.json` | o pnpm 10 bloqueia postinstall por padrão |
 | `typecheck` | `tsc --noEmit` | `tsc --noEmit -p tsconfig.app.json` | o `tsconfig.json` raiz só tem references |
 | Supabase CLI | não previsto | `supabase` 2.121 como **devDependency**; `supabase/config.toml` gerado por `supabase init` | migrations e edge functions (Módulo 8) sem CLI global |
-| Supabase | `src/lib/supabase.ts` | falha com erro claro se faltar `VITE_*`; ainda não é importado por nenhum componente | a página em branco não usa o banco |
+| Supabase | `src/lib/supabase.ts` | `getSupabase()` retorna `null` sem `VITE_*` (antes lançava erro) e carrega o `supabase-js` sob demanda (Módulos 8 e 10) | não derrubar o site sem env; tirar o `supabase-js` da primeira dobra |
 | `.env` | `.env.example` | `.env.example` só com os nomes; valores reais em `.env.local` (ignorado) | nunca versionar valores |
 | Lint/format | padrão | ESLint e Prettier ignoram `portfolio-jefferson/`, `assets-portfolio/`, `FOTOS/`, `teste-permissao/`, `.pnpm-store/` | pastas de origem e a cópia antiga ficam na raiz |
-| Nome do pacote | — | `package.json` ainda com `name: portfolio-jefferson` | herdado da cópia antiga; sem efeito no build |
+| Nome do pacote | — | `portfolio-2027` (renomeado no Módulo 10) | herdado da cópia antiga |
 
 **Status do Módulo 0: concluído** (commits `afd1581`, `a04fd7e`): código, lint, typecheck e build OK, código no GitHub. Deploy na Vercel e variáveis `VITE_*` na Vercel ficam para o Módulo 10, por decisão do Jefferson. `supabase link` só é necessário no Módulo 8.
+
+**Desvios e decisões (Módulos 1 a 10)**
+
+| Módulo | Decisão | Motivo |
+| --- | --- | --- |
+| 1 | Paleta em `--palette-*` no topo de `tokens.css`; os nomes do shadcn (`--background`, `--accent`, `--muted`…) derivam dela. O `--muted` da seção 1.1 virou `--muted-foreground` (texto); `--muted` é superfície | no shadcn, `--muted` é cor de fundo |
+| 1 | Texto sobre o acento é sempre `#111` (`--primary-foreground`); erros (`--destructive`) derivam do acento escurecido | contraste AA sem criar outra cor |
+| 1 | Tema próprio (sem `next-themes`): `src/lib/theme.ts` + script inline no `index.html`; botão extra para voltar a "seguir o sistema" | opção mais simples; o switch só tem 2 estados |
+| 1 | Idioma detectado do navegador; só a escolha manual é salva (`lang`) | não "congelar" o idioma detectado |
+| 1 | Fontes auto-hospedadas via `@fontsource-variable` (Archivo, Inter, JetBrains Mono) | sem requisição a terceiros |
+| 2 | Destaque do menu calculado a cada scroll lendo o DOM (sem IntersectionObserver) | o observer perdia seções recriadas |
+| 3 | `framer-motion` não foi usado: animações em CSS (`retro.css`, transições Tailwind) | menos JS; tudo desliga com reduced motion |
+| 3 | Mão de outra pessoa à direita do retrato esmaecida no recorte; sem recorte, a foto entra com máscara radial | resíduo citado no Módulo 3 |
+| 4 | Fotos tratadas em `public/images/about/editorial/` (originais preservados): recorte 4:5, escala uniforme, cores sóbrias, pretos de filme; fundo desfocado na foto da camisa 14. **Rosto sem deformação** | pedido do Jefferson: fotos no tema do site, mantendo o rosto |
+| 4 | Foto da timeline só é montada após abrir o item | não baixar ~750 kB de fotos escondidas |
+| 5 | Campos `year` e `kind` em `Project` (micro-texto do pôster); tokens `--wall*` para a parede escura | exigidos pelo layout do Módulo 5 |
+| 5 | `technologies` tipado como `SkillKey` (chaves de `skills.ts`) | erro de build se a chave não existir |
+| 6 | Idiomas como itens de `skills.ts` com ícone `Languages` | adicionar skill continua exigindo só `skills.ts` |
+| 7 | Seção "Depoimentos" (`#depoimentos`) entre Habilidades e Fale comigo, fora do menu | o menu segue a seção 1 |
+| 8 | Dependências extras: `@hookform/resolvers` e `@radix-ui/react-dialog` (base do Dialog/Sheet) | ligar zod ao react-hook-form; shadcn usa Radix |
+| 8 | A Edge Function grava **como anon** (sem `service_role`), respeitando a RLS; falha no e-mail não perde a mensagem (já salva) | regra de nunca usar `service_role` |
+| 8 | Limite de taxa em memória da instância (5 envios / 10 min por IP) | "limite de taxa simples" |
+| 9 | Sons sintetizados com WebAudio (sem arquivos em `public/audio/`); `site.easterEggs` desliga todos os easter eggs | sem downloads extras; desativável num só lugar |
+| 9 | `vercel.json` reescreve rotas desconhecidas para o app, que mostra a 404 "SEM SINAL" | SPA sem roteador |
+| 10 | URL pública em `VITE_SITE_URL` (env); plugin no `vite.config.ts` gera JSON-LD, meta tags, preload do retrato, `robots.txt` e, com URL, canonical e `sitemap.xml` | domínio indefinido; dados vêm de `site.ts` sem duplicar |
+| 10 | Seções abaixo da dobra e o formulário em chunks lazy; `<Analytics />` só com `VITE_VERCEL_ENV` (exposto pela Vercel) | bundle inicial 241 → 135 kB gzip; evita 404 fora da Vercel |
+| 10 | Lighthouse (build local): desktop 100/100/100/100; mobile simulado 88/100/100/100. Para mobile ≥ 90 estável seria preciso pré-renderizar o HTML (SSG) | o custo restante é executar o React antes do primeiro paint |
+
+**Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
+
+**Lançamento (passo a passo)**
+1. Supabase (uma vez): `pnpm exec supabase login`, `pnpm exec supabase link --project-ref <ref>`, `pnpm exec supabase db push` (cria `contact_messages` com RLS), `pnpm exec supabase secrets set RESEND_API_KEY=... CONTACT_TO_EMAIL=...` (opcionais: `CONTACT_FROM_EMAIL`, `ALLOWED_ORIGIN`) e `pnpm exec supabase functions deploy send-contact`.
+2. Vercel: importar `portfolio-2027` (preset Vite, `pnpm install`, `pnpm build`, saída `dist`, raiz do repo) e cadastrar `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` e `VITE_SITE_URL`. Ativar Web Analytics no painel.
+3. Testar em produção: envio do formulário (linha no Postgres + e-mail), deep link `#projeto-<slug>`, 404, tema e idioma.
+4. Checklist final do Módulo 10: autorização das fotos da família, CVs, placeholders e nenhum `TODO(jefferson)` remanescente.
