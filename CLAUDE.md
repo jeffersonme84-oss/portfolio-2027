@@ -94,7 +94,7 @@ Antes de cada commit: `pnpm lint && pnpm typecheck && pnpm build` devem passar.
   - `chore(infra): configura eslint e prettier`
   - `docs: atualiza CLAUDE.md`
 - Trabalhar em branch por módulo (`feat/modulo-home`) e abrir PR para `main`, ou commitar direto em `main` se o Jefferson pedir.
-- **Deploy:** Vercel conectado ao GitHub. Cada push em `main` publica em produção; PRs geram preview.
+- **Deploy:** Vercel conectado ao GitHub **somente no Módulo 10**. Depois disso, cada push em `main` publica em produção e PRs geram preview. Até lá, a validação é local (`pnpm build` / `pnpm preview`).
 - Nunca commitar `.env`, chaves ou o `service_role` do Supabase.
 
 ## 5. Estrutura de pastas
@@ -280,11 +280,11 @@ Cada módulo tem objetivo, entregáveis e **Definition of Done (DoD)**.
 
 - Criar projeto com Vite (template React + TS), Tailwind e shadcn/ui.
 - Configurar ESLint, Prettier, alias `@/` e `.env.example`.
-- Criar repositório GitHub, conectar à Vercel (deploy automático).
+- Criar repositório GitHub. (A conexão com a Vercel foi adiada para o Módulo 10.)
 - Criar projeto Supabase e `src/lib/supabase.ts` (usa apenas `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY`).
 - Criar a estrutura de pastas da seção 5.
 
-**DoD:** `pnpm build` passa; página em branco publicada na Vercel; lint e typecheck limpos.
+**DoD:** `pnpm build` passa; lint e typecheck limpos; código no GitHub. (Publicação na Vercel movida para o Módulo 10.)
 
 ## Módulo 1 — Tema e i18n
 
@@ -437,6 +437,7 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 - `<title>`, `<meta description>`, Open Graph e Twitter Card por idioma; `og-image.png`.
 - `favicon` (ícone de fita ou vinil minimalista), `robots.txt`, `sitemap.xml`.
 - JSON-LD `Person` com nome, cargo e links.
+- **Deploy na Vercel:** importar `portfolio-2027` (preset Vite, `pnpm install`, `pnpm build`, saída `dist`, raiz do repositório), cadastrar `VITE_SUPABASE_URL` e `VITE_SUPABASE_ANON_KEY` em Environment Variables e validar a URL de produção.
 - **Vercel Analytics** (`@vercel/analytics`).
 - Auditoria: Lighthouse ≥ 90, checagem de contraste e navegação por teclado.
 - Domínio próprio: **a definir** (configurar na Vercel quando houver).
@@ -499,4 +500,4 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | Lint/format | padrão | ESLint e Prettier ignoram `portfolio-jefferson/`, `assets-portfolio/`, `FOTOS/`, `teste-permissao/`, `.pnpm-store/` | pastas de origem e a cópia antiga ficam na raiz |
 | Nome do pacote | — | `package.json` ainda com `name: portfolio-jefferson` | herdado da cópia antiga; sem efeito no build |
 
-**Status do Módulo 0:** código, lint, typecheck e build concluídos (commits `afd1581`, `a04fd7e`). **Pendente:** deploy na Vercel (login no painel) e variáveis `VITE_*` na Vercel. `supabase link` só é necessário no Módulo 8.
+**Status do Módulo 0: concluído** (commits `afd1581`, `a04fd7e`): código, lint, typecheck e build OK, código no GitHub. Deploy na Vercel e variáveis `VITE_*` na Vercel ficam para o Módulo 10, por decisão do Jefferson. `supabase link` só é necessário no Módulo 8.
