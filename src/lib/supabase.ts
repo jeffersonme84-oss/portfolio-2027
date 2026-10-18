@@ -1,11 +1,15 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, type SupabaseClient } from '@supabase/supabase-js'
 
-// Apenas a anon key no front. O service_role nunca entra neste projeto.
+// Apenas a anon key no front.
 const url = import.meta.env.VITE_SUPABASE_URL
 const anonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-if (!url || !anonKey) {
-  throw new Error('Defina VITE_SUPABASE_URL e VITE_SUPABASE_ANON_KEY (veja .env.example).')
-}
+let client: SupabaseClient | null = null
 
-export const supabase = createClient(url, anonKey)
+// Sem as variáveis VITE_* (ex.: preview sem env), retorna null em vez de derrubar o site;
+// o formulário de contato mostra uma mensagem amigável.
+export function getSupabase(): SupabaseClient | null {
+  if (!url || !anonKey) return null
+  client ??= createClient(url, anonKey)
+  return client
+}
