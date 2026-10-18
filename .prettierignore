@@ -1,0 +1,9 @@
+dist
+node_modules
+pnpm-lock.yaml
+CLAUDE.md
+portfolio-jefferson
+assets-portfolio
+FOTOS
+teste-permissao
+.pnpm-store

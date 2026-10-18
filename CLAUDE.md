@@ -480,3 +480,6 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 - Idiomas: `pt-BR` (padrão) e `en-US`.
 - Estética retro (K7, VHS, vinil): no **layout e em interações / easter eggs**, não nas cores.
 - Deploy na Vercel; código versionado no GitHub com Conventional Commits.
+- Repositório: `jeffersonme84-oss/portfolio-2027` (privado), com o projeto na raiz de `Portfolio 2027`. A cópia antiga em `portfolio-jefferson/` (git próprio) fica só no disco, ignorada.
+- Módulo 0: Tailwind v4 (`@tailwindcss/vite`, sem `tailwind.config`) com shadcn/ui estilo `new-york`; dependências entram por módulo. `src/lib/supabase.ts` falha com erro claro se faltarem as variáveis `VITE_*`. pnpm 10.34.7 fixado em `packageManager`; `esbuild` liberado em `pnpm.onlyBuiltDependencies`. Os estilos base (`bg-background`, `border-border`) entram no Módulo 1 junto com os tokens.
+- Fotos com familiares já estão versionadas: o repositório deve continuar **privado** até a autorização deles.

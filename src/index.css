@@ -1,0 +1,7 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* Tokens de design, mapeamento shadcn/ui e estilos base (bg-background, border-border):
+   Módulo 1 (src/styles/tokens.css). */

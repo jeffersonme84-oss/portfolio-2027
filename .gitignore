@@ -1,14 +1,29 @@
-
 node_modules/
 dist/
 .vite/
+.vercel/
+.pnpm-store/
 
 .env
 .env.*
 !.env.example
+supabase/.temp/
+supabase/.branches/
 
+# editor / sistema / logs
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.log
+
+# material de origem (fica só local)
 FOTOS/
 assets-portfolio/
 assets-portfolio.zip
 PROMPT SIte e CLAUDE. MD.txt
 teste-permissao/
+
+# cópia antiga do projeto, com repositório git próprio (preservada no disco)
+portfolio-jefferson/
+portfolio-jefferson.zip
