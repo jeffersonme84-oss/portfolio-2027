@@ -15,6 +15,14 @@ function timecode(index: number) {
 export function Timeline() {
   const { t, l } = useLocale()
   const [openId, setOpenId] = useState<string | null>(null)
+  // Itens já abertos mantêm a foto montada (a animação de fechar não perde a imagem).
+  const [seen, setSeen] = useState<ReadonlySet<string>>(new Set())
+
+  function toggle(id: string) {
+    const next = openId === id ? null : id
+    setOpenId(next)
+    if (next) setSeen((current) => new Set(current).add(next))
+  }
   const headers = useRef<(HTMLButtonElement | null)[]>([])
 
   function onKeyDown(event: KeyboardEvent, index: number) {
@@ -61,7 +69,7 @@ export function Timeline() {
                   type="button"
                   aria-expanded={open}
                   aria-controls={panelId}
-                  onClick={() => setOpenId(open ? null : item.id)}
+                  onClick={() => toggle(item.id)}
                   onKeyDown={(event) => onKeyDown(event, index)}
                   className="group w-full cursor-pointer text-left"
                 >
@@ -96,7 +104,8 @@ export function Timeline() {
                 <div className="flex min-h-0 flex-col gap-5 overflow-hidden">
                   <span aria-hidden className="h-0" />
                   <p className="max-w-prose text-sm leading-relaxed">{l(item.details)}</p>
-                  {item.photo && item.photoAlt && (
+                  {/* Foto só entra após a primeira abertura: não baixa imagens escondidas */}
+                  {seen.has(item.id) && item.photo && item.photoAlt && (
                     <VhsPhoto
                       src={item.photo}
                       alt={l(item.photoAlt)}

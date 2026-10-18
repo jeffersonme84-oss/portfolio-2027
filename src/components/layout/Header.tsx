@@ -36,13 +36,10 @@ export function Header({ onBrandClick }: HeaderProps) {
         <a
           href="#inicio"
           onClick={onBrandClick}
-          aria-label={t('nav.brand')}
           className="flex items-baseline gap-3"
         >
-          <span aria-hidden className="font-display text-xl font-black tracking-[-0.04em]">
-            {initials}
-          </span>
-          <span aria-hidden className="hidden text-[11px] font-medium uppercase tracking-[0.12em] xl:inline">
+          <span className="font-display text-xl font-black tracking-[-0.04em]">{initials}</span>
+          <span className="sr-only text-[11px] font-medium tracking-[0.12em] uppercase xl:not-sr-only">
             {site.name}
           </span>
         </a>

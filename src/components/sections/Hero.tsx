@@ -91,7 +91,7 @@ export function Hero() {
             <ul className={cn(microText, 'text-right')}>
               {miniIndex.map((item) => (
                 <li key={item.href}>
-                  <a href={item.href} className="hover:text-accent">
+                  <a href={item.href} className="inline-block py-[5px] hover:text-accent">
                     {item.label}
                   </a>
                 </li>

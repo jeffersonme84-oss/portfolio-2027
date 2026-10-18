@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FloatingContacts } from '@/components/layout/FloatingContacts'
 import { Footer } from '@/components/layout/Footer'
@@ -7,18 +7,15 @@ import { NotFound } from '@/components/retro/NotFound'
 import { SoundToggle } from '@/components/retro/SoundToggle'
 import { TapeCounter } from '@/components/retro/TapeCounter'
 import { VhsOverlay } from '@/components/retro/VhsOverlay'
-import { About } from '@/components/sections/About'
-import { Contact } from '@/components/sections/Contact'
 import { Hero } from '@/components/sections/Hero'
-import { Projects } from '@/components/sections/Projects'
-import { Skills } from '@/components/sections/Skills'
-import { Testimonials } from '@/components/sections/Testimonials'
 import { site } from '@/content/site'
 import { useKonami } from '@/hooks/useKonami'
 import { printConsoleTape } from '@/lib/consoleTape'
 import { playSound } from '@/lib/sound'
 
 type RetroEffect = 'tracking' | 'rewind' | null
+
+const BelowFold = lazy(() => import('@/components/sections/BelowFold'))
 
 const isNotFound = !['/', '/index.html'].includes(window.location.pathname)
 
@@ -52,6 +49,12 @@ export default function App() {
     }
   }
 
+  // Título e descrição no idioma ativo.
+  useEffect(() => {
+    document.title = t('meta.title')
+    document.querySelector('meta[name="description"]')?.setAttribute('content', t('meta.description'))
+  }, [t])
+
   useEffect(() => {
     if (site.easterEggs) {
       printConsoleTape(t('retro.console'), site.social.github || site.social.linkedin)
@@ -72,11 +75,9 @@ export default function App() {
       <Header onBrandClick={onBrandClick} />
       <main id="conteudo" tabIndex={-1}>
         <Hero />
-        <About />
-        <Projects />
-        <Skills />
-        <Testimonials />
-        <Contact />
+        <Suspense fallback={<div className="min-h-svh" />}>
+          <BelowFold />
+        </Suspense>
       </main>
       <Footer />
       <FloatingContacts>

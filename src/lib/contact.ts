@@ -1,4 +1,3 @@
-import { FunctionsHttpError } from '@supabase/supabase-js'
 import { z } from 'zod'
 import type { Locale } from '@/content/types'
 import { getSupabase } from '@/lib/supabase'
@@ -25,15 +24,16 @@ export type SendResult = 'success' | 'error' | 'rateLimited' | 'unavailable'
 export async function sendContact(values: ContactValues, locale: Locale): Promise<SendResult> {
   if (values.website) return 'success' // bot: finge sucesso sem enviar
 
-  const supabase = getSupabase()
-  if (!supabase) return 'unavailable'
+  const pending = getSupabase()
+  if (!pending) return 'unavailable'
+  const supabase = await pending
 
   const { error } = await supabase.functions.invoke('send-contact', {
     body: { name: values.name, email: values.email, message: values.message, locale },
   })
   if (!error) return 'success'
-  if (error instanceof FunctionsHttpError && error.context instanceof Response) {
-    if (error.context.status === 429) return 'rateLimited'
-  }
+  // FunctionsHttpError traz a Response em `context`.
+  const context: unknown = 'context' in error ? error.context : undefined
+  if (context instanceof Response && context.status === 429) return 'rateLimited'
   return 'error'
 }

@@ -28,8 +28,6 @@ export const site = {
     cutout: '/images/hero/jefferson-cutout.webp' as string | null,
     fallback: '/images/hero/hero-origem-terno-claro.webp',
   },
-  // URL pública do site (SEO, sitemap). Preencher quando houver domínio.
-  url: '', // TODO(jefferson): preencher com o domínio
   // Liga/desliga todos os easter eggs (Konami, logo, carretéis, foto da família).
   easterEggs: true,
 }
