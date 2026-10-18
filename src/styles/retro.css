@@ -1,0 +1,40 @@
+/*
+ * Efeitos retro (K7 / VHS / vinil). Todos são opt-in por interação e
+ * desligam com prefers-reduced-motion (CLAUDE.md, seção 1.1).
+ */
+
+@keyframes retro-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.retro-cursor {
+  animation: retro-blink 1s steps(1) infinite;
+}
+
+@keyframes retro-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.retro-reel {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+.retro-reel[data-state='play'] {
+  animation: retro-spin 1.6s linear infinite;
+}
+
+.retro-reel[data-state='rewind'] {
+  animation: retro-spin 0.35s linear infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .retro-cursor,
+  .retro-reel[data-state] {
+    animation: none;
+  }
+}

@@ -3,6 +3,7 @@ import { FloatingContacts } from '@/components/layout/FloatingContacts'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
 import { TapeCounter } from '@/components/retro/TapeCounter'
+import { Hero } from '@/components/sections/Hero'
 import { SectionHeading } from '@/components/sections/SectionHeading'
 import { NAV_SECTIONS } from '@/lib/sections'
 
@@ -19,7 +20,8 @@ export default function App() {
       </a>
       <Header />
       <main id="conteudo" tabIndex={-1}>
-        {NAV_SECTIONS.map(({ id, labelKey }) => (
+        <Hero />
+        {NAV_SECTIONS.filter(({ id }) => id !== 'inicio').map(({ id, labelKey }) => (
           <section
             key={id}
             id={id}

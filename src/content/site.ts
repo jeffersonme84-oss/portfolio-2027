@@ -25,7 +25,7 @@ export const site = {
   cv: { 'pt-BR': null, 'en-US': null } as Record<Locale, string | null>, // TODO(jefferson): enviar os PDFs
   // Retrato da Home. Enquanto o recorte (fundo transparente) não existir, usa a foto com máscara.
   hero: {
-    cutout: null as string | null,
+    cutout: '/images/hero/jefferson-cutout.webp' as string | null,
     fallback: '/images/hero/hero-origem-terno-claro.webp',
   },
   // URL pública do site (SEO, sitemap). Preencher quando houver domínio.
