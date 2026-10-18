@@ -7,6 +7,7 @@ import { About } from '@/components/sections/About'
 import { Hero } from '@/components/sections/Hero'
 import { Projects } from '@/components/sections/Projects'
 import { Skills } from '@/components/sections/Skills'
+import { Testimonials } from '@/components/sections/Testimonials'
 import { SectionHeading } from '@/components/sections/SectionHeading'
 import { NAV_SECTIONS } from '@/lib/sections'
 
@@ -27,6 +28,7 @@ export default function App() {
         <About />
         <Projects />
         <Skills />
+        <Testimonials />
         {NAV_SECTIONS.filter(({ id }) => !['inicio', 'sobre', 'projetos', 'habilidades'].includes(id)).map(({ id, labelKey }) => (
           <section
             key={id}
