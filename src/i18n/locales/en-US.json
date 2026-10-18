@@ -138,6 +138,7 @@
   "notFound": {
     "title": "NO SIGNAL",
     "text": "This page is not recorded on this tape.",
-    "back": "Back to home"
+    "back": "Back to home",
+    "stop": "STOP"
   }
 }

@@ -76,3 +76,50 @@
     animation: none;
   }
 }
+
+/* VHS tracking (Konami Code): linhas horizontais e faixa de ruído que desce. */
+.vhs-scanlines {
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.18) 0,
+    rgb(0 0 0 / 0.18) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+@keyframes vhs-band {
+  from {
+    top: -10%;
+  }
+  to {
+    top: 110%;
+  }
+}
+
+.vhs-tracking-band {
+  top: 40%;
+  background: linear-gradient(to bottom, transparent, rgb(255 255 255 / 0.25), transparent);
+  backdrop-filter: blur(1px) saturate(0.4);
+  animation: vhs-band 1.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vhs-tracking-band {
+    animation: none;
+  }
+}
+
+/* Página 404: barras de cor em tons neutros (sem novas cores). */
+.vhs-bars {
+  background: linear-gradient(
+    to right,
+    #f2f2f2 0 14.28%,
+    #d4d4d4 14.28% 28.56%,
+    #a3a3a3 28.56% 42.84%,
+    #737373 42.84% 57.12%,
+    #525252 57.12% 71.4%,
+    #262626 71.4% 85.68%,
+    #0d0d0d 85.68%
+  );
+}

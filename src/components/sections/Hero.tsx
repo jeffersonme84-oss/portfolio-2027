@@ -8,6 +8,7 @@ import { site, splitName } from '@/content/site'
 import { useClock } from '@/hooks/useClock'
 import { useLocale } from '@/hooks/useLocale'
 import { useTypewriter } from '@/hooks/useTypewriter'
+import { playSound } from '@/lib/sound'
 import { cn } from '@/lib/utils'
 
 const { first, rest } = splitName(site.name)
@@ -142,7 +143,11 @@ export function Hero() {
           <CassetteLabel
             side={t('hero.side')}
             interactive={site.easterEggs}
-            onRewind={restart}
+            onSpin={() => playSound('play')}
+            onRewind={() => {
+              playSound('rewind')
+              restart()
+            }}
             className="mr-14 hidden shrink-0 lg:block"
           >
             <p className="font-display text-[1.75rem] leading-[0.95] font-black tracking-[-0.02em] text-balance text-accent uppercase">

@@ -18,6 +18,7 @@ import {
   type ContactValues,
   type SendResult,
 } from '@/lib/contact'
+import { playSound } from '@/lib/sound'
 import { cn } from '@/lib/utils'
 
 const label = 'mb-2 block font-mono text-[11px] tracking-[0.18em] uppercase'
@@ -68,6 +69,7 @@ export function Contact() {
 
   async function onSubmit(values: ContactValues) {
     setResult(null)
+    playSound('needle')
     const outcome = await sendContact(values, locale)
     setResult(outcome)
     if (outcome === 'success') reset()

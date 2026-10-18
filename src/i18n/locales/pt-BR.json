@@ -138,6 +138,7 @@
   "notFound": {
     "title": "SEM SINAL",
     "text": "Esta página não está gravada nesta fita.",
-    "back": "Voltar ao início"
+    "back": "Voltar ao início",
+    "stop": "PARADO"
   }
 }
