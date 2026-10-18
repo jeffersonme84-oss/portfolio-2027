@@ -88,7 +88,9 @@ export function Timeline() {
                   {item.subtitle && (
                     <span className="mt-1 block text-sm font-medium">{l(item.subtitle)}</span>
                   )}
-                  <span className="mt-2 block text-sm text-muted-foreground">{l(item.summary)}</span>
+                  <span className="mt-2 block text-sm text-muted-foreground">
+                    {l(item.summary)}
+                  </span>
                 </button>
               </h3>
               <div

@@ -33,11 +33,7 @@ export function Header({ onBrandClick }: HeaderProps) {
       )}
     >
       <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between gap-4 px-4 md:px-6">
-        <a
-          href="#inicio"
-          onClick={onBrandClick}
-          className="flex items-baseline gap-3"
-        >
+        <a href="#inicio" onClick={onBrandClick} className="flex items-baseline gap-3">
           <span className="font-display text-xl font-black tracking-[-0.04em]">{initials}</span>
           <span className="sr-only text-[11px] font-medium tracking-[0.12em] uppercase xl:not-sr-only">
             {site.name}

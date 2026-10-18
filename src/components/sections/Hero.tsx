@@ -60,7 +60,10 @@ export function Hero() {
     >
       <div className="relative mx-auto flex h-full max-w-[1200px] flex-col px-4 md:px-6">
         {/* Nome gigante atrás do retrato */}
-        <h1 id="inicio-titulo" className="relative z-0 pt-4 font-display font-black uppercase lg:pt-6">
+        <h1
+          id="inicio-titulo"
+          className="relative z-0 pt-4 font-display font-black uppercase lg:pt-6"
+        >
           <span className="sr-only">{site.name}</span>
           <span aria-hidden className="block">
             <span className="block text-[min(14vw,11.2rem)] leading-[0.85] tracking-[-0.04em] text-accent">
@@ -133,7 +136,10 @@ export function Hero() {
                 {t('nav.contact')}
               </a>
               {site.social.linkedin && (
-                <ExternalLink href={site.social.linkedin} className="underline-offset-4 hover:underline">
+                <ExternalLink
+                  href={site.social.linkedin}
+                  className="underline-offset-4 hover:underline"
+                >
                   {t('social.linkedin')}
                 </ExternalLink>
               )}

@@ -16,7 +16,8 @@ export const contactSchema = z.object({
 })
 
 export type ContactValues = z.infer<typeof contactSchema>
-export type ContactErrorKey = 'nameRequired' | 'nameTooLong' | 'emailInvalid' | 'messageTooShort' | 'messageTooLong'
+export type ContactErrorKey =
+  'nameRequired' | 'nameTooLong' | 'emailInvalid' | 'messageTooShort' | 'messageTooLong'
 
 export type SendResult = 'success' | 'error' | 'rateLimited' | 'unavailable'
 

@@ -37,5 +37,7 @@ export function SheetContent({ className, children, closeLabel, ...props }: Shee
 }
 
 export function SheetTitle({ className, ...props }: ComponentProps<typeof SheetPrimitive.Title>) {
-  return <SheetPrimitive.Title className={cn('font-mono text-[11px] uppercase', className)} {...props} />
+  return (
+    <SheetPrimitive.Title className={cn('font-mono text-[11px] uppercase', className)} {...props} />
+  )
 }

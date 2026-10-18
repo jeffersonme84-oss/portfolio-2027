@@ -9,7 +9,10 @@ export const DialogTrigger = DialogPrimitive.Trigger
 export const DialogClose = DialogPrimitive.Close
 export const DialogPortal = DialogPrimitive.Portal
 
-export function DialogOverlay({ className, ...props }: ComponentProps<typeof DialogPrimitive.Overlay>) {
+export function DialogOverlay({
+  className,
+  ...props
+}: ComponentProps<typeof DialogPrimitive.Overlay>) {
   return (
     <DialogPrimitive.Overlay
       className={cn(
@@ -57,5 +60,7 @@ export function DialogDescription({
   className,
   ...props
 }: ComponentProps<typeof DialogPrimitive.Description>) {
-  return <DialogPrimitive.Description className={cn('text-muted-foreground', className)} {...props} />
+  return (
+    <DialogPrimitive.Description className={cn('text-muted-foreground', className)} {...props} />
+  )
 }

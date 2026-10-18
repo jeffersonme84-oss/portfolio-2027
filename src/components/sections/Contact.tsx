@@ -32,14 +32,20 @@ export function Contact() {
             <h3 className={subheading}>{t('contact.direct')}</h3>
             <ul className="flex flex-col gap-3">
               <li>
-                <a href={`mailto:${site.email}`} className="inline-flex items-center gap-3 hover:text-accent">
+                <a
+                  href={`mailto:${site.email}`}
+                  className="inline-flex items-center gap-3 hover:text-accent"
+                >
                   <Mail className="size-4" aria-hidden />
                   <span className="sr-only">{t('social.email')}: </span>
                   {site.email}
                 </a>
               </li>
               <li>
-                <ExternalLink href={site.whatsappUrl} className="inline-flex items-center gap-3 hover:text-accent">
+                <ExternalLink
+                  href={site.whatsappUrl}
+                  className="inline-flex items-center gap-3 hover:text-accent"
+                >
                   <SiWhatsapp className="size-4" aria-hidden />
                   <span className="sr-only">{t('social.whatsapp')}: </span>
                   {site.phoneDisplay}
@@ -65,7 +71,10 @@ export function Contact() {
                 const Icon = socialIcons[network]
                 return (
                   <li key={network}>
-                    <ExternalLink href={url} className="inline-flex items-center gap-2 hover:text-accent">
+                    <ExternalLink
+                      href={url}
+                      className="inline-flex items-center gap-2 hover:text-accent"
+                    >
                       <Icon className="size-4" aria-hidden />
                       {t(`social.${network}`)}
                     </ExternalLink>
@@ -76,7 +85,10 @@ export function Contact() {
           </div>
 
           <div className="flex flex-wrap gap-3">
-            <ExternalLink href={site.whatsappUrl} className={buttonVariants({ variant: 'outline' })}>
+            <ExternalLink
+              href={site.whatsappUrl}
+              className={buttonVariants({ variant: 'outline' })}
+            >
               <SiWhatsapp aria-hidden />
               {t('social.whatsapp')}
             </ExternalLink>

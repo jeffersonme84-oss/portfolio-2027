@@ -1,0 +1,8 @@
+# Fim de linha LF no repositório e no disco (Prettier usa LF; evita avisos de CRLF no Windows).
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.webp binary
+*.woff2 binary
+*.pdf binary

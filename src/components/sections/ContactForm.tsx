@@ -23,7 +23,11 @@ type FieldProps = {
   name: 'name' | 'email' | 'message'
   label: string
   error?: FieldError
-  children: (props: { id: string; 'aria-invalid': boolean; 'aria-describedby'?: string }) => ReactNode
+  children: (props: {
+    id: string
+    'aria-invalid': boolean
+    'aria-describedby'?: string
+  }) => ReactNode
 }
 
 function Field({ id, name, label: text, error, children }: FieldProps) {
@@ -78,15 +82,30 @@ export default function ContactForm() {
       aria-busy={isSubmitting}
     >
       <Field id={id} name="name" label={t('contact.form.name')} error={errors.name}>
-        {(props) => <input {...props} {...register('name')} autoComplete="name" className={input} />}
+        {(props) => (
+          <input {...props} {...register('name')} autoComplete="name" className={input} />
+        )}
       </Field>
       <Field id={id} name="email" label={t('contact.form.email')} error={errors.email}>
         {(props) => (
-          <input {...props} {...register('email')} type="email" autoComplete="email" className={input} />
+          <input
+            {...props}
+            {...register('email')}
+            type="email"
+            autoComplete="email"
+            className={input}
+          />
         )}
       </Field>
       <Field id={id} name="message" label={t('contact.form.message')} error={errors.message}>
-        {(props) => <textarea {...props} {...register('message')} rows={6} className={cn(input, 'resize-y')} />}
+        {(props) => (
+          <textarea
+            {...props}
+            {...register('message')}
+            rows={6}
+            className={cn(input, 'resize-y')}
+          />
+        )}
       </Field>
 
       {/* Honeypot anti-spam: fora da tela e fora da navegação por teclado */}
@@ -99,7 +118,10 @@ export default function ContactForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className={cn(buttonVariants({ variant: 'default' }), 'h-14 gap-3 pr-6 pl-3 disabled:opacity-100')}
+          className={cn(
+            buttonVariants({ variant: 'default' }),
+            'h-14 gap-3 pr-6 pl-3 disabled:opacity-100',
+          )}
         >
           <VinylNeedle spinning={isSubmitting} />
           {isSubmitting ? t('contact.form.sending') : t('contact.form.submit')}

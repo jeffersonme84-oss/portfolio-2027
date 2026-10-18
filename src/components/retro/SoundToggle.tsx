@@ -18,7 +18,11 @@ export function SoundToggle() {
       onClick={() => setSoundEnabled(!enabled)}
       className="flex size-9 cursor-pointer items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
     >
-      {enabled ? <Volume2 className="size-4" aria-hidden /> : <VolumeX className="size-4" aria-hidden />}
+      {enabled ? (
+        <Volume2 className="size-4" aria-hidden />
+      ) : (
+        <VolumeX className="size-4" aria-hidden />
+      )}
     </button>
   )
 }

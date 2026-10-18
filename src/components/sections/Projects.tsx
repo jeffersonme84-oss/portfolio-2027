@@ -108,7 +108,10 @@ export function Projects() {
         </ul>
       </div>
 
-      <ProjectDialog project={projects.find((project) => project.slug === openSlug)} onClose={close} />
+      <ProjectDialog
+        project={projects.find((project) => project.slug === openSlug)}
+        onClose={close}
+      />
     </section>
   )
 }

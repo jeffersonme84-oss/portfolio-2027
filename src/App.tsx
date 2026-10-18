@@ -52,7 +52,9 @@ export default function App() {
   // Título e descrição no idioma ativo.
   useEffect(() => {
     document.title = t('meta.title')
-    document.querySelector('meta[name="description"]')?.setAttribute('content', t('meta.description'))
+    document
+      .querySelector('meta[name="description"]')
+      ?.setAttribute('content', t('meta.description'))
   }, [t])
 
   useEffect(() => {

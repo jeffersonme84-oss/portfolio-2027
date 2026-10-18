@@ -9,5 +9,7 @@ export function useClock(timeZone: string, locale: string) {
     return () => window.clearInterval(timer)
   }, [])
 
-  return new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', timeZone }).format(now)
+  return new Intl.DateTimeFormat(locale, { hour: '2-digit', minute: '2-digit', timeZone }).format(
+    now,
+  )
 }

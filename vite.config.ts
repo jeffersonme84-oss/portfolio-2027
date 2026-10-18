@@ -36,14 +36,24 @@ function seo(siteUrl: string): Plugin {
         `<script type="application/ld+json">${JSON.stringify(person)}</script>`,
       ]
       if (base) {
-        tags.push(`<link rel="canonical" href="${base}/" />`, `<meta property="og:url" content="${base}/" />`)
+        tags.push(
+          `<link rel="canonical" href="${base}/" />`,
+          `<meta property="og:url" content="${base}/" />`,
+        )
       }
       return html
-        .replace('<title>Jefferson Moreira Evangelista</title>', `<title>${ptBR.meta.title}</title>`)
+        .replace(
+          '<title>Jefferson Moreira Evangelista</title>',
+          `<title>${ptBR.meta.title}</title>`,
+        )
         .replace('</head>', `    ${tags.join('\n    ')}\n  </head>`)
     },
     generateBundle() {
-      const robots = ['User-agent: *', 'Allow: /', ...(base ? ['', `Sitemap: ${base}/sitemap.xml`] : [])]
+      const robots = [
+        'User-agent: *',
+        'Allow: /',
+        ...(base ? ['', `Sitemap: ${base}/sitemap.xml`] : []),
+      ]
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `${robots.join('\n')}\n` })
       if (base) {
         this.emitFile({
@@ -66,6 +76,16 @@ export default defineConfig(({ mode }) => {
     plugins: [react(), tailwindcss(), seo(env.VITE_SITE_URL ?? '')],
     resolve: {
       alias: { '@': path.resolve(__dirname, './src') },
+    },
+    build: {
+      rollupOptions: {
+        onwarn(warning, warn) {
+          // O zod 4 traz comentários @__PURE__ em posições que o Rollup ignora: aviso inofensivo
+          // de dependência. Avisos do nosso código continuam aparecendo.
+          if (warning.code === 'INVALID_ANNOTATION' && warning.id?.includes('node_modules')) return
+          warn(warning)
+        },
+      },
     },
   }
 })

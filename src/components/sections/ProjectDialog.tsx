@@ -45,7 +45,10 @@ export function ProjectDialog({ project, onClose }: ProjectDialogProps) {
                 ['result', t('projects.result')],
               ] as const
             ).map(([key, label], index) => (
-              <section key={key} className="grid gap-2 border-t border-border pt-4 md:grid-cols-[12rem_1fr]">
+              <section
+                key={key}
+                className="grid gap-2 border-t border-border pt-4 md:grid-cols-[12rem_1fr]"
+              >
                 <h3 className="font-mono text-[11px] tracking-[0.18em] uppercase">
                   <span className="text-accent" aria-hidden>
                     0{index + 1}{' '}
@@ -62,7 +65,11 @@ export function ProjectDialog({ project, onClose }: ProjectDialogProps) {
               <h3 className="mb-3 font-mono text-[11px] tracking-[0.18em] uppercase">
                 {t('projects.technologies')}
               </h3>
-              <TechList technologies={shown.technologies} label={t('projects.technologies')} showNames />
+              <TechList
+                technologies={shown.technologies}
+                label={t('projects.technologies')}
+                showNames
+              />
             </div>
             <ProjectLinks project={shown} tone="page" />
           </div>
