@@ -1,0 +1,16 @@
+{
+  "theme": {
+    "dark": "Dark mode",
+    "light": "Light mode",
+    "useSystem": "Use system theme"
+  },
+  "language": {
+    "label": "Language",
+    "pt-BR": "Portuguese (Brazil)",
+    "en-US": "English (US)",
+    "short": {
+      "pt-BR": "BR",
+      "en-US": "US"
+    }
+  }
+}
