@@ -536,14 +536,22 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 
 | Decisão | Motivo |
 | --- | --- |
-| Imagem principal da Hero: robô futurista de corpo inteiro com o rosto do Jefferson (`public/images/hero/robo-futurista*.webp`, configurada em `site.hero`). **Exceção autorizada** à regra "nada de geração de rostos": a imagem foi gerada e enviada pelo próprio Jefferson | decisão dele |
-| A imagem enviada era RGB com quadriculado "pintado" (sem transparência real). Só o fundo foi removido (rembg `u2net`) e as margens vazias cortadas; o robô não foi redimensionado nem alterado. Original guardado em `docs/assets-originais/robo-futurista-original.webp`. Variantes 400/600/800/1156 px via `srcset` | não exibir quadriculado falso; desempenho no celular |
+| ~~Robô futurista em primeiro plano~~ (substituído na 2ª atualização, abaixo). Original guardado em `docs/assets-originais/robo-futurista-original.webp`; as variantes saíram de `public/` | histórico |
 | O retrato recortado (`jefferson-cutout.webp`) sai da Home, mas continua na `og-image.png` | compartilhamento com foto real |
 | Digitação só do último sobrenome (EVANGELISTA), uma única vez, cursor vertical no acento; JEFFERSON MOREIRA estável; texto completo no `<h1>` (sr-only) e letras visuais `aria-hidden`; duplo clique nos carretéis repete a digitação | pedido do Jefferson; acessibilidade |
 | `src/components/ui/kinetic-matrix.tsx`: malha de nós com pulsos, ondas de impacto (clique em área livre) e reação ao ponteiro. **Exceção autorizada** à regra "sem fundos animados", com limites: canvas transparente atrás do conteúdo (`pointer-events: none`), máscara que esvazia o centro, cores dos tokens do tema (+ azul do robô), começa só após `load`/ocioso, pausa fora da tela e com a aba oculta, 30 fps e menos nós no celular, quadro estático com reduced motion. O código original do KineticMatrix não foi enviado; o componente foi escrito a partir da descrição | pedido do Jefferson, sem perder legibilidade e desempenho |
 | `useActiveSection` lê o DOM num listener de scroll com `requestAnimationFrame` (antes lia durante o render e forçava reflow) | performance |
-| Lighthouse após a nova Home: desktop 99/100/100/100; mobile 75–90 em execuções seguidas (mediana ~80) / 100 / 100 / 100 | a imagem maior e a malha custam alguns pontos no mobile simulado |
+| Lighthouse com o robô: desktop 99/100/100/100; mobile 75–90 (mediana ~80) / 100 / 100 / 100 | histórico |
 | Neste computador, o Windows está com "Efeitos de animação" desligados, o que ativa `prefers-reduced-motion`: a digitação e a malha aparecem estáticas. Para ver as animações, ligue em Configurações → Acessibilidade → Efeitos visuais | comportamento correto de acessibilidade |
+
+**2ª atualização da Home e dos Projetos (pedido do Jefferson, 2026-10-18)**
+
+| Decisão | Motivo |
+| --- | --- |
+| Fundo da Hero: foto do Jefferson programando (`public/images/hero/dev-futurista-{800,1600}.webp`, em `site.hero.background`), começando abaixo do nome, com desfoque de 2 px, véu de 55% na cor do fundo e degradês nas bordas (CSS). **Exceção autorizada** à regra de não usar foto de fundo cheia e à de geração de rostos (imagem gerada e enviada por ele). Original em `docs/assets-originais/dev-futurista-original.webp` | pedido: fundo "não muito focado", sem perder a legibilidade |
+| Linha MOREIRA EVANGELISTA menor (até 3,5 rem; 8,5 vw no celular); a digitação de EVANGELISTA continua | pedido do Jefferson |
+| `src/components/ui/notched-project-card.tsx` (21st.dev) adaptado: sem "use client", cantos de 8 px, título em display, proporção 2:3 (ideia do pôster mantida), recorte pintado em `var(--wall)`, disco claro que fica laranja (acento) no hover/foco, rótulo acessível. A galeria segue na parede escura, em P&B, com Deploy/GitHub abaixo e o estudo de caso em modal | efeito pedido, em harmonia com o tema |
+| Lighthouse: desktop 99/100/100/100; mobile 83–86 / 100 / 100 / 100 | foto de fundo pesa menos que o robô |
 
 **Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
 

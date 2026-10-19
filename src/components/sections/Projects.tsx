@@ -2,6 +2,7 @@ import { useEffect, useState, type CSSProperties } from 'react'
 import { ProjectDialog } from '@/components/sections/ProjectDialog'
 import { ProjectLinks } from '@/components/sections/ProjectLinks'
 import { TechList } from '@/components/sections/TechList'
+import { NotchedProjectCard } from '@/components/ui/notched-project-card'
 import { projects } from '@/content/projects'
 import { useLocale } from '@/hooks/useLocale'
 
@@ -65,37 +66,28 @@ export function Projects() {
         <ul className="grid gap-14 md:grid-cols-3 md:gap-8">
           {projects.map((project) => (
             <li key={project.slug} className="flex flex-col gap-5">
-              <button
-                type="button"
-                onClick={() => open(project.slug)}
+              {/* Pôster com recorte: o canto é pintado na cor da parede e a seta abre o estudo de caso */}
+              <NotchedProjectCard
+                href={`${HASH_PREFIX}${project.slug}`}
+                onClick={(event) => {
+                  event.preventDefault()
+                  open(project.slug)
+                }}
                 aria-haspopup="dialog"
                 data-project={project.slug}
-                className="group block w-full cursor-pointer border-2 border-wall-foreground/70 bg-black p-2 text-left transition-colors hover:border-wall-foreground"
-              >
-                <span className="relative block aspect-[2/3] overflow-hidden">
-                  <img
-                    src={project.cover}
-                    alt=""
-                    width={600}
-                    height={900}
-                    loading="lazy"
-                    decoding="async"
-                    className="size-full object-cover grayscale transition-[filter] duration-500 group-hover:grayscale-0 group-focus-visible:grayscale-0 motion-reduce:transition-none"
-                  />
-                  <span className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/30" />
-                  <span className="absolute top-3 left-3 font-mono text-[10px] tracking-[0.18em] text-white uppercase">
-                    {project.year} / {l(project.kind)}
-                  </span>
-                  <span className="absolute inset-x-4 bottom-4 text-white">
-                    <span className="block font-display text-3xl leading-[0.85] font-black tracking-[-0.04em] [overflow-wrap:anywhere] uppercase lg:text-4xl">
-                      {l(project.title)}
-                    </span>
-                    <span className="mt-2 block text-sm text-white/80">{l(project.summary)}</span>
-                    <span className="sr-only"> — {t('projects.open')}</span>
-                  </span>
-                </span>
-              </button>
-              <div className="flex flex-wrap items-center justify-between gap-4">
+                title={l(project.title)}
+                description={l(project.summary)}
+                image={project.cover}
+                badge={project.year}
+                tags={[l(project.kind)]}
+                aspect="2 / 3"
+                monochrome
+                surface="var(--wall)"
+                accent="var(--accent)"
+                discClassName="bg-wall-foreground text-wall"
+                actionLabel={t('projects.open')}
+              />
+              <div className="flex flex-wrap items-center justify-between gap-4 border-t border-wall-foreground/15 pt-4">
                 <TechList
                   technologies={project.technologies}
                   label={t('projects.technologies')}

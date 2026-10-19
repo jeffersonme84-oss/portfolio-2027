@@ -56,13 +56,39 @@ export function Hero() {
       aria-labelledby="inicio-titulo"
       className="relative isolate h-svh min-h-[600px] overflow-hidden pt-14"
     >
-      {/* Malha tecnológica: camada decorativa atrás de tudo, mais visível nas bordas */}
+      {/* Imagem de fundo, desfocada e suavizada na cor do tema para não competir com o nome */}
+      {/* Começa abaixo do nome: o rosto aparece entre o nome e os CTAs */}
+      <div className="absolute inset-x-0 top-[34%] bottom-0 -z-20 overflow-hidden sm:top-[30%] lg:top-[24%]">
+        <img
+          src={site.hero.background.src}
+          srcSet={site.hero.background.srcSet}
+          sizes="100vw"
+          alt={t('hero.portraitAlt')}
+          width={site.hero.background.width}
+          height={site.hero.background.height}
+          fetchPriority="high"
+          decoding="async"
+          className="size-full scale-105 object-cover object-top blur-[2px] select-none"
+        />
+        <div aria-hidden className="absolute inset-0 bg-background/55" />
+        {/* Bordas fundem com o fundo do site; base mais clara para os CTAs e o rótulo K7 */}
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-b from-background via-transparent via-35% to-background/90"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[linear-gradient(to_right,var(--background),transparent_22%,transparent_78%,var(--background))]"
+        />
+      </div>
+
+      {/* Malha tecnológica: camada decorativa sobre o fundo, mais visível nas bordas */}
       <KineticMatrix
         interactionRef={sectionRef}
         className="-z-10 [mask-image:radial-gradient(ellipse_42%_55%_at_50%_58%,transparent_35%,black_100%)]"
       />
       <div className="relative mx-auto flex h-full max-w-[1200px] flex-col px-4 md:px-6">
-        {/* Nome gigante atrás do robô */}
+        {/* Nome gigante */}
         <h1
           id="inicio-titulo"
           className="relative z-0 pt-4 font-display font-black uppercase lg:pt-6"
@@ -72,7 +98,7 @@ export function Hero() {
             <span className="block text-[min(14vw,11.2rem)] leading-[0.85] tracking-[-0.04em] text-accent">
               {first}
             </span>
-            <span className="mt-1 block text-[min(12vw,4.9rem)] leading-[0.88] tracking-[-0.04em] lg:text-[min(6.6vw,4.9rem)]">
+            <span className="mt-2 block text-[min(8.5vw,3.5rem)] leading-[0.9] tracking-[-0.03em] lg:text-[min(4.6vw,3.5rem)]">
               {staticWords.map((word) => (
                 <span key={word} className="block lg:inline">
                   {word}
@@ -105,19 +131,6 @@ export function Hero() {
             </ul>
           </nav>
         </div>
-
-        {/* Robô de corpo inteiro em primeiro plano: base encostada na base da dobra */}
-        <img
-          src={site.hero.src}
-          srcSet={site.hero.srcSet}
-          sizes="(min-width: 1024px) 448px, (min-width: 640px) 50vh, 42vh"
-          alt={t('hero.portraitAlt')}
-          width={site.hero.width}
-          height={site.hero.height}
-          fetchPriority="high"
-          decoding="async"
-          className="pointer-events-none absolute bottom-0 left-1/2 z-10 h-[44%] w-auto max-w-[min(100%,48rem)] -translate-x-1/2 object-contain object-bottom select-none sm:h-[52%] lg:h-[63%] lg:max-w-[28rem]"
-        />
 
         {/* Rodapé da dobra: número + CTAs à esquerda, rótulo K7 à direita */}
         <div className="relative z-20 mt-auto flex items-end justify-between gap-6 pb-6 sm:pb-14 lg:pb-10">
