@@ -14,22 +14,26 @@ import { playSound } from '@/lib/sound'
 import { cn } from '@/lib/utils'
 
 const { first, rest } = splitName(site.name)
-// Só o último sobrenome é digitado; o restante do nome fica estável desde o carregamento.
+// Linha 2 (MOREIRA EVANGELISTA) é digitável: no carregamento só o último sobrenome é digitado
+// (MOREIRA já aparece); ao passar o mouse no nome, a linha inteira é digitada de novo.
 const restWords = rest.split(' ')
-const typedWord = restWords.at(-1) ?? ''
-const staticWords = restWords.slice(0, -1)
+const wordOffsets = restWords.map((_, index) => restWords.slice(0, index).join('').length)
+const restLength = restWords.join('').length
+const firstRunStart = wordOffsets.at(-1) ?? 0
 
 const microText = 'font-mono text-[11px] leading-snug tracking-[0.14em] uppercase'
 
-type TypedProps = { text: string; count: number; typing: boolean }
+type TypedProps = { text: string; offset: number; count: number; typing: boolean }
 
 // Letras ainda não digitadas ficam invisíveis: o layout não se move durante a digitação.
-function Typed({ text, count, typing }: TypedProps) {
-  const typed = Math.min(text.length, count)
+// O cursor aparece só na palavra que está sendo digitada.
+function Typed({ text, offset, count, typing }: TypedProps) {
+  const typed = Math.max(0, Math.min(text.length, count - offset))
+  const active = typing && count >= offset && count < offset + text.length
   return (
     <>
       {text.slice(0, typed)}
-      {typing && (
+      {active && (
         <span className="retro-cursor relative inline-block h-[0.78em] w-[0.06em] translate-y-[0.04em] bg-accent align-baseline" />
       )}
       <span className="invisible">{text.slice(typed)}</span>
@@ -40,9 +44,13 @@ function Typed({ text, count, typing }: TypedProps) {
 export function Hero() {
   const { t, l, locale } = useLocale()
   const time = useClock(site.timeZone, locale)
-  const { count, done, restart } = useTypewriter(typedWord.length, { speed: 110, delay: 700 })
+  const { count, done, restart } = useTypewriter(restLength, {
+    speed: 95,
+    delay: 700,
+    startAt: firstRunStart,
+  })
   const sectionRef = useRef<HTMLElement>(null)
-  const lastRetype = useRef(0)
+  const photoRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
 
   // Paralaxe suave: a foto acompanha o mouse e o scroll (variáveis CSS, sem re-render).
@@ -50,11 +58,12 @@ export function Hero() {
     const section = sectionRef.current
     if (!section || reducedMotion) return
     let frame = 0
-    const pointer = { x: 0, y: 0 }
+    const pointer = { x: 0, y: 0, overPhoto: false }
     function apply() {
       frame = 0
       section!.style.setProperty('--px', pointer.x.toFixed(3))
       section!.style.setProperty('--py', pointer.y.toFixed(3))
+      section!.style.setProperty('--ph', pointer.overPhoto ? '1' : '0')
       section!.style.setProperty('--sy', `${Math.min(window.scrollY, 900) * 0.12}px`)
     }
     function schedule() {
@@ -65,11 +74,21 @@ export function Hero() {
       const rect = section!.getBoundingClientRect()
       pointer.x = (event.clientX - rect.left) / rect.width - 0.5
       pointer.y = (event.clientY - rect.top) / rect.height - 0.5
+      // A foto fica atrás do conteúdo: o hover nela é detectado pela posição do ponteiro.
+      const photo = photoRef.current?.getBoundingClientRect()
+      pointer.overPhoto = Boolean(
+        photo &&
+        event.clientX >= photo.left &&
+        event.clientX <= photo.right &&
+        event.clientY >= photo.top &&
+        event.clientY <= photo.bottom,
+      )
       schedule()
     }
     function onPointerLeave() {
       pointer.x = 0
       pointer.y = 0
+      pointer.overPhoto = false
       schedule()
     }
     section.addEventListener('pointermove', onPointerMove)
@@ -80,16 +99,13 @@ export function Hero() {
       section.removeEventListener('pointermove', onPointerMove)
       section.removeEventListener('pointerleave', onPointerLeave)
       window.removeEventListener('scroll', schedule)
-      for (const name of ['--px', '--py', '--sy']) section.style.removeProperty(name)
+      for (const name of ['--px', '--py', '--ph', '--sy']) section.style.removeProperty(name)
     }
   }, [reducedMotion])
 
-  // Passar o mouse perto do nome digita o sobrenome de novo (intervalo mínimo entre repetições).
+  // Passar o mouse sobre o nome digita MOREIRA EVANGELISTA de novo (quando a digitação anterior terminou).
   function retypeSurname() {
-    const now = Date.now()
-    if (!done || now - lastRetype.current < 1500) return
-    lastRetype.current = now
-    restart()
+    if (done) restart()
   }
 
   const miniIndex = [
@@ -108,10 +124,13 @@ export function Hero() {
     >
       {/* Foto colorida à direita, na base, dissolvendo na cor da página (claro e escuro).
           Fica abaixo do nome e se move em paralaxe com o mouse e o scroll. */}
-      <div className="absolute inset-x-0 bottom-0 -z-20 h-[44%] sm:h-[48%] lg:inset-x-auto lg:right-0 lg:h-[56%] lg:w-[48%]">
+      <div
+        ref={photoRef}
+        className="absolute inset-x-0 bottom-0 -z-20 h-[44%] sm:h-[48%] lg:inset-x-auto lg:right-[7%] lg:h-[56%] lg:w-[48%]"
+      >
         <div className="absolute inset-0 overflow-hidden">
           <div className="size-full motion-safe:animate-reveal motion-safe:[animation-delay:250ms]">
-            <div className="size-full transition-transform duration-700 ease-out [transform:translate3d(calc(var(--px,0)*-18px),calc(var(--py,0)*-12px_+_var(--sy,0px)),0)_scale(1.04)] motion-reduce:[transform:none]">
+            <div className="size-full transition-transform duration-700 ease-out [transform:translate3d(calc(var(--px,0)*-18px),calc(var(--py,0)*-12px_+_var(--sy,0px)),0)_scale(calc(1.04_+_var(--ph,0)*0.05))_rotate(calc(var(--px,0)*var(--ph,0)*-3deg))] motion-reduce:[transform:none]">
               <img
                 src={site.hero.background.src}
                 srcSet={site.hero.background.srcSet}
@@ -126,13 +145,29 @@ export function Hero() {
             </div>
           </div>
         </div>
-        {/* Bordas fundem na cor da página: esquerda (onde ficam os textos), topo e base.
+        {/* Bordas fundem na cor da página: esquerda (onde ficam os textos), direita, topo e base.
             O véu passa 2 px das bordas para cobrir a junção com a camada animada da foto. */}
         <div
           aria-hidden
-          className="absolute -inset-[2px] bg-[linear-gradient(to_right,var(--background)_0%,var(--background)_3%,color-mix(in_oklab,var(--background)_45%,transparent)_22%,transparent_45%),linear-gradient(to_bottom,var(--background)_0%,var(--background)_4%,transparent_30%),linear-gradient(to_top,var(--background)_0%,var(--background)_3%,transparent_18%)]"
+          className="absolute -inset-[2px] bg-[linear-gradient(to_right,var(--background)_0%,var(--background)_3%,color-mix(in_oklab,var(--background)_45%,transparent)_22%,transparent_45%),linear-gradient(to_bottom,var(--background)_0%,var(--background)_4%,transparent_30%),linear-gradient(to_top,var(--background)_0%,var(--background)_3%,transparent_18%),linear-gradient(to_left,var(--background)_0%,var(--background)_3%,transparent_22%)]"
         />
       </div>
+
+      {/* Rótulo K7 à direita, sobre a foto */}
+      <CassetteLabel
+        side={t('hero.side')}
+        interactive={site.easterEggs}
+        onSpin={() => playSound('play')}
+        onRewind={() => {
+          playSound('rewind')
+          restart()
+        }}
+        className="absolute right-[6%] bottom-[10%] z-20 hidden w-64 lg:block motion-safe:animate-rise motion-safe:[animation-delay:480ms]"
+      >
+        <p className="font-display text-[1.75rem] leading-[0.95] font-black tracking-[-0.02em] text-balance text-accent uppercase">
+          {t('hero.headline')}
+        </p>
+      </CassetteLabel>
 
       {/* Malha tecnológica com paralaxe 3D: camada decorativa sobre a foto, mais leve no centro */}
       <KineticMatrix
@@ -152,15 +187,12 @@ export function Hero() {
               {first}
             </span>
             <span className="mt-2 block text-[min(8.5vw,3.5rem)] leading-[0.9] tracking-[-0.03em] motion-safe:animate-rise motion-safe:[animation-delay:120ms] lg:text-[min(4.6vw,3.5rem)]">
-              {staticWords.map((word) => (
-                <span key={word} className="block lg:inline">
-                  {word}
-                  <span className="hidden lg:inline"> </span>
+              {restWords.map((word, index) => (
+                <span key={word} className="block whitespace-nowrap lg:inline">
+                  {index > 0 && <span className="hidden lg:inline"> </span>}
+                  <Typed text={word} offset={wordOffsets[index]} count={count} typing={!done} />
                 </span>
               ))}
-              <span className="block whitespace-nowrap lg:inline">
-                <Typed text={typedWord} count={count} typing={!done} />
-              </span>
             </span>
           </span>
         </h1>
@@ -185,7 +217,7 @@ export function Hero() {
           </nav>
         </div>
 
-        {/* Rodapé da dobra: número + CTAs, e o rótulo K7 ao lado */}
+        {/* Rodapé da dobra: número + CTAs */}
         <div className="relative z-20 mt-auto flex items-end gap-10 pb-6 motion-safe:animate-rise motion-safe:[animation-delay:360ms] sm:pb-14 lg:pb-10">
           <div className="flex w-full flex-col gap-5 bg-gradient-to-t from-background from-60% to-transparent pt-10 lg:w-auto lg:bg-none lg:pt-0">
             <p className="hidden items-end gap-3 lg:flex">
@@ -215,21 +247,6 @@ export function Hero() {
               )}
             </div>
           </div>
-
-          <CassetteLabel
-            side={t('hero.side')}
-            interactive={site.easterEggs}
-            onSpin={() => playSound('play')}
-            onRewind={() => {
-              playSound('rewind')
-              restart()
-            }}
-            className="hidden w-64 shrink-0 xl:block"
-          >
-            <p className="font-display text-[1.75rem] leading-[0.95] font-black tracking-[-0.02em] text-balance text-accent uppercase">
-              {t('hero.headline')}
-            </p>
-          </CassetteLabel>
         </div>
       </div>
     </section>

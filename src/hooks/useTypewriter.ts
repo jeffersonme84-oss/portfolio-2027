@@ -4,17 +4,22 @@ import { useReducedMotion } from '@/hooks/useReducedMotion'
 type Options = {
   speed?: number
   delay?: number
+  // Caracteres já visíveis na primeira execução (as repetições começam do zero).
+  startAt?: number
 }
 
 // Quantos caracteres de `total` já foram "digitados". Com reduced motion, tudo de uma vez.
-export function useTypewriter(total: number, { speed = 75, delay = 400 }: Options = {}) {
+export function useTypewriter(
+  total: number,
+  { speed = 75, delay = 400, startAt = 0 }: Options = {},
+) {
   const reducedMotion = useReducedMotion()
   const [run, setRun] = useState(0)
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(startAt)
 
   useEffect(() => {
     if (reducedMotion) return
-    let current = 0
+    let current = run === 0 ? startAt : 0
     // Repetições (hover, carretéis) começam quase na hora; só a primeira espera o carregamento.
     const startDelay = run === 0 ? delay : Math.min(delay, 150)
     let timer = window.setTimeout(function tick() {
@@ -23,7 +28,7 @@ export function useTypewriter(total: number, { speed = 75, delay = 400 }: Option
       if (current < total) timer = window.setTimeout(tick, speed)
     }, startDelay)
     return () => window.clearTimeout(timer)
-  }, [reducedMotion, total, speed, delay, run])
+  }, [reducedMotion, total, speed, delay, run, startAt])
 
   const restart = useCallback(() => {
     setCount(0)
