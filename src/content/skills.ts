@@ -9,12 +9,21 @@ import {
 } from 'lucide-react'
 import type { IconType } from 'react-icons'
 import {
+  SiAndroid,
+  SiArduino,
+  SiCplusplus,
   SiDocker,
+  SiEspressif,
+  SiExpo,
   SiFigma,
+  SiFirebase,
   SiGit,
   SiGithub,
+  SiGooglegemini,
   SiJavascript,
+  SiMqtt,
   SiNodedotjs,
+  SiOpenjdk,
   SiPostgresql,
   SiReact,
   SiShadcnui,
@@ -50,6 +59,17 @@ export const skills = {
   git: { name: 'Git', icon: SiGit, color: '#F05032' },
   github: { name: 'GitHub', icon: SiGithub },
   figma: { name: 'Figma', icon: SiFigma, color: '#F24E1E' },
+  // Tecnologias dos projetos do GitHub (react-icons não tem marca do React Native).
+  reactNative: { name: 'React Native', icon: SiReact, color: '#61DAFB' },
+  expo: { name: 'Expo', icon: SiExpo },
+  firebase: { name: 'Firebase', icon: SiFirebase, color: '#DD2C00' },
+  gemini: { name: 'Google Gemini', icon: SiGooglegemini, color: '#8E75B2' },
+  android: { name: 'Android', icon: SiAndroid, color: '#34A853' },
+  java: { name: 'Java', icon: SiOpenjdk },
+  cpp: { name: 'C++', icon: SiCplusplus, color: '#00599C' },
+  esp32: { name: 'ESP32', icon: SiEspressif, color: '#E7352C' },
+  arduino: { name: 'Arduino', icon: SiArduino, color: '#00878F' },
+  mqtt: { name: 'MQTT', icon: SiMqtt, color: '#660066' },
   portuguese: {
     name: { 'pt-BR': 'Português · Lorem', 'en-US': 'Portuguese · Lorem' }, // TODO(jefferson): nível
     icon: Languages,
