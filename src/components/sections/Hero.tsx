@@ -2,7 +2,6 @@ import { ArrowRight } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { CvButton } from '@/components/layout/CvButton'
 import { ExternalLink } from '@/components/layout/ExternalLink'
-import { CassetteLabel } from '@/components/retro/CassetteLabel'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { KineticMatrix } from '@/components/ui/kinetic-matrix'
 import { site, splitName } from '@/content/site'
@@ -10,7 +9,6 @@ import { useClock } from '@/hooks/useClock'
 import { useLocale } from '@/hooks/useLocale'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { useTypewriter } from '@/hooks/useTypewriter'
-import { playSound } from '@/lib/sound'
 import { cn } from '@/lib/utils'
 
 const { first, rest } = splitName(site.name)
@@ -152,22 +150,6 @@ export function Hero() {
           className="absolute -inset-[2px] bg-[linear-gradient(to_right,var(--background)_0%,var(--background)_3%,color-mix(in_oklab,var(--background)_45%,transparent)_22%,transparent_45%),linear-gradient(to_bottom,var(--background)_0%,var(--background)_4%,transparent_30%),linear-gradient(to_top,var(--background)_0%,var(--background)_3%,transparent_18%),linear-gradient(to_left,var(--background)_0%,var(--background)_3%,transparent_22%)]"
         />
       </div>
-
-      {/* Rótulo K7 à direita, sobre a foto */}
-      <CassetteLabel
-        side={t('hero.side')}
-        interactive={site.easterEggs}
-        onSpin={() => playSound('play')}
-        onRewind={() => {
-          playSound('rewind')
-          restart()
-        }}
-        className="absolute right-[6%] bottom-[10%] z-20 hidden w-64 lg:block motion-safe:animate-rise motion-safe:[animation-delay:480ms]"
-      >
-        <p className="font-display text-[1.75rem] leading-[0.95] font-black tracking-[-0.02em] text-balance text-accent uppercase">
-          {t('hero.headline')}
-        </p>
-      </CassetteLabel>
 
       {/* Malha tecnológica com paralaxe 3D: camada decorativa sobre a foto, mais leve no centro */}
       <KineticMatrix
