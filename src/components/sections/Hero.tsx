@@ -41,6 +41,15 @@ export function Hero() {
   const time = useClock(site.timeZone, locale)
   const { count, done, restart } = useTypewriter(typedWord.length, { speed: 110, delay: 700 })
   const sectionRef = useRef<HTMLElement>(null)
+  const lastRetype = useRef(0)
+
+  // Passar o mouse perto do nome digita o sobrenome de novo (intervalo mínimo entre repetições).
+  function retypeSurname() {
+    const now = Date.now()
+    if (!done || now - lastRetype.current < 1500) return
+    lastRetype.current = now
+    restart()
+  }
 
   const miniIndex = [
     { href: '#sobre', label: t('nav.about') },
@@ -56,30 +65,6 @@ export function Hero() {
       aria-labelledby="inicio-titulo"
       className="relative isolate h-svh min-h-[600px] overflow-hidden pt-14"
     >
-      {/* Foto nítida cobrindo a Home toda, com o rosto centralizado na tela.
-          Véus em degradê só onde há texto (topo, laterais e base); o centro fica limpo. */}
-      <div className="absolute inset-0 -z-20 overflow-hidden">
-        <img
-          src={site.hero.background.src}
-          srcSet={site.hero.background.srcSet}
-          sizes="100vw"
-          alt={t('hero.portraitAlt')}
-          width={site.hero.background.width}
-          height={site.hero.background.height}
-          fetchPriority="high"
-          decoding="async"
-          className="absolute inset-x-0 top-[30%] h-full w-full object-cover object-[50%_0%] select-none sm:top-[22%] lg:top-[14%]"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--background)_0%,var(--background)_16%,color-mix(in_oklab,var(--background)_55%,transparent)_30%,transparent_45%,transparent_68%,color-mix(in_oklab,var(--background)_75%,transparent)_86%,var(--background)_100%)]"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 hidden bg-[linear-gradient(to_right,color-mix(in_oklab,var(--background)_88%,transparent)_0%,transparent_30%,transparent_70%,color-mix(in_oklab,var(--background)_88%,transparent)_100%)] lg:block"
-        />
-      </div>
-
       {/* Malha tecnológica com paralaxe 3D: camada decorativa sobre a foto, mais leve no centro */}
       <KineticMatrix
         interactionRef={sectionRef}
@@ -89,7 +74,8 @@ export function Hero() {
         {/* Nome gigante */}
         <h1
           id="inicio-titulo"
-          className="relative z-0 pt-4 font-display font-black uppercase lg:pt-6"
+          onPointerEnter={retypeSurname}
+          className="relative z-0 cursor-default pt-4 font-display font-black uppercase lg:pt-6"
         >
           <span className="sr-only">{site.name}</span>
           <span aria-hidden className="block">
@@ -130,8 +116,23 @@ export function Hero() {
           </nav>
         </div>
 
-        {/* Rodapé da dobra: número + CTAs à esquerda, rótulo K7 à direita */}
-        <div className="relative z-20 mt-auto flex items-end justify-between gap-6 pb-6 sm:pb-14 lg:pb-10">
+        {/* Foto inteira (todos os detalhes visíveis), menor e alinhada à direita */}
+        <figure className="absolute inset-x-4 top-[47%] z-10 aspect-video sm:inset-x-6 sm:top-[42%] lg:inset-x-auto lg:top-auto lg:right-16 lg:bottom-10 xl:right-10 lg:w-[min(46%,34rem)]">
+          <img
+            src={site.hero.background.src}
+            srcSet={site.hero.background.srcSet}
+            sizes="(min-width: 1024px) 34rem, 92vw"
+            alt={t('hero.portraitAlt')}
+            width={site.hero.background.width}
+            height={site.hero.background.height}
+            fetchPriority="high"
+            decoding="async"
+            className="size-full rounded-md object-contain shadow-[0_24px_60px_-28px_rgb(0_0_0/0.55)] ring-1 ring-foreground/10 select-none"
+          />
+        </figure>
+
+        {/* Rodapé da dobra: número + CTAs, e o rótulo K7 ao lado (a foto fica livre à direita) */}
+        <div className="relative z-20 mt-auto flex items-end gap-10 pb-6 sm:pb-14 lg:pb-10">
           <div className="flex w-full flex-col gap-5 bg-gradient-to-t from-background from-60% to-transparent pt-10 lg:w-auto lg:bg-none lg:pt-0">
             <p className="hidden items-end gap-3 lg:flex">
               <span className="font-display text-7xl leading-[0.85] font-black tracking-[-0.04em]">
@@ -169,7 +170,7 @@ export function Hero() {
               playSound('rewind')
               restart()
             }}
-            className="mr-14 hidden shrink-0 lg:block"
+            className="hidden w-64 shrink-0 xl:block"
           >
             <p className="font-display text-[1.75rem] leading-[0.95] font-black tracking-[-0.02em] text-balance text-accent uppercase">
               {t('hero.headline')}

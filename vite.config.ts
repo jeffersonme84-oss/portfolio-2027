@@ -24,7 +24,7 @@ function seo(siteUrl: string): Plugin {
     name: 'portfolio-seo',
     transformIndexHtml(html) {
       const tags = [
-        `<link rel="preload" as="image" href="${site.hero.background.src}" imagesrcset="${site.hero.background.srcSet}" imagesizes="100vw" fetchpriority="high" />`,
+        `<link rel="preload" as="image" href="${site.hero.background.src}" imagesrcset="${site.hero.background.srcSet}" imagesizes="(min-width: 1024px) 34rem, 92vw" fetchpriority="high" />`,
         `<meta name="description" content="${ptBR.meta.description}" />`,
         `<meta property="og:title" content="${ptBR.meta.title}" />`,
         `<meta property="og:description" content="${ptBR.meta.description}" />`,

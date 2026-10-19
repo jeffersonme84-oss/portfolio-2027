@@ -15,11 +15,13 @@ export function useTypewriter(total: number, { speed = 75, delay = 400 }: Option
   useEffect(() => {
     if (reducedMotion) return
     let current = 0
+    // Repetições (hover, carretéis) começam quase na hora; só a primeira espera o carregamento.
+    const startDelay = run === 0 ? delay : Math.min(delay, 150)
     let timer = window.setTimeout(function tick() {
       current += 1
       setCount(current)
       if (current < total) timer = window.setTimeout(tick, speed)
-    }, delay)
+    }, startDelay)
     return () => window.clearTimeout(timer)
   }, [reducedMotion, total, speed, delay, run])
 
