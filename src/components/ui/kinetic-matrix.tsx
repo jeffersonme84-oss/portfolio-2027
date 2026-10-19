@@ -10,12 +10,13 @@ type KineticMatrixProps = {
   interactionRef?: React.RefObject<HTMLElement | null>
 }
 
-type Node = { x: number; y: number; phase: number; dx: number; dy: number }
+// z: profundidade (0,3 = fundo, 1 = frente), usada na paralaxe 3D do ponteiro.
+type Node = { x: number; y: number; z: number; phase: number; dx: number; dy: number }
 type Pulse = { edge: number; t: number; speed: number; color: string }
 type Wave = { x: number; y: number; radius: number; life: number }
 type Palette = { line: string; node: string; accent: string; blue: string }
 
-// Azul dos detalhes do robô da Home; o resto vem dos tokens do tema.
+// Azul dos detalhes da foto da Home; o resto vem dos tokens do tema.
 const BLUE = '#3b82f6'
 
 function readPalette(): Palette {
@@ -25,8 +26,10 @@ function readPalette(): Palette {
   return { line: foreground, node: foreground, accent, blue: BLUE }
 }
 
-// Malha de nós conectados com pulsos de dados, ondas de impacto e reação ao ponteiro.
-// Camada decorativa: canvas transparente (alpha), atrás do conteúdo, sem bloquear cliques.
+// Malha de nós em camadas de profundidade, com pulsos de dados, ondas de impacto e
+// paralaxe 3D que acompanha o ponteiro. Canvas transparente (alpha), atrás do conteúdo,
+// sem bloquear cliques. Com reduced motion, nada se move sozinho: só as reações ao
+// ponteiro (iniciadas pelo usuário) continuam.
 export function KineticMatrix({ className, interactionRef }: KineticMatrixProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const reducedMotion = useReducedMotion()
@@ -61,6 +64,7 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
     let pulses: Pulse[] = []
     let waves: Wave[] = []
     const pointer = { x: -9999, y: -9999, active: false }
+    const parallax = { x: 0, y: 0 }
     let frame = 0
     let lastFrame = 0
     let lastSpawn = 0
@@ -85,6 +89,7 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
           nodes.push({
             x: col * spacing + (Math.random() - 0.5) * spacing * 0.5,
             y: row * spacing + (Math.random() - 0.5) * spacing * 0.5,
+            z: 0.3 + Math.random() * 0.7,
             phase: Math.random() * Math.PI * 2,
             dx: 0,
             dy: 0,
@@ -104,24 +109,39 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
 
     function position(node: Node, time: number) {
       const drift = reducedMotion ? 0 : 3
+      // Paralaxe: nós da frente (z alto) se deslocam mais que os do fundo.
+      const depth = 46 * node.z
       return {
-        x: node.x + Math.sin(time / 1800 + node.phase) * drift + node.dx,
-        y: node.y + Math.cos(time / 2100 + node.phase) * drift + node.dy,
+        x: node.x + Math.sin(time / 1800 + node.phase) * drift + node.dx - parallax.x * depth,
+        y: node.y + Math.cos(time / 2100 + node.phase) * drift + node.dy - parallax.y * depth,
       }
+    }
+
+    // Movimento pendente (ponteiro, ondas ou paralaxe voltando ao centro)?
+    function settling() {
+      if (pointer.active || waves.length) return true
+      if (Math.abs(parallax.x) > 0.002 || Math.abs(parallax.y) > 0.002) return true
+      return nodes.some((node) => Math.abs(node.dx) > 0.05 || Math.abs(node.dy) > 0.05)
     }
 
     function draw(time: number) {
       const palette = shared.palette!
       ctx!.clearRect(0, 0, width, height) // sem pintar fundo: o cinza do site aparece
 
-      // Ponteiro e ondas empurram os nós de leve.
+      // Paralaxe 3D: a malha "gira" suavemente na direção oposta ao ponteiro.
+      const goalX = pointer.active ? (pointer.x - width / 2) / width : 0
+      const goalY = pointer.active ? (pointer.y - height / 2) / height : 0
+      parallax.x += (goalX - parallax.x) * 0.08
+      parallax.y += (goalY - parallax.y) * 0.08
+
+      // Ponteiro e ondas empurram os nós.
       for (const node of nodes) {
         let tx = 0
         let ty = 0
         if (pointer.active) {
           const dist = Math.hypot(node.x - pointer.x, node.y - pointer.y)
-          if (dist < 140 && dist > 0) {
-            const force = (1 - dist / 140) * 14
+          if (dist < 170 && dist > 0) {
+            const force = (1 - dist / 170) * 22 * node.z
             tx += ((node.x - pointer.x) / dist) * force
             ty += ((node.y - pointer.y) / dist) * force
           }
@@ -130,7 +150,7 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
           const dist = Math.hypot(node.x - wave.x, node.y - wave.y)
           const band = Math.abs(dist - wave.radius)
           if (band < 40 && dist > 0) {
-            const force = (1 - band / 40) * 10 * wave.life
+            const force = (1 - band / 40) * 16 * wave.life * node.z
             tx += ((node.x - wave.x) / dist) * force
             ty += ((node.y - wave.y) / dist) * force
           }
@@ -143,7 +163,7 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
 
       ctx!.lineWidth = 1
       ctx!.strokeStyle = palette.line
-      ctx!.globalAlpha = 0.09
+      ctx!.globalAlpha = 0.13
       ctx!.beginPath()
       for (const [a, b] of edges) {
         ctx!.moveTo(points[a].x, points[a].y)
@@ -154,12 +174,12 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
       // Linhas próximas ao ponteiro ganham destaque.
       if (pointer.active) {
         ctx!.strokeStyle = palette.accent
-        ctx!.globalAlpha = 0.35
+        ctx!.globalAlpha = 0.55
         ctx!.beginPath()
         for (const [a, b] of edges) {
           const mx = (points[a].x + points[b].x) / 2
           const my = (points[a].y + points[b].y) / 2
-          if (Math.hypot(mx - pointer.x, my - pointer.y) < 110) {
+          if (Math.hypot(mx - pointer.x, my - pointer.y) < 130) {
             ctx!.moveTo(points[a].x, points[a].y)
             ctx!.lineTo(points[b].x, points[b].y)
           }
@@ -167,11 +187,14 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
         ctx!.stroke()
       }
 
+      // Nós da frente maiores e mais opacos: sensação de profundidade.
       ctx!.fillStyle = palette.node
-      ctx!.globalAlpha = 0.22
-      for (const point of points) {
-        ctx!.fillRect(point.x - 1, point.y - 1, 2, 2)
-      }
+      points.forEach((point, index) => {
+        const z = nodes[index].z
+        const size = 1 + z * 2.2
+        ctx!.globalAlpha = 0.12 + 0.3 * z
+        ctx!.fillRect(point.x - size / 2, point.y - size / 2, size, size)
+      })
 
       // Pulsos de dados correndo pelas conexões.
       for (const pulse of pulses) {
@@ -201,7 +224,7 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
       const delta = Math.min(time - (lastFrame || time), 64)
       lastFrame = time
 
-      if (edges.length && pulses.length < maxPulses && time - lastSpawn > 420) {
+      if (!reducedMotion && edges.length && pulses.length < maxPulses && time - lastSpawn > 420) {
         lastSpawn = time
         const palette = shared.palette!
         const colors = [palette.accent, palette.blue, palette.node]
@@ -219,6 +242,15 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
         return wave.life > 0
       })
       draw(time)
+      // Com reduced motion, o loop só existe enquanto houver reação ao ponteiro.
+      if (reducedMotion && !settling()) stop()
+    }
+
+    // Liga o loop para responder ao ponteiro (também com reduced motion).
+    function kick() {
+      if (frame || !visible || document.hidden) return
+      lastFrame = 0
+      frame = requestAnimationFrame(step)
     }
 
     function start() {
@@ -243,9 +275,11 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
       pointer.x = event.clientX - rect.left
       pointer.y = event.clientY - rect.top
       pointer.active = true
+      kick()
     }
     function onPointerLeave() {
       pointer.active = false
+      kick()
     }
     function onPointerDown(event: PointerEvent) {
       // Cliques em links, botões e campos seguem normais, sem onda.
@@ -258,6 +292,7 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
           radius: 0,
           life: 1,
         })
+        kick()
       }
     }
     function onVisibility() {
@@ -294,7 +329,7 @@ export function KineticMatrix({ className, interactionRef }: KineticMatrixProps)
     intersection.observe(canvas)
 
     document.addEventListener('visibilitychange', onVisibility)
-    if (!reducedMotion && target) {
+    if (target) {
       target.addEventListener('pointermove', onPointerMove)
       target.addEventListener('pointerleave', onPointerLeave)
       target.addEventListener('pointerdown', onPointerDown)

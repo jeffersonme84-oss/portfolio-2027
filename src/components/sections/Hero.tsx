@@ -56,36 +56,27 @@ export function Hero() {
       aria-labelledby="inicio-titulo"
       className="relative isolate h-svh min-h-[600px] overflow-hidden pt-14"
     >
-      {/* Imagem de fundo, desfocada e suavizada na cor do tema para não competir com o nome */}
-      {/* Começa abaixo do nome: o rosto aparece entre o nome e os CTAs */}
-      <div className="absolute inset-x-0 top-[34%] bottom-0 -z-20 overflow-hidden sm:top-[30%] lg:top-[24%]">
+      {/* Foto nítida, enquadrada inteira e menor, na base da dobra, abaixo do nome.
+          As bordas se dissolvem no fundo do site (máscara radial), sem véu pesado. */}
+      <div className="absolute inset-x-0 top-[36%] bottom-0 -z-20 sm:top-[32%] lg:inset-x-auto lg:top-auto lg:bottom-0 lg:left-1/2 lg:aspect-video lg:w-[min(58rem,80%)] lg:-translate-x-1/2">
         <img
           src={site.hero.background.src}
           srcSet={site.hero.background.srcSet}
-          sizes="100vw"
+          sizes="(min-width: 1024px) 58rem, 100vw"
           alt={t('hero.portraitAlt')}
           width={site.hero.background.width}
           height={site.hero.background.height}
           fetchPriority="high"
           decoding="async"
-          className="size-full scale-105 object-cover object-top blur-[2px] select-none"
+          className="size-full object-cover object-top select-none [mask-image:radial-gradient(ellipse_60%_58%_at_50%_58%,black_52%,transparent_100%)] lg:object-contain"
         />
-        <div aria-hidden className="absolute inset-0 bg-background/55" />
-        {/* Bordas fundem com o fundo do site; base mais clara para os CTAs e o rótulo K7 */}
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-b from-background via-transparent via-35% to-background/90"
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 bg-[linear-gradient(to_right,var(--background),transparent_22%,transparent_78%,var(--background))]"
-        />
+        <div aria-hidden className="absolute inset-0 bg-background/10" />
       </div>
 
-      {/* Malha tecnológica: camada decorativa sobre o fundo, mais visível nas bordas */}
+      {/* Malha tecnológica com paralaxe 3D: camada decorativa sobre a foto, mais leve no centro */}
       <KineticMatrix
         interactionRef={sectionRef}
-        className="-z-10 [mask-image:radial-gradient(ellipse_42%_55%_at_50%_58%,transparent_35%,black_100%)]"
+        className="-z-10 [mask-image:radial-gradient(ellipse_40%_50%_at_50%_60%,rgb(0_0_0/0.35)_0%,black_100%)]"
       />
       <div className="relative mx-auto flex h-full max-w-[1200px] flex-col px-4 md:px-6">
         {/* Nome gigante */}
