@@ -15,12 +15,16 @@
     <meta name="twitter:card" content="summary_large_image" />
     <script>
       // Aplica tema e idioma salvos antes da primeira pintura (sem flash).
-      // Mesmas chaves de src/lib/theme.ts e src/i18n/index.ts.
+      // Mesmas chaves de src/lib/theme.ts, src/lib/motion.ts e src/i18n/index.ts.
       try {
         var t = localStorage.getItem('theme')
         var dark =
           t === 'dark' || (t !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
         if (dark) document.documentElement.classList.add('dark')
+        var m = localStorage.getItem('motion')
+        var reduce =
+          m === 'off' || (m !== 'on' && matchMedia('(prefers-reduced-motion: reduce)').matches)
+        if (reduce) document.documentElement.classList.add('reduce-motion')
         var l = localStorage.getItem('lang')
         if (l === 'pt-BR' || l === 'en-US') document.documentElement.lang = l
       } catch (e) {}

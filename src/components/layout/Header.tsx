@@ -32,7 +32,7 @@ export function Header({ onBrandClick }: HeaderProps) {
         scrolled ? 'border-border bg-background/95 backdrop-blur-sm' : 'border-transparent',
       )}
     >
-      <div className="mx-auto flex h-14 max-w-[1200px] items-center justify-between gap-4 px-4 md:px-6">
+      <div className="mx-auto flex h-14 max-w-[1200px] items-center gap-4 px-4 md:gap-6 md:px-6">
         <a href="#inicio" onClick={onBrandClick} className="flex items-baseline gap-3">
           <span className="font-display text-xl font-black tracking-[-0.04em]">{initials}</span>
           <span className="sr-only text-[11px] font-medium tracking-[0.12em] uppercase xl:not-sr-only">
@@ -40,8 +40,9 @@ export function Header({ onBrandClick }: HeaderProps) {
           </span>
         </a>
 
-        <nav aria-label={t('nav.label')} className="hidden md:block">
-          <ul className="flex items-center gap-6">
+        {/* Menu à direita, junto dos controles de tema e idioma */}
+        <nav aria-label={t('nav.label')} className="ml-auto hidden md:block">
+          <ul className="flex items-center gap-5 lg:gap-6">
             {NAV_SECTIONS.map(({ id, labelKey }) => (
               <li key={id}>
                 <a
@@ -61,6 +62,8 @@ export function Header({ onBrandClick }: HeaderProps) {
           </ul>
         </nav>
 
+        <span aria-hidden className="hidden h-5 w-px bg-border md:block" />
+
         <div className="hidden items-center gap-3 md:flex">
           <ThemeToggle />
           <LanguageSwitcher />
@@ -69,7 +72,7 @@ export function Header({ onBrandClick }: HeaderProps) {
 
         <Sheet>
           <SheetTrigger
-            className="flex size-10 cursor-pointer items-center justify-center md:hidden"
+            className="ml-auto flex size-10 cursor-pointer items-center justify-center md:hidden"
             aria-label={t('nav.openMenu')}
           >
             <Menu className="size-5" aria-hidden />

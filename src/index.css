@@ -4,6 +4,9 @@
 @import './styles/retro.css';
 
 @custom-variant dark (&:is(.dark *));
+/* Animações seguem a classe .reduce-motion (sistema ou botão do site), não só a media query. */
+@custom-variant motion-reduce (&:where(.reduce-motion, .reduce-motion *));
+@custom-variant motion-safe (&:where(:root:not(.reduce-motion) *));
 
 @layer base {
   * {
@@ -22,9 +25,7 @@
     /* Compensa o header fixo ao rolar até as âncoras. */
     scroll-padding-top: 4rem;
   }
-  @media (prefers-reduced-motion: no-preference) {
-    html {
-      scroll-behavior: smooth;
-    }
+  html:not(.reduce-motion) {
+    scroll-behavior: smooth;
   }
 }

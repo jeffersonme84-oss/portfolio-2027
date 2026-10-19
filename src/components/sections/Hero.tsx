@@ -56,21 +56,28 @@ export function Hero() {
       aria-labelledby="inicio-titulo"
       className="relative isolate h-svh min-h-[600px] overflow-hidden pt-14"
     >
-      {/* Foto nítida, enquadrada inteira e menor, na base da dobra, abaixo do nome.
-          As bordas se dissolvem no fundo do site (máscara radial), sem véu pesado. */}
-      <div className="absolute inset-x-0 top-[36%] bottom-0 -z-20 sm:top-[32%] lg:inset-x-auto lg:top-auto lg:bottom-0 lg:left-1/2 lg:aspect-video lg:w-[min(58rem,80%)] lg:-translate-x-1/2">
+      {/* Foto nítida cobrindo a Home toda, com o rosto centralizado na tela.
+          Véus em degradê só onde há texto (topo, laterais e base); o centro fica limpo. */}
+      <div className="absolute inset-0 -z-20 overflow-hidden">
         <img
           src={site.hero.background.src}
           srcSet={site.hero.background.srcSet}
-          sizes="(min-width: 1024px) 58rem, 100vw"
+          sizes="100vw"
           alt={t('hero.portraitAlt')}
           width={site.hero.background.width}
           height={site.hero.background.height}
           fetchPriority="high"
           decoding="async"
-          className="size-full object-cover object-top select-none [mask-image:radial-gradient(ellipse_60%_58%_at_50%_58%,black_52%,transparent_100%)] lg:object-contain"
+          className="absolute inset-x-0 top-[30%] h-full w-full object-cover object-[50%_0%] select-none sm:top-[22%] lg:top-[14%]"
         />
-        <div aria-hidden className="absolute inset-0 bg-background/10" />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-[linear-gradient(to_bottom,var(--background)_0%,var(--background)_16%,color-mix(in_oklab,var(--background)_55%,transparent)_30%,transparent_45%,transparent_68%,color-mix(in_oklab,var(--background)_75%,transparent)_86%,var(--background)_100%)]"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-0 hidden bg-[linear-gradient(to_right,color-mix(in_oklab,var(--background)_88%,transparent)_0%,transparent_30%,transparent_70%,color-mix(in_oklab,var(--background)_88%,transparent)_100%)] lg:block"
+        />
       </div>
 
       {/* Malha tecnológica com paralaxe 3D: camada decorativa sobre a foto, mais leve no centro */}

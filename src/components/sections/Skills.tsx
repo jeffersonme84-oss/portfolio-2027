@@ -2,8 +2,44 @@ import type { CSSProperties } from 'react'
 import { SectionHeading } from '@/components/sections/SectionHeading'
 import { hardSkillGroups, skills, softSkills } from '@/content/skills'
 import { useLocale } from '@/hooks/useLocale'
+import { cn } from '@/lib/utils'
 
 const subheading = 'mb-8 font-mono text-[11px] tracking-[0.2em] uppercase'
+
+// Cada soft skill tem uma interação de hover própria (ciclo pela posição na lista).
+// Movimentos só com animações ligadas (motion-safe); cores mudam sempre.
+const softHover = [
+  // peça de quebra-cabeça que encaixa: card inverte e o ícone gira
+  {
+    card: 'hover:bg-foreground hover:text-background',
+    icon: 'motion-safe:group-hover:rotate-90 motion-safe:group-hover:scale-110',
+    text: 'group-hover:text-background/70',
+  },
+  // conversa: barra de acento sobe pela lateral e o balão balança
+  {
+    card: 'before:absolute before:inset-y-0 before:left-0 before:w-1 before:origin-bottom before:scale-y-0 before:bg-accent before:transition-transform before:duration-300 hover:before:scale-y-100',
+    icon: 'group-hover:text-accent motion-safe:group-hover:animate-nudge',
+    text: '',
+  },
+  // tempo: os ponteiros dão uma volta completa
+  {
+    card: '',
+    icon: 'group-hover:text-accent motion-safe:transition-transform motion-safe:duration-700 motion-safe:group-hover:rotate-[360deg]',
+    text: 'group-hover:text-foreground',
+  },
+  // equipe: card se destaca com sombra editorial dura
+  {
+    card: 'hover:z-10 hover:shadow-[6px_6px_0_var(--foreground)] motion-safe:hover:-translate-x-0.5 motion-safe:hover:-translate-y-0.5',
+    icon: 'motion-safe:group-hover:scale-125',
+    text: '',
+  },
+  // ideia: a lâmpada acende
+  {
+    card: 'hover:bg-[radial-gradient(circle_at_15%_30%,color-mix(in_oklab,var(--accent)_18%,transparent),transparent_65%)]',
+    icon: 'group-hover:text-accent group-hover:drop-shadow-[0_0_10px_var(--accent)]',
+    text: '',
+  },
+]
 
 export function Skills() {
   const { t, l } = useLocale()
@@ -50,17 +86,37 @@ export function Skills() {
       </div>
 
       <h3 className={`${subheading} mt-24`}>{t('skills.soft')}</h3>
-      <ul className="grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
-        {softSkills.map((skill) => {
+      <ul className="grid border-t border-l border-border sm:grid-cols-2 lg:grid-cols-3">
+        {softSkills.map((skill, index) => {
           const Icon = skill.icon
+          const effect = softHover[index % softHover.length]
           return (
-            <li key={skill.id} className="flex gap-4 bg-background p-6">
-              <Icon className="size-6 shrink-0" aria-hidden />
+            <li
+              key={skill.id}
+              className={cn(
+                'group relative flex gap-4 border-r border-b border-border bg-background p-6 transition-[background-color,color,box-shadow,translate] duration-300',
+                effect.card,
+              )}
+            >
+              <Icon
+                className={cn(
+                  'size-6 shrink-0 transition-[color,scale,rotate] duration-300',
+                  effect.icon,
+                )}
+                aria-hidden
+              />
               <div>
                 <h4 className="font-display text-lg leading-tight font-black tracking-[-0.02em] uppercase">
                   {l(skill.title)}
                 </h4>
-                <p className="mt-1 text-sm text-muted-foreground">{l(skill.text)}</p>
+                <p
+                  className={cn(
+                    'mt-1 text-sm text-muted-foreground transition-colors',
+                    effect.text,
+                  )}
+                >
+                  {l(skill.text)}
+                </p>
               </div>
             </li>
           )

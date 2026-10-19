@@ -139,5 +139,9 @@
     "text": "This page is not recorded on this tape.",
     "back": "Back to home",
     "stop": "STOP"
+  },
+  "motion": {
+    "enable": "Turn animations on",
+    "disable": "Reduce animations"
   }
 }

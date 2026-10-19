@@ -139,5 +139,9 @@
     "text": "Esta página não está gravada nesta fita.",
     "back": "Voltar ao início",
     "stop": "PARADO"
+  },
+  "motion": {
+    "enable": "Ativar animações",
+    "disable": "Reduzir animações"
   }
 }

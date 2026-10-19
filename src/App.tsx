@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { FloatingContacts } from '@/components/layout/FloatingContacts'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
+import { MotionToggle } from '@/components/retro/MotionToggle'
 import { NotFound } from '@/components/retro/NotFound'
 import { SoundToggle } from '@/components/retro/SoundToggle'
 import { TapeCounter } from '@/components/retro/TapeCounter'
@@ -83,6 +84,7 @@ export default function App() {
       </main>
       <Footer />
       <FloatingContacts>
+        <MotionToggle />
         <SoundToggle />
       </FloatingContacts>
       <TapeCounter rewinding={effect === 'rewind'} />

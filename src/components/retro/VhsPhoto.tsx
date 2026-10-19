@@ -18,7 +18,7 @@ export function VhsPhoto({ src, alt, timecode, revealsIllustration = false }: Vh
   const animated = site.easterEggs && revealsIllustration && clicks >= 3
 
   return (
-    <figure className="w-full max-w-xs">
+    <figure className="mx-auto w-full max-w-xs">
       <div
         className="vhs-frame relative border border-foreground/30 bg-foreground/5 p-1.5"
         onClick={revealsIllustration ? () => setClicks((count) => count + 1) : undefined}

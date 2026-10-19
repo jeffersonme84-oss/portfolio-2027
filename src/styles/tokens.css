@@ -104,3 +104,21 @@
   --tracking-display: -0.04em;
   --leading-display: 0.85;
 }
+
+/* Microanimações de hover (soft skills): token do Tailwind (animate-nudge). */
+@theme {
+  --animate-nudge: nudge 0.5s ease-in-out 2;
+
+  @keyframes nudge {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0);
+    }
+    30% {
+      transform: translateY(-4px) rotate(-8deg);
+    }
+    60% {
+      transform: translateY(0) rotate(6deg);
+    }
+  }
+}

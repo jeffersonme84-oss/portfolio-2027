@@ -1,13 +1,23 @@
 import { ExternalLink } from '@/components/layout/ExternalLink'
 import { socialIcons } from '@/components/layout/socialIcons'
 import { SectionHeading } from '@/components/sections/SectionHeading'
+import { TiltCard } from '@/components/ui/tilt-card'
 import { testimonials } from '@/content/testimonials'
 import { useLocale } from '@/hooks/useLocale'
 import { cn } from '@/lib/utils'
 
 // Linhas de caderno do rótulo de fita.
 const notebookLines =
-  'bg-[repeating-linear-gradient(to_bottom,transparent_0,transparent_1.6rem,var(--border)_1.6rem,var(--border)_calc(1.6rem+1px))]'
+  'bg-[repeating-linear-gradient(to_bottom,transparent_0,transparent_1.6rem,var(--lines,var(--border))_1.6rem,var(--lines,var(--border))_calc(1.6rem+1px))]'
+
+// Cada depoimento tem uma interação própria (ciclo pela posição):
+// 0 = inclinação 3D que segue o mouse; 1 = sobe com sombra de acento e a faixa cresce;
+// 2 = o rótulo "descola" e as linhas do caderno ganham a cor de acento.
+const cardHover = [
+  '',
+  'hover:shadow-[8px_8px_0_var(--accent)] motion-safe:hover:-translate-y-1.5',
+  'hover:[--lines:color-mix(in_oklab,var(--accent)_45%,transparent)] motion-safe:hover:-rotate-[1.5deg] motion-safe:hover:translate-x-1',
+]
 
 function initials(name: string) {
   return name
@@ -37,11 +47,23 @@ export function Testimonials() {
           testimonials.length > 2 && 'lg:grid-cols-3',
         )}
       >
-        {testimonials.map((item) => (
-          <li key={item.id}>
-            <figure className="flex h-full flex-col border-2 border-foreground bg-background">
+        {testimonials.map((item, index) => {
+          const variant = index % cardHover.length
+          const card = (
+            <figure
+              className={cn(
+                'group flex h-full flex-col border-2 border-foreground bg-background transition-[translate,rotate,box-shadow] duration-300',
+                cardHover[variant],
+              )}
+            >
               {/* Faixa superior do rótulo, como numa fita K7 */}
-              <div aria-hidden className="h-3 border-b-2 border-foreground bg-accent" />
+              <div
+                aria-hidden
+                className={cn(
+                  'h-3 border-b-2 border-foreground bg-accent transition-[height] duration-300',
+                  variant === 1 && 'group-hover:h-6',
+                )}
+              />
               <blockquote className={cn('flex-1 px-5 pt-[0.35rem] pb-4', notebookLines)}>
                 <p className="font-mono text-sm leading-[1.6rem]">“{l(item.text)}”</p>
               </blockquote>
@@ -82,8 +104,13 @@ export function Testimonials() {
                 )}
               </figcaption>
             </figure>
-          </li>
-        ))}
+          )
+          return (
+            <li key={item.id}>
+              {variant === 0 ? <TiltCard className="h-full">{card}</TiltCard> : card}
+            </li>
+          )
+        })}
       </ul>
     </section>
   )

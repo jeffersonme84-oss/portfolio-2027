@@ -1,6 +1,6 @@
 /*
  * Efeitos retro (K7 / VHS / vinil). Todos são opt-in por interação e
- * desligam com prefers-reduced-motion (CLAUDE.md, seção 1.1).
+ * desligam com reduced motion (classe .reduce-motion: sistema ou botão do site).
  */
 
 @keyframes retro-blink {
@@ -32,11 +32,9 @@
   animation: retro-spin 0.35s linear infinite reverse;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .retro-cursor,
-  .retro-reel[data-state] {
-    animation: none;
-  }
+.reduce-motion .retro-cursor,
+.reduce-motion .retro-reel[data-state] {
+  animation: none;
 }
 
 /* VHS: granulado estático (SVG feTurbulence) sobre as fotos da timeline. */
@@ -71,10 +69,8 @@
   animation: vhs-tracking 0.45s steps(2) 1;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .vhs-frame:hover .vhs-glitch {
-    animation: none;
-  }
+.reduce-motion .vhs-frame:hover .vhs-glitch {
+  animation: none;
 }
 
 /* VHS tracking (Konami Code): linhas horizontais e faixa de ruído que desce. */
@@ -104,10 +100,8 @@
   animation: vhs-band 1.4s linear infinite;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .vhs-tracking-band {
-    animation: none;
-  }
+.reduce-motion .vhs-tracking-band {
+  animation: none;
 }
 
 /* Página 404: barras de cor em tons neutros (sem novas cores). */
