@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Jefferson Moreira Evangelista · Desenvolvedor de Sistemas",
-    "description": "Portfólio de Jefferson Moreira Evangelista, desenvolvedor de sistemas em São Paulo: projetos, trajetória, habilidades e contato."
+    "title": "Jefferson Moreira Evangelista · Desenvolvedor de Software",
+    "description": "Portfólio de Jefferson Moreira Evangelista, desenvolvedor de software em São Paulo: projetos web, mobile, IoT e IA, trajetória, habilidades e contato."
   },
   "theme": {
     "dark": "Modo escuro",
@@ -56,7 +56,7 @@
   },
   "hero": {
     "index": "Índice",
-    "experience": "anos de experiência",
+    "experience": "anos como dev full stack",
     "headline": "Sistemas sólidos. Web com propósito.",
     "seeProjects": "Ver projetos",
     "portraitAlt": "Jefferson trabalhando no notebook, com telas holográficas de código e um braço robótico",

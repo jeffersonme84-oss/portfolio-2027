@@ -4,12 +4,12 @@ export type SocialNetwork = 'linkedin' | 'github' | 'behance' | 'instagram' | 'd
 
 export const site = {
   name: 'Jefferson Moreira Evangelista',
-  title: { 'pt-BR': 'Desenvolvedor de Sistemas', 'en-US': 'Systems Developer' } as Localized, // TODO(jefferson): confirmar título
+  title: { 'pt-BR': 'Desenvolvedor de Software', 'en-US': 'Software Developer' } as Localized,
   location: 'São Paulo, BR',
   timeZone: 'America/Sao_Paulo',
-  // Número grande da Home (anos de experiência).
-  experienceYears: '00', // TODO(jefferson): preencher
-  email: 'seu-email@exemplo.com', // TODO(jefferson): preencher
+  // Número grande da Home: anos como desenvolvedor full stack (DMANDA, fev. 2022 – nov. 2023).
+  experienceYears: '02',
+  email: 'jeffersonme84@gmail.com',
   phoneDisplay: '(11) 96194-1984',
   whatsappUrl: 'https://wa.me/5511961941984',
   // Redes com string vazia não aparecem. A ordem aqui é a ordem de exibição.

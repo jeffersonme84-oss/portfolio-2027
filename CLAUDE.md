@@ -461,9 +461,9 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 **A definir pelo Jefferson**
 - [x] Recorte do hero gerado com `rembg` (`hero/jefferson-cutout.webp`). Pendente: **original em alta resolução** para refazer o recorte com mais nitidez
 - [ ] Arquivos originais no lugar dos prints de tela da pasta `reserva/`
-- [ ] Título profissional exato (placeholder: "Desenvolvedor de Sistemas")
-- [ ] E-mail profissional e GitHub (telefone, WhatsApp, LinkedIn e Instagram já estão em `site.ts`)
-- [ ] Conteúdo do LinkedIn (colar o texto ou enviar o PDF do perfil)
+- [x] Título profissional: "Desenvolvedor de Software" (headline do LinkedIn)
+- [x] E-mail (jeffersonme84@gmail.com) e GitHub em `site.ts`. O LinkedIn lista github.com/jeffersonme84-oss, mas essa conta não tem repositórios públicos; o site usa github.com/JeffersonEvangelista (trocar em `site.social.github` se preferir)
+- [x] Conteúdo do LinkedIn aplicado em `timeline.ts` (bio, valores, experiências, formação, certificações) e `skills.ts`. Pendentes: textos dos itens de família, datas sobrepostas da Verisure (Júnior × Pleno) e status da pós na PUC-Campinas
 - [ ] CVs em PDF (`pt-BR` e `en-US`)
 - [ ] Fotos (hero, pessoais, família) e **confirmação de autorização dos familiares**
 - [ ] Conteúdo real: timeline, projetos, habilidades finais e depoimentos
@@ -561,6 +561,7 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | Home na opção B (escolhida numa prévia com 4 opções): foto colorida à direita e na base (48% x 56% no desktop; faixa inferior no celular), abaixo do nome, dissolvendo na cor da página nos dois temas (véu que passa 2 px das bordas para não deixar linha na junção com a camada animada). Entrada em cascata (animate-rise/animate-reveal) e paralaxe da foto com mouse e scroll; tudo desliga com animações reduzidas | pedido do Jefferson: mais fluidez |
 | Ajuste da opção B: foto a 7% da borda direita (esmaecida também à direita); rótulo K7 sobre o lado direito da foto (lg+); hover no nome redigita a linha MOREIRA EVANGELISTA inteira (no carregamento, só EVANGELISTA); hover na foto aproxima ~5% e inclina levemente | pedido do Jefferson |
 | Rótulo K7 "Lado A" retirado da Home (e com ele o duplo clique nos carretéis); a headline continua no i18n (`hero.headline`) para uso futuro | pedido do Jefferson |
+| Conteúdo do LinkedIn (out. 2026): `site.title` = Desenvolvedor de Software; número da Home = 02 "anos como dev full stack" (DMANDA, fev. 2022 – nov. 2023; a Verisure é vendas/liderança); Verisure Júnior e Pleno num item só (datas se sobrepõem no LinkedIn); certificações agrupadas em 3 itens (AWS; desenvolvimento e IA; infraestrutura, segurança e IoT); prêmio Lorem removido (não há prêmios no perfil); Docker removido das skills (não consta no perfil); soft skills reais (liderança, apresentações de vendas, negociação consultiva etc.); og-image regenerada com o novo título | dados fornecidos pelo Jefferson; nada inventado |
 | Linha MOREIRA EVANGELISTA menor (até 3,5 rem; 8,5 vw no celular); a digitação de EVANGELISTA continua | pedido do Jefferson |
 | `src/components/ui/notched-project-card.tsx` (21st.dev) adaptado: sem "use client", cantos de 8 px, título em display, proporção 2:3 (ideia do pôster mantida), recorte pintado em `var(--wall)`, disco claro que fica laranja (acento) no hover/foco, rótulo acessível. A galeria segue na parede escura, em P&B, com Deploy/GitHub abaixo e o estudo de caso em modal | efeito pedido, em harmonia com o tema |
 | Lighthouse: desktop 99/100/100/100; mobile 83–86 / 100 / 100 / 100 | foto de fundo pesa menos que o robô |

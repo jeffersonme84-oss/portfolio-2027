@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Jefferson Moreira Evangelista · Systems Developer",
-    "description": "Portfolio of Jefferson Moreira Evangelista, systems developer in São Paulo: projects, journey, skills and contact."
+    "title": "Jefferson Moreira Evangelista · Software Developer",
+    "description": "Portfolio of Jefferson Moreira Evangelista, software developer in São Paulo: web, mobile, IoT and AI projects, journey, skills and contact."
   },
   "theme": {
     "dark": "Dark mode",
@@ -56,7 +56,7 @@
   },
   "hero": {
     "index": "Index",
-    "experience": "years of experience",
+    "experience": "years as a full stack dev",
     "headline": "Solid systems. Purposeful web.",
     "seeProjects": "See projects",
     "portraitAlt": "Jefferson working on a laptop, with holographic code screens and a robotic arm",
