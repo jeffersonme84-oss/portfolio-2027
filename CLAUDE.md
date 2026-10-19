@@ -530,7 +530,20 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | 9 | `vercel.json` reescreve rotas desconhecidas para o app, que mostra a 404 "SEM SINAL" | SPA sem roteador |
 | 10 | URL pública em `VITE_SITE_URL` (env); plugin no `vite.config.ts` gera JSON-LD, meta tags, preload do retrato, `robots.txt` e, com URL, canonical e `sitemap.xml` | domínio indefinido; dados vêm de `site.ts` sem duplicar |
 | 10 | Seções abaixo da dobra e o formulário em chunks lazy; `<Analytics />` só com `VITE_VERCEL_ENV` (exposto pela Vercel) | bundle inicial 241 → 135 kB gzip; evita 404 fora da Vercel |
-| 10 | Lighthouse (build local): desktop 100/100/100/100; mobile simulado 88/100/100/100. Para mobile ≥ 90 estável seria preciso pré-renderizar o HTML (SSG) | o custo restante é executar o React antes do primeiro paint |
+| 10 | Lighthouse (build local, antes da nova Home): desktop 100/100/100/100; mobile simulado 88/100/100/100. Para mobile ≥ 90 estável seria preciso pré-renderizar o HTML (SSG) | o custo restante é executar o React antes do primeiro paint |
+
+**Atualização da Home (pedido do Jefferson, 2026-10-18)**
+
+| Decisão | Motivo |
+| --- | --- |
+| Imagem principal da Hero: robô futurista de corpo inteiro com o rosto do Jefferson (`public/images/hero/robo-futurista*.webp`, configurada em `site.hero`). **Exceção autorizada** à regra "nada de geração de rostos": a imagem foi gerada e enviada pelo próprio Jefferson | decisão dele |
+| A imagem enviada era RGB com quadriculado "pintado" (sem transparência real). Só o fundo foi removido (rembg `u2net`) e as margens vazias cortadas; o robô não foi redimensionado nem alterado. Original guardado em `docs/assets-originais/robo-futurista-original.webp`. Variantes 400/600/800/1156 px via `srcset` | não exibir quadriculado falso; desempenho no celular |
+| O retrato recortado (`jefferson-cutout.webp`) sai da Home, mas continua na `og-image.png` | compartilhamento com foto real |
+| Digitação só do último sobrenome (EVANGELISTA), uma única vez, cursor vertical no acento; JEFFERSON MOREIRA estável; texto completo no `<h1>` (sr-only) e letras visuais `aria-hidden`; duplo clique nos carretéis repete a digitação | pedido do Jefferson; acessibilidade |
+| `src/components/ui/kinetic-matrix.tsx`: malha de nós com pulsos, ondas de impacto (clique em área livre) e reação ao ponteiro. **Exceção autorizada** à regra "sem fundos animados", com limites: canvas transparente atrás do conteúdo (`pointer-events: none`), máscara que esvazia o centro, cores dos tokens do tema (+ azul do robô), começa só após `load`/ocioso, pausa fora da tela e com a aba oculta, 30 fps e menos nós no celular, quadro estático com reduced motion. O código original do KineticMatrix não foi enviado; o componente foi escrito a partir da descrição | pedido do Jefferson, sem perder legibilidade e desempenho |
+| `useActiveSection` lê o DOM num listener de scroll com `requestAnimationFrame` (antes lia durante o render e forçava reflow) | performance |
+| Lighthouse após a nova Home: desktop 99/100/100/100; mobile 75–90 em execuções seguidas (mediana ~80) / 100 / 100 / 100 | a imagem maior e a malha custam alguns pontos no mobile simulado |
+| Neste computador, o Windows está com "Efeitos de animação" desligados, o que ativa `prefers-reduced-motion`: a digitação e a malha aparecem estáticas. Para ver as animações, ligue em Configurações → Acessibilidade → Efeitos visuais | comportamento correto de acessibilidade |
 
 **Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
 
