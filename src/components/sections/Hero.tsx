@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react'
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { CvButton } from '@/components/layout/CvButton'
 import { ExternalLink } from '@/components/layout/ExternalLink'
 import { CassetteLabel } from '@/components/retro/CassetteLabel'
@@ -8,6 +8,7 @@ import { KineticMatrix } from '@/components/ui/kinetic-matrix'
 import { site, splitName } from '@/content/site'
 import { useClock } from '@/hooks/useClock'
 import { useLocale } from '@/hooks/useLocale'
+import { useReducedMotion } from '@/hooks/useReducedMotion'
 import { useTypewriter } from '@/hooks/useTypewriter'
 import { playSound } from '@/lib/sound'
 import { cn } from '@/lib/utils'
@@ -42,6 +43,46 @@ export function Hero() {
   const { count, done, restart } = useTypewriter(typedWord.length, { speed: 110, delay: 700 })
   const sectionRef = useRef<HTMLElement>(null)
   const lastRetype = useRef(0)
+  const reducedMotion = useReducedMotion()
+
+  // Paralaxe suave: a foto acompanha o mouse e o scroll (variáveis CSS, sem re-render).
+  useEffect(() => {
+    const section = sectionRef.current
+    if (!section || reducedMotion) return
+    let frame = 0
+    const pointer = { x: 0, y: 0 }
+    function apply() {
+      frame = 0
+      section!.style.setProperty('--px', pointer.x.toFixed(3))
+      section!.style.setProperty('--py', pointer.y.toFixed(3))
+      section!.style.setProperty('--sy', `${Math.min(window.scrollY, 900) * 0.12}px`)
+    }
+    function schedule() {
+      if (!frame) frame = requestAnimationFrame(apply)
+    }
+    function onPointerMove(event: PointerEvent) {
+      if (event.pointerType === 'touch') return
+      const rect = section!.getBoundingClientRect()
+      pointer.x = (event.clientX - rect.left) / rect.width - 0.5
+      pointer.y = (event.clientY - rect.top) / rect.height - 0.5
+      schedule()
+    }
+    function onPointerLeave() {
+      pointer.x = 0
+      pointer.y = 0
+      schedule()
+    }
+    section.addEventListener('pointermove', onPointerMove)
+    section.addEventListener('pointerleave', onPointerLeave)
+    window.addEventListener('scroll', schedule, { passive: true })
+    return () => {
+      cancelAnimationFrame(frame)
+      section.removeEventListener('pointermove', onPointerMove)
+      section.removeEventListener('pointerleave', onPointerLeave)
+      window.removeEventListener('scroll', schedule)
+      for (const name of ['--px', '--py', '--sy']) section.style.removeProperty(name)
+    }
+  }, [reducedMotion])
 
   // Passar o mouse perto do nome digita o sobrenome de novo (intervalo mínimo entre repetições).
   function retypeSurname() {
@@ -65,6 +106,34 @@ export function Hero() {
       aria-labelledby="inicio-titulo"
       className="relative isolate h-svh min-h-[600px] overflow-hidden pt-14"
     >
+      {/* Foto colorida à direita, na base, dissolvendo na cor da página (claro e escuro).
+          Fica abaixo do nome e se move em paralaxe com o mouse e o scroll. */}
+      <div className="absolute inset-x-0 bottom-0 -z-20 h-[44%] sm:h-[48%] lg:inset-x-auto lg:right-0 lg:h-[56%] lg:w-[48%]">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="size-full motion-safe:animate-reveal motion-safe:[animation-delay:250ms]">
+            <div className="size-full transition-transform duration-700 ease-out [transform:translate3d(calc(var(--px,0)*-18px),calc(var(--py,0)*-12px_+_var(--sy,0px)),0)_scale(1.04)] motion-reduce:[transform:none]">
+              <img
+                src={site.hero.background.src}
+                srcSet={site.hero.background.srcSet}
+                sizes="(min-width: 1024px) 48vw, 100vw"
+                alt={t('hero.portraitAlt')}
+                width={site.hero.background.width}
+                height={site.hero.background.height}
+                fetchPriority="high"
+                decoding="async"
+                className="size-full object-cover object-[50%_15%] select-none [filter:saturate(0.9)_brightness(1.06)] dark:[filter:none]"
+              />
+            </div>
+          </div>
+        </div>
+        {/* Bordas fundem na cor da página: esquerda (onde ficam os textos), topo e base.
+            O véu passa 2 px das bordas para cobrir a junção com a camada animada da foto. */}
+        <div
+          aria-hidden
+          className="absolute -inset-[2px] bg-[linear-gradient(to_right,var(--background)_0%,var(--background)_3%,color-mix(in_oklab,var(--background)_45%,transparent)_22%,transparent_45%),linear-gradient(to_bottom,var(--background)_0%,var(--background)_4%,transparent_30%),linear-gradient(to_top,var(--background)_0%,var(--background)_3%,transparent_18%)]"
+        />
+      </div>
+
       {/* Malha tecnológica com paralaxe 3D: camada decorativa sobre a foto, mais leve no centro */}
       <KineticMatrix
         interactionRef={sectionRef}
@@ -75,14 +144,14 @@ export function Hero() {
         <h1
           id="inicio-titulo"
           onPointerEnter={retypeSurname}
-          className="relative z-0 cursor-default pt-4 font-display font-black uppercase lg:pt-6"
+          className="relative z-20 cursor-default pt-4 font-display font-black uppercase lg:pt-6"
         >
           <span className="sr-only">{site.name}</span>
           <span aria-hidden className="block">
-            <span className="block text-[min(14vw,11.2rem)] leading-[0.85] tracking-[-0.04em] text-accent">
+            <span className="block text-[min(14vw,11.2rem)] leading-[0.85] tracking-[-0.04em] text-accent motion-safe:animate-rise">
               {first}
             </span>
-            <span className="mt-2 block text-[min(8.5vw,3.5rem)] leading-[0.9] tracking-[-0.03em] lg:text-[min(4.6vw,3.5rem)]">
+            <span className="mt-2 block text-[min(8.5vw,3.5rem)] leading-[0.9] tracking-[-0.03em] motion-safe:animate-rise motion-safe:[animation-delay:120ms] lg:text-[min(4.6vw,3.5rem)]">
               {staticWords.map((word) => (
                 <span key={word} className="block lg:inline">
                   {word}
@@ -97,7 +166,7 @@ export function Hero() {
         </h1>
 
         {/* Micro-textos superiores */}
-        <div className="relative z-20 mt-5 flex justify-between gap-6">
+        <div className="relative z-20 mt-5 flex justify-between gap-6 motion-safe:animate-rise motion-safe:[animation-delay:220ms]">
           <p className={microText}>
             {l(site.title)}
             <br />
@@ -116,23 +185,8 @@ export function Hero() {
           </nav>
         </div>
 
-        {/* Foto inteira (todos os detalhes visíveis), menor e alinhada à direita */}
-        <figure className="absolute inset-x-4 top-[47%] z-10 aspect-video sm:inset-x-6 sm:top-[42%] lg:inset-x-auto lg:top-auto lg:right-16 lg:bottom-10 xl:right-10 lg:w-[min(46%,34rem)]">
-          <img
-            src={site.hero.background.src}
-            srcSet={site.hero.background.srcSet}
-            sizes="(min-width: 1024px) 34rem, 92vw"
-            alt={t('hero.portraitAlt')}
-            width={site.hero.background.width}
-            height={site.hero.background.height}
-            fetchPriority="high"
-            decoding="async"
-            className="size-full rounded-md object-contain shadow-[0_24px_60px_-28px_rgb(0_0_0/0.55)] ring-1 ring-foreground/10 select-none"
-          />
-        </figure>
-
-        {/* Rodapé da dobra: número + CTAs, e o rótulo K7 ao lado (a foto fica livre à direita) */}
-        <div className="relative z-20 mt-auto flex items-end gap-10 pb-6 sm:pb-14 lg:pb-10">
+        {/* Rodapé da dobra: número + CTAs, e o rótulo K7 ao lado */}
+        <div className="relative z-20 mt-auto flex items-end gap-10 pb-6 motion-safe:animate-rise motion-safe:[animation-delay:360ms] sm:pb-14 lg:pb-10">
           <div className="flex w-full flex-col gap-5 bg-gradient-to-t from-background from-60% to-transparent pt-10 lg:w-auto lg:bg-none lg:pt-0">
             <p className="hidden items-end gap-3 lg:flex">
               <span className="font-display text-7xl leading-[0.85] font-black tracking-[-0.04em]">

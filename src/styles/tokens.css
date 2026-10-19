@@ -122,3 +122,23 @@
     }
   }
 }
+
+/* Entrada da Home: elementos sobem em cascata; a foto surge deslizando. */
+@theme {
+  --animate-rise: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-reveal: reveal 1.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+  }
+
+  @keyframes reveal {
+    from {
+      opacity: 0;
+      transform: translateX(32px) scale(1.04);
+    }
+  }
+}
