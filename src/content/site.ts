@@ -9,7 +9,7 @@ export const site = {
   timeZone: 'America/Sao_Paulo',
   // Número grande da Home: anos como desenvolvedor full stack (DMANDA, fev. 2022 – nov. 2023).
   experienceYears: '02',
-  email: 'jeffersonme84@gmail.com',
+  email: 'jeff.evangelista2027@icloud.com',
   phoneDisplay: '(11) 96194-1984',
   whatsappUrl: 'https://wa.me/5511961941984',
   // Redes com string vazia não aparecem. A ordem aqui é a ordem de exibição.
