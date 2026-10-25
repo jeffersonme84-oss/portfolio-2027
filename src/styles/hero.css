@@ -15,48 +15,6 @@
   object-position: 72% 50%;
 }
 
-/* Holofote (useSpotlight): a mesma imagem em P&B tingida com o acento e scanlines, visível só
-   dentro de um círculo de borda suave que segue o cursor. Em repouso o raio é 0 (invisível).
-   Só cor e textura mudam; a geometria e o rosto ficam idênticos. */
-.hero-reveal {
-  position: absolute;
-  inset: 0;
-  isolation: isolate;
-  pointer-events: none;
-  --spot-mask: radial-gradient(
-    circle var(--spot-r, 0px) at var(--spot-x, -999px) var(--spot-y, -999px),
-    #000 0 62%,
-    rgb(0 0 0 / 0.5) 80%,
-    transparent 100%
-  );
-  -webkit-mask-image: var(--spot-mask);
-  mask-image: var(--spot-mask);
-}
-
-.hero-reveal img {
-  filter: grayscale(1) contrast(1.25) brightness(1.45);
-}
-
-/* Duotone: o acento em "multiply" leva os claros ao laranja e mantém os escuros pretos
-   (os detalhes do rosto continuam pela luminosidade da foto). */
-/* z-index: o filter da imagem a pinta na camada dos posicionados; sem ele, o tom fica por baixo. */
-.hero-reveal::before,
-.hero-reveal::after {
-  content: '';
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-}
-
-.hero-reveal::before {
-  background: var(--accent);
-  mix-blend-mode: multiply;
-}
-
-.hero-reveal::after {
-  background: repeating-linear-gradient(to bottom, rgb(0 0 0 / 0.22) 0 1px, transparent 1px 3px);
-}
-
 /* Véu de leitura: no celular a cena fica entre o nome (topo) e os botões (base). */
 .hero-scene {
   position: absolute;

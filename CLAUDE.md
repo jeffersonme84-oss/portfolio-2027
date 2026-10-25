@@ -579,7 +579,6 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | Transição entre seções: `src/hooks/useRevealOnScroll.ts` + `.reveal/.is-in` em `hero.css` (fade, subida e blur); seção já visível nunca é escondida | pedido de transições "tipo app" numa one-page sem rotas |
 | Cards da Hero com profundidade 3D pelo mouse (reaproveita `--px/--py` do Hero) e hover com escala e borda de acento | pedido de 3D sutil, sem custo no celular (cards ocultos < 1280 px) |
 | Tipografia mantida (Archivo display, Inter texto, JetBrains Mono detalhes); o nome ficou menor no desktop (`.hero-name-first`) para terminar antes da figura | identidade do site; Inter já atende ao pedido de sans-serif legível |
-| Holofote na foto (`src/hooks/useSpotlight.ts` + `.hero-reveal` em `hero.css`): um círculo de borda suave segue o cursor e revela a **mesma imagem** em duotone preto/acento com scanlines (máscara radial com variáveis CSS, sem canvas). Só com mouse; em repouso fica invisível; com animações reduzidas acompanha o cursor sem atraso. A foto em si não muda | pedido de "spotlight reveal" sem mudar a aparência; as duas variações da armadura não estão alinhadas pixel a pixel, então revelar uma sob a outra desencontraria o rosto |
 
 **Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
 
