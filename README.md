@@ -21,17 +21,17 @@
 
 ## ✨ Funcionalidades
 
-| | Funcionalidade | Detalhes |
-| --- | --- | --- |
-| 🌎 | **Bilíngue** | Português (padrão) e inglês, com detecção automática do idioma do navegador (`react-i18next`) |
-| 🌗 | **Tema claro e escuro** | Toggle em pílula, preferência salva e aplicada antes da primeira pintura (sem "flash") |
-| 🧭 | **One-page com âncoras** | Início, Sobre, Projetos, Habilidades e Fale comigo, com destaque da seção ativa |
-| 🗂️ | **Projetos como estudos de caso** | Cards com recorte e efeito 3D; cada projeto abre em modal com deep link `#projeto-<slug>` |
-| 📅 | **Linha do tempo** | Carreira, formação e certificações, navegável por teclado |
-| 📬 | **Contato de verdade** | Formulário com `react-hook-form` + `zod`, salvo no Postgres e enviado por uma Edge Function do Supabase |
-| 📼 | **Easter eggs retrô** | Código Konami, sons opcionais (desligados por padrão), efeito VHS sob demanda e página 404 temática |
-| ♿ | **Acessível** | HTML semântico, foco visível, contraste AA e respeito a `prefers-reduced-motion` (com botão para desligar animações) |
-| 🔎 | **SEO e analytics** | Open Graph, `canonical`, `sitemap.xml`, `robots.txt` e Vercel Analytics |
+|     | Funcionalidade                    | Detalhes                                                                                                             |
+| --- | --------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| 🌎  | **Bilíngue**                      | Português (padrão) e inglês, com detecção automática do idioma do navegador (`react-i18next`)                        |
+| 🌗  | **Tema claro e escuro**           | Toggle em pílula, preferência salva e aplicada antes da primeira pintura (sem "flash")                               |
+| 🧭  | **One-page com âncoras**          | Início, Sobre, Projetos, Habilidades e Fale comigo, com destaque da seção ativa                                      |
+| 🗂️  | **Projetos como estudos de caso** | Cards com recorte e efeito 3D; cada projeto abre em modal com deep link `#projeto-<slug>`                            |
+| 📅  | **Linha do tempo**                | Carreira, formação e certificações, navegável por teclado                                                            |
+| 📬  | **Contato de verdade**            | Formulário com `react-hook-form` + `zod`, salvo no Postgres e enviado por uma Edge Function do Supabase              |
+| 📼  | **Easter eggs retrô**             | Código Konami, sons opcionais (desligados por padrão), efeito VHS sob demanda e página 404 temática                  |
+| ♿  | **Acessível**                     | HTML semântico, foco visível, contraste AA e respeito a `prefers-reduced-motion` (com botão para desligar animações) |
+| 🔎  | **SEO e analytics**               | Open Graph, `canonical`, `sitemap.xml`, `robots.txt` e Vercel Analytics                                              |
 
 ## 🏗️ Arquitetura
 
@@ -46,15 +46,15 @@ flowchart LR
 
 ## 🧰 Stack
 
-| Camada | Tecnologia |
-| --- | --- |
-| Front-end | React 19, Vite 6, TypeScript (strict) |
-| Estilo | Tailwind CSS 4, shadcn/ui, Radix UI |
-| Formulários | react-hook-form, zod |
+| Camada              | Tecnologia                                 |
+| ------------------- | ------------------------------------------ |
+| Front-end           | React 19, Vite 6, TypeScript (strict)      |
+| Estilo              | Tailwind CSS 4, shadcn/ui, Radix UI        |
+| Formulários         | react-hook-form, zod                       |
 | Internacionalização | i18next, react-i18next, detector de idioma |
-| Back-end | Supabase: Postgres, Edge Functions |
-| Deploy e métricas | Vercel, Vercel Analytics |
-| Qualidade | ESLint, Prettier, Conventional Commits |
+| Back-end            | Supabase: Postgres, Edge Functions         |
+| Deploy e métricas   | Vercel, Vercel Analytics                   |
+| Qualidade           | ESLint, Prettier, Conventional Commits     |
 
 ## 🚀 Como rodar
 
@@ -68,14 +68,14 @@ cp .env.example .env.local   # preencha VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KE
 pnpm dev
 ```
 
-| Comando | O que faz |
-| --- | --- |
-| `pnpm dev` | Servidor de desenvolvimento |
-| `pnpm build` | Checagem de tipos + build de produção |
-| `pnpm preview` | Pré-visualiza o build |
-| `pnpm lint` | ESLint |
-| `pnpm typecheck` | TypeScript sem emitir arquivos |
-| `pnpm format` | Prettier |
+| Comando          | O que faz                             |
+| ---------------- | ------------------------------------- |
+| `pnpm dev`       | Servidor de desenvolvimento           |
+| `pnpm build`     | Checagem de tipos + build de produção |
+| `pnpm preview`   | Pré-visualiza o build                 |
+| `pnpm lint`      | ESLint                                |
+| `pnpm typecheck` | TypeScript sem emitir arquivos        |
+| `pnpm format`    | Prettier                              |
 
 > Sem as variáveis do Supabase, o site funciona normalmente e o formulário mostra uma mensagem amigável.
 

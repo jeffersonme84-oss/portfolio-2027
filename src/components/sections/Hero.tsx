@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Award, GraduationCap } from 'lucide-react'
 import { useEffect, useRef } from 'react'
 import { CvButton } from '@/components/layout/CvButton'
 import { ExternalLink } from '@/components/layout/ExternalLink'
@@ -120,35 +120,31 @@ export function Hero() {
       aria-labelledby="inicio-titulo"
       className="relative isolate h-svh min-h-[600px] overflow-hidden pt-14"
     >
-      {/* Foto colorida à direita, na base, dissolvendo na cor da página (claro e escuro).
+      {/* Véu da cena: protege a leitura dos textos sobre a imagem (tema escuro e celular). */}
+      <div aria-hidden className="hero-scene" />
+      {/* Cena da Home (degradê + armadura) cobrindo a primeira dobra (posição em hero.css).
           Fica abaixo do nome e se move em paralaxe com o mouse e o scroll. */}
       <div
         ref={photoRef}
-        className="absolute inset-x-0 bottom-0 -z-20 h-[44%] sm:h-[48%] lg:inset-x-auto lg:right-[7%] lg:h-[56%] lg:w-[48%]"
+        className="hero-photo absolute inset-x-0 bottom-0 -z-20 h-[44%] sm:h-[48%] lg:inset-x-auto lg:right-[7%] lg:h-[56%] lg:w-[48%]"
       >
         <div className="absolute inset-0 overflow-hidden">
-          <div className="size-full motion-safe:animate-reveal motion-safe:[animation-delay:250ms]">
+          <div className="hero-photo-in size-full">
             <div className="size-full transition-transform duration-700 ease-out [transform:translate3d(calc(var(--px,0)*-18px),calc(var(--py,0)*-12px_+_var(--sy,0px)),0)_scale(calc(1.04_+_var(--ph,0)*0.05))_rotate(calc(var(--px,0)*var(--ph,0)*-3deg))] motion-reduce:[transform:none]">
               <img
                 src={site.hero.background.src}
                 srcSet={site.hero.background.srcSet}
-                sizes="(min-width: 1024px) 48vw, 100vw"
+                sizes="100vw"
                 alt={t('hero.portraitAlt')}
                 width={site.hero.background.width}
                 height={site.hero.background.height}
                 fetchPriority="high"
                 decoding="async"
-                className="size-full object-cover object-[50%_15%] select-none [filter:saturate(0.9)_brightness(1.06)] dark:[filter:none]"
+                className="size-full object-cover select-none"
               />
             </div>
           </div>
         </div>
-        {/* Bordas fundem na cor da página: esquerda (onde ficam os textos), direita, topo e base.
-            O véu passa 2 px das bordas para cobrir a junção com a camada animada da foto. */}
-        <div
-          aria-hidden
-          className="absolute -inset-[2px] bg-[linear-gradient(to_right,var(--background)_0%,var(--background)_3%,color-mix(in_oklab,var(--background)_45%,transparent)_22%,transparent_45%),linear-gradient(to_bottom,var(--background)_0%,var(--background)_4%,transparent_30%),linear-gradient(to_top,var(--background)_0%,var(--background)_3%,transparent_18%),linear-gradient(to_left,var(--background)_0%,var(--background)_3%,transparent_22%)]"
-        />
       </div>
 
       {/* Malha tecnológica com paralaxe 3D: camada decorativa sobre a foto, mais leve no centro */}
@@ -165,29 +161,34 @@ export function Hero() {
         >
           <span className="sr-only">{site.name}</span>
           <span aria-hidden className="block">
-            <span className="block text-[min(14vw,11.2rem)] leading-[0.85] tracking-[-0.04em] text-accent motion-safe:animate-rise">
-              {first}
+            {/* Cada linha sobe por trás de uma máscara (entrada em hero.css). */}
+            <span className="hero-mask">
+              <span className="hero-line hero-name-first block text-[min(14vw,11.2rem)] leading-[0.85] tracking-[-0.04em] text-accent">
+                {first}
+              </span>
             </span>
-            <span className="mt-2 block text-[min(8.5vw,3.5rem)] leading-[0.9] tracking-[-0.03em] motion-safe:animate-rise motion-safe:[animation-delay:120ms] lg:text-[min(4.6vw,3.5rem)]">
-              {restWords.map((word, index) => (
-                <span key={word} className="block whitespace-nowrap lg:inline">
-                  {index > 0 && <span className="hidden lg:inline"> </span>}
-                  <Typed text={word} offset={wordOffsets[index]} count={count} typing={!done} />
-                </span>
-              ))}
+            <span className="hero-mask mt-2">
+              <span className="hero-line hero-line-2 block text-[min(8.5vw,3.5rem)] leading-[0.9] tracking-[-0.03em] lg:text-[min(4.6vw,3.5rem)]">
+                {restWords.map((word, index) => (
+                  <span key={word} className="block whitespace-nowrap lg:inline">
+                    {index > 0 && <span className="hidden lg:inline"> </span>}
+                    <Typed text={word} offset={wordOffsets[index]} count={count} typing={!done} />
+                  </span>
+                ))}
+              </span>
             </span>
           </span>
         </h1>
 
         {/* Micro-textos superiores */}
-        <div className="relative z-20 mt-5 flex justify-between gap-6 motion-safe:animate-rise motion-safe:[animation-delay:220ms]">
+        <div className="hero-in hero-in-3 relative z-20 mt-5 flex justify-between gap-6">
           <p className={microText}>
             {l(site.title)}
             <br />
             {site.location} — <time>{time}</time>
           </p>
           <nav aria-label={t('hero.index')} className="hidden lg:block">
-            <ul className={cn(microText, 'text-right')}>
+            <ul className={cn(microText, 'hero-index text-right')}>
               {miniIndex.map((item) => (
                 <li key={item.href}>
                   <a href={item.href} className="inline-block py-[5px] hover:text-accent">
@@ -200,7 +201,7 @@ export function Hero() {
         </div>
 
         {/* Rodapé da dobra: número + CTAs */}
-        <div className="relative z-20 mt-auto flex items-end gap-10 pb-6 motion-safe:animate-rise motion-safe:[animation-delay:360ms] sm:pb-14 lg:pb-10">
+        <div className="hero-in hero-in-4 relative z-20 mt-auto flex items-end gap-10 pb-6 sm:pb-14 lg:pb-10">
           <div className="flex w-full flex-col gap-5 bg-gradient-to-t from-background from-60% to-transparent pt-10 lg:w-auto lg:bg-none lg:pt-0">
             <p className="hidden items-end gap-3 lg:flex">
               <span className="font-display text-7xl leading-[0.85] font-black tracking-[-0.04em]">
@@ -209,9 +210,12 @@ export function Hero() {
               <span className={cn(microText, 'max-w-[8rem] pb-1')}>{t('hero.experience')}</span>
             </p>
             <div className="flex flex-wrap items-center gap-3">
-              <a href="#projetos" className={buttonVariants({ variant: 'default' })}>
+              <a href="#projetos" className={cn(buttonVariants({ variant: 'default' }), 'group')}>
                 {t('hero.seeProjects')}
-                <ArrowRight aria-hidden />
+                <ArrowRight
+                  aria-hidden
+                  className="transition-transform duration-300 ease-out group-hover:translate-x-1"
+                />
               </a>
               <CvButton />
             </div>
@@ -228,6 +232,51 @@ export function Hero() {
                 </ExternalLink>
               )}
             </div>
+          </div>
+        </div>
+      </div>
+      {/* Cards de dev e estudo (telas largas): código, formação e certificações. Estilo em hero.css. */}
+      <div className="hero-cards">
+        <div aria-hidden className="hero-card hero-code">
+          <div className="hero-code-dots">
+            <i />
+            <i />
+            <i />
+          </div>
+          <div className="hero-code-body">
+            <span className="line">
+              <span className="tk">const</span> <span className="tv">jefferson</span> = {'{'}
+            </span>
+            <span className="line ind">
+              stack: [<span className="ts">'React'</span>, <span className="ts">'TS'</span>,{' '}
+              <span className="ts">'Supabase'</span>],
+            </span>
+            <span className="line ind">
+              {t('hero.code.learning')}: [<span className="ts">'AWS'</span>,{' '}
+              <span className="ts">'{t('hero.code.ai')}'</span>],
+            </span>
+            <span className="line ind">
+              {t('hero.code.coffee')}: <span className="tk">true</span>,{' '}
+              <span className="tc">
+                {'// '}
+                {t('hero.code.always')}
+              </span>
+            </span>
+            <span className="line">{'}'}</span>
+          </div>
+        </div>
+        <div className="hero-card hero-chip hero-edu">
+          <GraduationCap aria-hidden className="hero-chip-icon" />
+          <div>
+            <p className="hero-chip-title">{t('hero.cards.educationTitle')}</p>
+            <p className="hero-chip-label">{t('hero.cards.education')}</p>
+          </div>
+        </div>
+        <div className="hero-card hero-chip hero-cert">
+          <Award aria-hidden className="hero-chip-icon" />
+          <div>
+            <p className="hero-chip-title">{t('hero.cards.certificationsTitle')}</p>
+            <p className="hero-chip-label">{t('hero.cards.certifications')}</p>
           </div>
         </div>
       </div>

@@ -2,6 +2,7 @@
 @import 'tw-animate-css';
 @import './styles/tokens.css';
 @import './styles/retro.css';
+@import './styles/hero.css';
 
 @custom-variant dark (&:is(.dark *));
 /* Animações seguem a classe .reduce-motion (sistema ou botão do site), não só a media query. */

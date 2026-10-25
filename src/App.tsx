@@ -11,6 +11,8 @@ import { VhsOverlay } from '@/components/retro/VhsOverlay'
 import { Hero } from '@/components/sections/Hero'
 import { site } from '@/content/site'
 import { useKonami } from '@/hooks/useKonami'
+import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
+import { useSmoothScroll } from '@/hooks/useSmoothScroll'
 import { printConsoleTape } from '@/lib/consoleTape'
 import { playSound } from '@/lib/sound'
 
@@ -25,6 +27,10 @@ export default function App() {
   const [effect, setEffect] = useState<RetroEffect>(null)
   const effectTimer = useRef<number>(undefined)
   const brandClicks = useRef<number[]>([])
+
+  // Rolagem suave (Lenis) e entrada das seções ao rolar; ambas respeitam animações reduzidas.
+  useSmoothScroll()
+  useRevealOnScroll()
 
   function showEffect(next: Exclude<RetroEffect, null>, duration: number) {
     setEffect(next)

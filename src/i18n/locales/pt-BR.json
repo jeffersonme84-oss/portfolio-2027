@@ -59,9 +59,21 @@
     "experience": "anos como dev full stack",
     "headline": "Sistemas sólidos. Web com propósito.",
     "seeProjects": "Ver projetos",
-    "portraitAlt": "Jefferson trabalhando no notebook, com telas holográficas de código e um braço robótico",
+    "portraitAlt": "Jefferson com armadura futurista programando no notebook, entre telas holográficas de código",
     "reels": "Girar os carretéis da fita (duplo clique rebobina o nome)",
-    "side": "LADO A"
+    "side": "LADO A",
+    "code": {
+      "learning": "estudando",
+      "ai": "IA",
+      "coffee": "café",
+      "always": "sempre"
+    },
+    "cards": {
+      "educationTitle": "Fatec · Tecnologia",
+      "education": "Formação",
+      "certificationsTitle": "AWS · IA · IoT",
+      "certifications": "Certificações"
+    }
   },
   "about": {
     "title": "Sobre",

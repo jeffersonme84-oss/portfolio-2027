@@ -566,6 +566,20 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | `src/components/ui/notched-project-card.tsx` (21st.dev) adaptado: sem "use client", cantos de 8 px, título em display, proporção 2:3 (ideia do pôster mantida), recorte pintado em `var(--wall)`, disco claro que fica laranja (acento) no hover/foco, rótulo acessível. A galeria segue na parede escura, em P&B, com Deploy/GitHub abaixo e o estudo de caso em modal | efeito pedido, em harmonia com o tema |
 | Lighthouse: desktop 99/100/100/100; mobile 83–86 / 100 / 100 / 100 | foto de fundo pesa menos que o robô |
 
+**3ª atualização da Home (pedido do Jefferson, 2026-10-25)**
+
+| Decisão | Motivo |
+| --- | --- |
+| Cena da Home = imagem de referência do Jefferson (degradê claro → escuro + figura de armadura) cobrindo a primeira dobra (`public/images/hero/home-cena-{1248,2496}.webp`). Os textos desenhados na imagem foram apagados; nome, menu, botões e cards são HTML por cima. Estilos em `src/styles/hero.css` | pedido: "usar essa imagem, fundo e tudo"; texto real é acessível, traduzível e nítido |
+| Cards na Hero (telas >= 1280 px): código (`const jefferson = {...}`), "Fatec · Tecnologia" e "AWS · IA · IoT" (textos em `hero.code.*` e `hero.cards.*`) | mostrar dev e estudante; dados reais do LinkedIn |
+| Tema escuro: véu escuro sobre a parte clara da cena; celular: véu em cima (nome) e embaixo (botões) | legibilidade |
+| Menu do topo sobre a cena (classe `header-top`, só antes de rolar): cápsula escura translúcida | contraste AA ao cruzar o degradê |
+| Entrada do Hero em CSS (sem framer-motion): nome por máscara, textos com fade + blur, cena com revelação circular e 3D, cards por último (`animation-fill-mode: backwards`) | pedido de animação de entrada; menos JS |
+| Rolagem suave com **Lenis** (`lenis`, dependência nova): `src/hooks/useSmoothScroll.ts`; âncoras com compensação do header; pausa quando um modal trava a rolagem; desliga com animações reduzidas | pedido de rolagem "amanteigada"; ~4 kB gzip |
+| Transição entre seções: `src/hooks/useRevealOnScroll.ts` + `.reveal/.is-in` em `hero.css` (fade, subida e blur); seção já visível nunca é escondida | pedido de transições "tipo app" numa one-page sem rotas |
+| Cards da Hero com profundidade 3D pelo mouse (reaproveita `--px/--py` do Hero) e hover com escala e borda de acento | pedido de 3D sutil, sem custo no celular (cards ocultos < 1280 px) |
+| Tipografia mantida (Archivo display, Inter texto, JetBrains Mono detalhes); o nome ficou menor no desktop (`.hero-name-first`) para terminar antes da figura | identidade do site; Inter já atende ao pedido de sans-serif legível |
+
 **Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
 
 **Lançamento (passo a passo)**

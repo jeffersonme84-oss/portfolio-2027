@@ -59,9 +59,21 @@
     "experience": "years as a full stack dev",
     "headline": "Solid systems. Purposeful web.",
     "seeProjects": "See projects",
-    "portraitAlt": "Jefferson working on a laptop, with holographic code screens and a robotic arm",
+    "portraitAlt": "Jefferson in futuristic armor coding on a laptop, between holographic code screens",
     "reels": "Spin the tape reels (double click rewinds the name)",
-    "side": "SIDE A"
+    "side": "SIDE A",
+    "code": {
+      "learning": "learning",
+      "ai": "AI",
+      "coffee": "coffee",
+      "always": "always"
+    },
+    "cards": {
+      "educationTitle": "Fatec · Technology",
+      "education": "Education",
+      "certificationsTitle": "AWS · AI · IoT",
+      "certifications": "Certifications"
+    }
   },
   "about": {
     "title": "About",

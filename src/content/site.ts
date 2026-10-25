@@ -23,15 +23,14 @@ export const site = {
   // Enquanto o PDF não existir, o botão "Baixar CV" fica oculto (null).
   // Ex.: '/cv/CV-Jefferson-Evangelista-pt-BR.pdf'
   cv: { 'pt-BR': null, 'en-US': null } as Record<Locale, string | null>, // TODO(jefferson): enviar os PDFs
-  // Imagem de fundo da Home (desfocada e suavizada em CSS para não competir com o nome).
+  // Cena da Home (degradê + armadura futurista), cobrindo a primeira dobra; ajustes em src/styles/hero.css.
   // Para trocar: coloque o arquivo em public/images/hero/ e ajuste src e srcSet.
   hero: {
     background: {
-      src: '/images/hero/dev-futurista-1600.webp',
-      srcSet:
-        '/images/hero/dev-futurista-800.webp 800w, /images/hero/dev-futurista-1600.webp 1600w',
-      width: 1600,
-      height: 900,
+      src: '/images/hero/home-cena-2496.webp',
+      srcSet: '/images/hero/home-cena-1248.webp 1248w, /images/hero/home-cena-2496.webp 2496w',
+      width: 2496,
+      height: 1664,
     },
   },
   // Liga/desliga todos os easter eggs (Konami, logo, carretéis, foto da família).
