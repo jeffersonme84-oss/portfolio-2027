@@ -8,6 +8,7 @@ import { site, splitName } from '@/content/site'
 import { useClock } from '@/hooks/useClock'
 import { useLocale } from '@/hooks/useLocale'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { useSpotlight } from '@/hooks/useSpotlight'
 import { useTypewriter } from '@/hooks/useTypewriter'
 import { cn } from '@/lib/utils'
 
@@ -49,7 +50,9 @@ export function Hero() {
   })
   const sectionRef = useRef<HTMLElement>(null)
   const photoRef = useRef<HTMLDivElement>(null)
+  const revealRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
+  useSpotlight(sectionRef, revealRef, reducedMotion)
 
   // Paralaxe suave: a foto acompanha o mouse e o scroll (variáveis CSS, sem re-render).
   useEffect(() => {
@@ -142,6 +145,20 @@ export function Hero() {
                 decoding="async"
                 className="size-full object-cover select-none"
               />
+              {/* Holofote: sob o cursor, a mesma imagem aparece em tom VHS (estilo em hero.css).
+                  Mesma imagem e mesmo enquadramento: nada se desalinha e o rosto não muda. */}
+              <div ref={revealRef} aria-hidden className="hero-reveal">
+                <img
+                  src={site.hero.background.src}
+                  srcSet={site.hero.background.srcSet}
+                  sizes="100vw"
+                  alt=""
+                  width={site.hero.background.width}
+                  height={site.hero.background.height}
+                  decoding="async"
+                  className="size-full object-cover select-none"
+                />
+              </div>
             </div>
           </div>
         </div>
