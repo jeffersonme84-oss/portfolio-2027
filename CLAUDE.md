@@ -587,6 +587,17 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | Testada e **descartada**: retrato emoldurado 4:5 com a armadura em "aço natural" no lugar da cena. A Home voltou à cena em tela cheia, com as cores originais | o Jefferson aprovou a cena dos dois temas como estava; pediu para **acrescentar** elementos, não trocar a foto |
 | Pilha de livros na mesa da cena (`HeroBooks`, temas em `src/content/studying.ts`: Java & Spring Boot, Cloud · AWS, Cibersegurança, Banco de Dados · SQL, IA). Lombadas em HTML (texto nítido e traduzível), tons do site, livro sai da pilha no hover; aparece com os cards (>= 1280 px). O chip de certificações subiu para dar espaço | mostrar que estuda e trabalha com tecnologia; são temas, não títulos de livros reais |
 
+**Uma tela por seção (pedido do Jefferson, 2026-10-25)**
+
+| Decisão | Motivo |
+| --- | --- |
+| Diploma emoldurado na parede (`HeroDiploma`, Fatec Zona Sul · DSM) e caneca de café com vapor na mesa (`HeroMug`) na cena da Home, junto dos livros; só em telas >= 1280 px, como os outros cards | mais objetos que mostram estudo e tecnologia, escolhidos pelo Jefferson |
+| Todas as seções têm a altura da tela (`screenSection` em `src/lib/layout.ts`: `min-h-svh`, header no padding de cima, conteúdo centralizado); título de seção menor (`clamp(2.25rem,6vw,4.5rem)`); a âncora do Lenis para no topo da seção (offset 0) | ao rolar, cada seção mostra todas as informações, como a Home. Verificado em 1280×720, 1440×900, 1077×914 e 360×740 |
+| Conteúdo longo vira páginas (`usePager`, `Pager` em `src/components/ui/pager.tsx`: setas + pontos), com a quantidade por tamanho de tela (`useMediaQuery`) | caber sem cortar nada |
+| Sobre: biografia e valores numa faixa larga; trajetória em lista paginada (4 por página; 3 no celular) + detalhe do item escolhido ao lado (foto VHS, detalhes). Setas do teclado navegam; o accordion saiu | a timeline em accordion media 2.700 px |
+| Projetos: 3 por página (2 no tablet, 1 no celular), capa 4:3 em vez de 2:3. Habilidades: abas Técnicas / Comportamentais, prateleiras mais baixas, grupos paginados em telas menores. Depoimentos: 3/2/1 por página | idem |
+| Fale comigo no celular: sem as listas de contato direto e redes (botões flutuantes e rodapé já têm os links), com botão de e-mail; mensagem com 4 linhas | idem |
+
 **Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
 
 **Lançamento (passo a passo)**

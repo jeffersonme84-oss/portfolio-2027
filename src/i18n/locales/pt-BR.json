@@ -74,7 +74,12 @@
       "certificationsTitle": "AWS · IA · IoT",
       "certifications": "Certificações"
     },
-    "books": "Temas que estudo"
+    "books": "Temas que estudo",
+    "diploma": {
+      "kicker": "Diploma · Tecnólogo",
+      "course": "Desenvolvimento de Software Multiplataforma",
+      "caption": "Diploma de tecnólogo em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul"
+    }
   },
   "about": {
     "title": "Sobre",
@@ -90,7 +95,8 @@
       "family": "Família"
     },
     "animated": "versão animada",
-    "keyboardHint": "Use as setas para navegar e Enter para abrir."
+    "keyboardHint": "Use as setas para navegar pela trajetória; o item escolhido aparece ao lado.",
+    "detail": "Detalhes"
   },
   "projects": {
     "title": "Projetos",
@@ -107,7 +113,11 @@
   "skills": {
     "title": "Habilidades",
     "hard": "Hard skills",
-    "soft": "Soft skills"
+    "soft": "Soft skills",
+    "tabs": {
+      "hard": "Técnicas",
+      "soft": "Comportamentais"
+    }
   },
   "testimonials": {
     "title": "Depoimentos",
@@ -156,5 +166,10 @@
   "motion": {
     "enable": "Ativar animações",
     "disable": "Reduzir animações"
+  },
+  "pager": {
+    "prev": "Página anterior",
+    "next": "Próxima página",
+    "goTo": "Ir para a página {{n}} de {{total}}"
   }
 }

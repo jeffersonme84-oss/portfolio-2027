@@ -1,9 +1,13 @@
 import { ExternalLink } from '@/components/layout/ExternalLink'
 import { socialIcons } from '@/components/layout/socialIcons'
 import { SectionHeading } from '@/components/sections/SectionHeading'
+import { Pager } from '@/components/ui/pager'
 import { TiltCard } from '@/components/ui/tilt-card'
 import { testimonials } from '@/content/testimonials'
 import { useLocale } from '@/hooks/useLocale'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
+import { usePager } from '@/hooks/usePager'
+import { screenSection } from '@/lib/layout'
 import { cn } from '@/lib/utils'
 
 // Linhas de caderno do rótulo de fita.
@@ -29,6 +33,10 @@ function initials(name: string) {
 
 export function Testimonials() {
   const { t, l } = useLocale()
+  // Uma tela por seção: 3 por página no desktop, 2 no tablet, 1 no celular.
+  const desktop = useMediaQuery('(min-width: 1024px)')
+  const tablet = useMediaQuery('(min-width: 768px)')
+  const pager = usePager(testimonials, desktop ? 3 : tablet ? 2 : 1)
   if (testimonials.length === 0) return null
   const LinkedIn = socialIcons.linkedin
 
@@ -36,9 +44,21 @@ export function Testimonials() {
     <section
       id="depoimentos"
       aria-labelledby="depoimentos-titulo"
-      className="mx-auto max-w-[1200px] px-4 py-24 md:px-6 md:py-32"
+      className={cn(screenSection, 'mx-auto w-full max-w-[1200px] px-4 md:px-6')}
     >
-      <SectionHeading id="depoimentos-titulo">{t('testimonials.title')}</SectionHeading>
+      <SectionHeading
+        id="depoimentos-titulo"
+        aside={
+          <Pager
+            page={pager.page}
+            pages={pager.pages}
+            onChange={pager.goTo}
+            label={t('testimonials.title')}
+          />
+        }
+      >
+        {t('testimonials.title')}
+      </SectionHeading>
 
       <ul
         className={cn(
@@ -47,8 +67,8 @@ export function Testimonials() {
           testimonials.length > 2 && 'lg:grid-cols-3',
         )}
       >
-        {testimonials.map((item, index) => {
-          const variant = index % cardHover.length
+        {pager.items.map((item, position) => {
+          const variant = (pager.offset + position) % cardHover.length
           const card = (
             <figure
               className={cn(

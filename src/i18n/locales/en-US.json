@@ -74,7 +74,12 @@
       "certificationsTitle": "AWS · AI · IoT",
       "certifications": "Certifications"
     },
-    "books": "Topics I study"
+    "books": "Topics I study",
+    "diploma": {
+      "kicker": "Diploma · Technologist",
+      "course": "Multiplatform Software Development",
+      "caption": "Technologist degree in Multiplatform Software Development from Fatec Zona Sul"
+    }
   },
   "about": {
     "title": "About",
@@ -90,7 +95,8 @@
       "family": "Family"
     },
     "animated": "animated version",
-    "keyboardHint": "Use the arrow keys to move and Enter to open."
+    "keyboardHint": "Use the arrow keys to browse the journey; the selected item is shown alongside.",
+    "detail": "Details"
   },
   "projects": {
     "title": "Projects",
@@ -107,7 +113,11 @@
   "skills": {
     "title": "Skills",
     "hard": "Hard skills",
-    "soft": "Soft skills"
+    "soft": "Soft skills",
+    "tabs": {
+      "hard": "Technical",
+      "soft": "Soft skills"
+    }
   },
   "testimonials": {
     "title": "Testimonials",
@@ -156,5 +166,10 @@
   "motion": {
     "enable": "Turn animations on",
     "disable": "Reduce animations"
+  },
+  "pager": {
+    "prev": "Previous page",
+    "next": "Next page",
+    "goTo": "Go to page {{n}} of {{total}}"
   }
 }

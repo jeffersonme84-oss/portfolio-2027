@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { familyIllustration } from '@/content/timeline'
 import { site } from '@/content/site'
+import { cn } from '@/lib/utils'
 
 type VhsPhotoProps = {
   src: string
@@ -9,16 +10,24 @@ type VhsPhotoProps = {
   // Timecode mono no canto (ex.: 00:14:32).
   timecode: string
   revealsIllustration?: boolean
+  // Tamanho da figura (padrão: até max-w-xs, centralizada).
+  className?: string
 }
 
 // Foto em "frame de fita": moldura fina, granulado leve, timecode e glitch só no hover.
-export function VhsPhoto({ src, alt, timecode, revealsIllustration = false }: VhsPhotoProps) {
+export function VhsPhoto({
+  src,
+  alt,
+  timecode,
+  revealsIllustration = false,
+  className,
+}: VhsPhotoProps) {
   const { t } = useTranslation()
   const [clicks, setClicks] = useState(0)
   const animated = site.easterEggs && revealsIllustration && clicks >= 3
 
   return (
-    <figure className="mx-auto w-full max-w-xs">
+    <figure className={cn('mx-auto w-full max-w-xs', className)}>
       <div
         className="vhs-frame relative border border-foreground/30 bg-foreground/5 p-1.5"
         onClick={revealsIllustration ? () => setClicks((count) => count + 1) : undefined}

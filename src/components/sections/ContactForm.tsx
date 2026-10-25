@@ -78,7 +78,7 @@ export default function ContactForm() {
     <form
       noValidate
       onSubmit={handleSubmit(onSubmit)}
-      className="relative flex flex-col gap-6"
+      className="relative flex flex-col gap-4 md:gap-6"
       aria-busy={isSubmitting}
     >
       <Field id={id} name="name" label={t('contact.form.name')} error={errors.name}>
@@ -102,8 +102,8 @@ export default function ContactForm() {
           <textarea
             {...props}
             {...register('message')}
-            rows={6}
-            className={cn(input, 'resize-y')}
+            rows={4}
+            className={cn(input, 'resize-y md:min-h-36')}
           />
         )}
       </Field>

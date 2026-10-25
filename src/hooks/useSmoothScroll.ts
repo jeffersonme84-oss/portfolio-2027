@@ -3,8 +3,9 @@ import 'lenis/dist/lenis.css'
 import { useEffect } from 'react'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
 
-// Compensa o header fixo (h-14) ao rolar até uma âncora.
-const HEADER_OFFSET = -64
+// As seções têm a altura da tela e já reservam o espaço do header no padding de cima:
+// a âncora para exatamente no topo da seção.
+const HEADER_OFFSET = 0
 // Tempo para o menu do celular (Sheet) soltar a trava de rolagem antes de rolar.
 const UNLOCK_DELAY = 320
 

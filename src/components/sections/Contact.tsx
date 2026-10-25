@@ -8,8 +8,11 @@ import { SectionHeading } from '@/components/sections/SectionHeading'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { activeSocials, site } from '@/content/site'
 import { useLocale } from '@/hooks/useLocale'
+import { screenSection } from '@/lib/layout'
+import { cn } from '@/lib/utils'
 
-const subheading = 'mb-4 font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase'
+const subheading =
+  'mb-2 md:mb-3 font-mono text-[11px] tracking-[0.2em] text-muted-foreground uppercase'
 
 const ContactForm = lazy(() => import('@/components/sections/ContactForm'))
 
@@ -20,15 +23,16 @@ export function Contact() {
     <section
       id="contato"
       aria-labelledby="contato-titulo"
-      className="mx-auto max-w-[1200px] px-4 py-24 md:px-6 md:py-32"
+      className={cn(screenSection, 'mx-auto w-full max-w-[1200px] px-4 md:px-6')}
     >
       <SectionHeading id="contato-titulo">{t('contact.title')}</SectionHeading>
 
-      <div className="grid gap-16 md:grid-cols-12">
-        <div className="flex flex-col gap-10 md:col-span-5">
+      <div className="grid gap-6 md:grid-cols-12 md:gap-12">
+        <div className="flex flex-col gap-5 md:col-span-5 md:gap-7">
           <p className="text-lg leading-relaxed">{t('contact.intro')}</p>
 
-          <div>
+          {/* No celular, contato direto e redes saem (botões flutuantes e rodapé já têm os links). */}
+          <div className="hidden md:block">
             <h3 className={subheading}>{t('contact.direct')}</h3>
             <ul className="flex flex-col gap-3">
               <li>
@@ -64,7 +68,7 @@ export function Contact() {
             </ul>
           </div>
 
-          <div>
+          <div className="hidden md:block">
             <h3 className={subheading}>{t('contact.networks')}</h3>
             <ul className="flex flex-wrap gap-x-6 gap-y-3">
               {activeSocials().map(([network, url]) => {
@@ -85,6 +89,13 @@ export function Contact() {
           </div>
 
           <div className="flex flex-wrap gap-3">
+            <a
+              href={`mailto:${site.email}`}
+              className={cn(buttonVariants({ variant: 'outline' }), 'md:hidden')}
+            >
+              <Mail aria-hidden />
+              {t('social.email')}
+            </a>
             <ExternalLink
               href={site.whatsappUrl}
               className={buttonVariants({ variant: 'outline' })}

@@ -3,6 +3,8 @@ import { useEffect, useRef } from 'react'
 import { CvButton } from '@/components/layout/CvButton'
 import { ExternalLink } from '@/components/layout/ExternalLink'
 import { HeroBooks } from '@/components/sections/HeroBooks'
+import { HeroDiploma } from '@/components/sections/HeroDiploma'
+import { HeroMug } from '@/components/sections/HeroMug'
 import { buttonVariants } from '@/components/ui/button-variants'
 import { KineticMatrix } from '@/components/ui/kinetic-matrix'
 import { site, splitName } from '@/content/site'
@@ -281,6 +283,8 @@ export function Hero() {
           </div>
         </div>
         <HeroBooks />
+        <HeroDiploma />
+        <HeroMug />
       </div>
     </section>
   )
