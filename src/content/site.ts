@@ -23,14 +23,16 @@ export const site = {
   // Enquanto o PDF não existir, o botão "Baixar CV" fica oculto (null).
   // Ex.: '/cv/CV-Jefferson-Evangelista-pt-BR.pdf'
   cv: { 'pt-BR': null, 'en-US': null } as Record<Locale, string | null>, // TODO(jefferson): enviar os PDFs
-  // Cena da Home (degradê + armadura futurista), cobrindo a primeira dobra; ajustes em src/styles/hero.css.
-  // Para trocar: coloque o arquivo em public/images/hero/ e ajuste src e srcSet.
+  // Retrato emoldurado da Home (4:5), com o painel de estudos e as tecnologias por cima.
+  // Gerado por scripts/armadura-cor.mjs (cor "aço natural", só cor e tom).
   hero: {
-    background: {
-      src: '/images/hero/home-cena-2496.webp',
-      srcSet: '/images/hero/home-cena-1248.webp 1248w, /images/hero/home-cena-2496.webp 2496w',
-      width: 2496,
-      height: 1664,
+    portrait: {
+      src: '/images/hero/retrato-armadura-960.webp',
+      srcSet:
+        '/images/hero/retrato-armadura-480.webp 480w, /images/hero/retrato-armadura-960.webp 960w',
+      sizes: '(min-width: 1024px) 420px, 62vw',
+      width: 960,
+      height: 1200,
     },
   },
   // Liga/desliga todos os easter eggs (Konami, logo, carretéis, foto da família).

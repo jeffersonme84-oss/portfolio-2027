@@ -580,6 +580,16 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | Cards da Hero com profundidade 3D pelo mouse (reaproveita `--px/--py` do Hero) e hover com escala e borda de acento | pedido de 3D sutil, sem custo no celular (cards ocultos < 1280 px) |
 | Tipografia mantida (Archivo display, Inter texto, JetBrains Mono detalhes); o nome ficou menor no desktop (`.hero-name-first`) para terminar antes da figura | identidade do site; Inter já atende ao pedido de sans-serif legível |
 
+**4ª atualização da Home (pedido do Jefferson, 2026-10-25)** — prompt em `docs/prompts/reformulacao-secoes.md`
+
+| Decisão | Motivo |
+| --- | --- |
+| A cena em tela cheia saiu: a foto virou um **retrato emoldurado 4:5** à direita (moldura deslocada, como cartão editorial), em duas colunas com o texto | a cena "parecia à parte" do site, e o nome e a foto estavam desproporcionais |
+| Cor da armadura "aço natural" (azuis dessaturados, metal neutro, realces levemente quentes), só cor e tom, gerada por `scripts/armadura-cor.mjs` (`sharp`, devDependency nova) → `retrato-armadura-{480,960}.webp`. Comparação em `docs/comparacoes/armadura-antes-depois.webp` | aprovada pelo Jefferson; combina com o acento sem competir |
+| Sobre o retrato: cartão "Estudando agora" (`StudyPanel`, dados em `src/content/studying.ts`, vindos da timeline) e pílula de tecnologias (`HeroStack`, `heroStack` em `studying.ts`) | foco no que ele estuda e nas tecnologias, mantendo a foto em destaque |
+| Nome menor e mais elegante; saíram o mini-índice (repetia o menu), o número "02" (métricas vão para o Sobre), os cards de código/formação e a cápsula escura do menu (`header-top`) | menos poluição; tudo cabe em 360×740 e 1280×720 |
+| Celular: 2 estudos no cartão, selos de status só com o ponto, sem a pílula de tecnologias e sem a linha "Fale comigo · LinkedIn" (os botões flutuantes já levam lá) | caber em uma tela |
+
 **Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
 
 **Lançamento (passo a passo)**
