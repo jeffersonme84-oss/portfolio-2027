@@ -29,7 +29,10 @@ export function Header({ onBrandClick }: HeaderProps) {
     <header
       className={cn(
         'fixed inset-x-0 top-0 z-40 border-b transition-colors duration-200',
-        scrolled ? 'border-border bg-background/95 backdrop-blur-sm' : 'border-transparent',
+        // header-top: no topo da Home, o menu fica sobre a cena (cores em hero.css).
+        scrolled
+          ? 'border-border bg-background/95 backdrop-blur-sm'
+          : 'header-top border-transparent',
       )}
     >
       <div className="mx-auto flex h-14 max-w-[1200px] items-center gap-4 px-4 md:gap-6 md:px-6">

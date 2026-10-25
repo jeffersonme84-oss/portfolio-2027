@@ -584,11 +584,8 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 
 | Decisão | Motivo |
 | --- | --- |
-| A cena em tela cheia saiu: a foto virou um **retrato emoldurado 4:5** à direita (moldura deslocada, como cartão editorial), em duas colunas com o texto | a cena "parecia à parte" do site, e o nome e a foto estavam desproporcionais |
-| Cor da armadura "aço natural" (azuis dessaturados, metal neutro, realces levemente quentes), só cor e tom, gerada por `scripts/armadura-cor.mjs` (`sharp`, devDependency nova) → `retrato-armadura-{480,960}.webp`. Comparação em `docs/comparacoes/armadura-antes-depois.webp` | aprovada pelo Jefferson; combina com o acento sem competir |
-| Sobre o retrato: cartão "Estudando agora" (`StudyPanel`, dados em `src/content/studying.ts`, vindos da timeline) e pílula de tecnologias (`HeroStack`, `heroStack` em `studying.ts`) | foco no que ele estuda e nas tecnologias, mantendo a foto em destaque |
-| Nome menor e mais elegante; saíram o mini-índice (repetia o menu), o número "02" (métricas vão para o Sobre), os cards de código/formação e a cápsula escura do menu (`header-top`) | menos poluição; tudo cabe em 360×740 e 1280×720 |
-| Celular: 2 estudos no cartão, selos de status só com o ponto, sem a pílula de tecnologias e sem a linha "Fale comigo · LinkedIn" (os botões flutuantes já levam lá) | caber em uma tela |
+| Testada e **descartada**: retrato emoldurado 4:5 com a armadura em "aço natural" no lugar da cena. A Home voltou à cena em tela cheia, com as cores originais | o Jefferson aprovou a cena dos dois temas como estava; pediu para **acrescentar** elementos, não trocar a foto |
+| Pilha de livros na mesa da cena (`HeroBooks`, temas em `src/content/studying.ts`: Java & Spring Boot, Cloud · AWS, Cibersegurança, Banco de Dados · SQL, IA). Lombadas em HTML (texto nítido e traduzível), tons do site, livro sai da pilha no hover; aparece com os cards (>= 1280 px). O chip de certificações subiu para dar espaço | mostrar que estuda e trabalha com tecnologia; são temas, não títulos de livros reais |
 
 **Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
 

@@ -55,23 +55,26 @@
     "backToTop": "Voltar ao topo"
   },
   "hero": {
+    "index": "Índice",
+    "experience": "anos como dev full stack",
     "headline": "Sistemas sólidos. Web com propósito.",
     "seeProjects": "Ver projetos",
     "portraitAlt": "Jefferson com armadura futurista programando no notebook, entre telas holográficas de código",
-    "greeting": "Olá, eu sou",
-    "focus": "Full Stack · Cloud · Segurança",
-    "intro": "Desenvolvo sistemas web, mobile e IoT com Java, Node.js, React e AWS, e sigo estudando cloud, segurança e inteligência artificial.",
-    "study": {
-      "title": "Estudando agora",
-      "subtitle": "Formação contínua · 2022 → hoje",
-      "stack": "Tecnologias que uso",
-      "status": {
-        "inProgress": "Em andamento",
-        "done": "Concluído",
-        "next": "Próximo"
-      }
+    "reels": "Girar os carretéis da fita (duplo clique rebobina o nome)",
+    "side": "LADO A",
+    "code": {
+      "learning": "estudando",
+      "ai": "IA",
+      "coffee": "café",
+      "always": "sempre"
     },
-    "reels": "Girar os carretéis da fita (duplo clique rebobina o nome)"
+    "cards": {
+      "educationTitle": "Fatec · Tecnologia",
+      "education": "Formação",
+      "certificationsTitle": "AWS · IA · IoT",
+      "certifications": "Certificações"
+    },
+    "books": "Temas que estudo"
   },
   "about": {
     "title": "Sobre",
