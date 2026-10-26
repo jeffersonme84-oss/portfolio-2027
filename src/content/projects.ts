@@ -77,6 +77,19 @@ export const projects: Project[] = [
         shape: 'phone',
       },
       {
+        src: '/images/projects/sias-cadastro.webp',
+        alt: { 'pt-BR': 'Tela de cadastro do SIAS App', 'en-US': 'SIAS App sign-up screen' },
+        shape: 'phone',
+      },
+      {
+        src: '/images/projects/sias-config.webp',
+        alt: {
+          'pt-BR': 'Tela de configurações do SIAS App',
+          'en-US': 'SIAS App settings screen',
+        },
+        shape: 'phone',
+      },
+      {
         src: '/images/projects/sias-banco.webp',
         alt: {
           'pt-BR': 'Diagrama do banco de dados do SIAS App',
