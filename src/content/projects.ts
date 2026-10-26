@@ -1,6 +1,13 @@
 import type { SkillKey } from './skills'
 import type { Localized } from './types'
 
+// Foto do projeto (slides do estudo de caso). phone = tela de celular (vertical); wide = paisagem.
+export type ProjectImage = {
+  src: string
+  alt: Localized
+  shape: 'phone' | 'wide'
+}
+
 export type Project = {
   slug: string
   title: Localized
@@ -9,6 +16,8 @@ export type Project = {
   year: string
   kind: Localized
   cover: string // /images/projects/<slug>.webp (placeholders em SVG até as capas reais)
+  // Fotos para os slides do estudo de caso (na ordem: problema, processo, resultado, extras).
+  gallery?: ProjectImage[]
   technologies: SkillKey[]
   deployUrl?: string
   githubUrl?: string
@@ -33,7 +42,49 @@ export const projects: Project[] = [
     },
     year: '2024',
     kind: { 'pt-BR': 'App mobile · equipe', 'en-US': 'Mobile app · team' },
-    cover: '/images/projects/sias-app.svg',
+    cover: '/images/projects/sias-app.webp',
+    // Telas reais do app (github.com/JeffersonEvangelista/SiasApp, pasta img/).
+    gallery: [
+      {
+        src: '/images/projects/sias-login.webp',
+        alt: { 'pt-BR': 'Tela de login do SIAS App', 'en-US': 'SIAS App login screen' },
+        shape: 'phone',
+      },
+      {
+        src: '/images/projects/sias-home.webp',
+        alt: {
+          'pt-BR': 'Painel do RH com as entrevistas oferecidas e agendadas',
+          'en-US': 'HR dashboard with offered and scheduled interviews',
+        },
+        shape: 'phone',
+      },
+      {
+        src: '/images/projects/sias-chatbot.webp',
+        alt: {
+          'pt-BR': 'Botly, o assistente virtual do SIAS',
+          'en-US': 'Botly, the SIAS virtual assistant',
+        },
+        shape: 'phone',
+      },
+      {
+        src: '/images/projects/sias-agenda.webp',
+        alt: { 'pt-BR': 'Agenda de entrevistas', 'en-US': 'Interview schedule' },
+        shape: 'phone',
+      },
+      {
+        src: '/images/projects/sias-chat.webp',
+        alt: { 'pt-BR': 'Chat entre RH e candidato', 'en-US': 'Chat between HR and candidate' },
+        shape: 'phone',
+      },
+      {
+        src: '/images/projects/sias-banco.webp',
+        alt: {
+          'pt-BR': 'Diagrama do banco de dados do SIAS App',
+          'en-US': 'SIAS App database diagram',
+        },
+        shape: 'wide',
+      },
+    ],
     technologies: ['reactNative', 'expo', 'typescript', 'supabase', 'firebase', 'gemini'],
     deployUrl: '',
     githubUrl: 'https://github.com/JeffersonEvangelista/SiasApp',
@@ -68,7 +119,34 @@ export const projects: Project[] = [
     },
     year: '2024',
     kind: { 'pt-BR': 'IoT', 'en-US': 'IoT' },
-    cover: '/images/projects/estacao-esp32.svg',
+    cover: '/images/projects/estacao-esp32.webp',
+    // Simulação no Wokwi (github.com/JeffersonEvangelista/Automacao-em-Esp32-Mqtt-temperatura-, pasta Deft/).
+    gallery: [
+      {
+        src: '/images/projects/esp32-simulacao.webp',
+        alt: {
+          'pt-BR': 'Código e circuito da estação ESP32 simulados no Wokwi',
+          'en-US': 'ESP32 station code and circuit simulated on Wokwi',
+        },
+        shape: 'wide',
+      },
+      {
+        src: '/images/projects/estacao-esp32.webp',
+        alt: {
+          'pt-BR': 'Circuito com ESP32, sensor DHT22, display LCD e LED',
+          'en-US': 'Circuit with ESP32, DHT22 sensor, LCD display and LED',
+        },
+        shape: 'wide',
+      },
+      {
+        src: '/images/projects/esp32-mqtt.webp',
+        alt: {
+          'pt-BR': 'Mensagens publicadas no broker MQTT',
+          'en-US': 'Messages published to the MQTT broker',
+        },
+        shape: 'wide',
+      },
+    ],
     technologies: ['esp32', 'cpp', 'arduino', 'mqtt'],
     deployUrl: '',
     githubUrl: 'https://github.com/JeffersonEvangelista/Automacao-em-Esp32-Mqtt-temperatura-',

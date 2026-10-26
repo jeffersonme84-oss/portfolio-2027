@@ -96,7 +96,8 @@
     },
     "animated": "animated version",
     "keyboardHint": "Use the arrow keys to browse the journey; the selected item is shown alongside.",
-    "detail": "Details"
+    "detail": "Details",
+    "morePhotos": "More photos"
   },
   "projects": {
     "title": "Projects",
@@ -108,7 +109,8 @@
     "process": "Creative process",
     "result": "Final result",
     "technologies": "Technologies",
-    "close": "Close"
+    "close": "Close",
+    "gallery": "Gallery"
   },
   "skills": {
     "title": "Skills",

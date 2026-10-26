@@ -66,7 +66,7 @@ export function Projects() {
         className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgb(255_255_255/0.09),transparent)]"
       />
       <div className="relative mx-auto w-full max-w-[1200px] px-4 md:px-6">
-        <div className="mb-5 flex flex-wrap items-end justify-between gap-4 md:mb-8">
+        <div className="mb-5 flex flex-wrap items-end justify-between gap-4 md:mb-6">
           <h2
             id="projetos-titulo"
             className="font-display text-[clamp(2.25rem,6vw,4.5rem)] leading-[0.85] font-black tracking-[-0.04em] uppercase"
@@ -100,7 +100,6 @@ export function Projects() {
                 badge={project.year}
                 tags={[l(project.kind)]}
                 aspect="4 / 3"
-                monochrome
                 surface="var(--wall)"
                 accent="var(--accent)"
                 discClassName="bg-wall-foreground text-wall"

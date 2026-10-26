@@ -598,6 +598,16 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | Projetos: 3 por página (2 no tablet, 1 no celular), capa 4:3 em vez de 2:3. Habilidades: abas Técnicas / Comportamentais, prateleiras mais baixas, grupos paginados em telas menores. Depoimentos: 3/2/1 por página | idem |
 | Fale comigo no celular: sem as listas de contato direto e redes (botões flutuantes e rodapé já têm os links), com botão de e-mail; mensagem com 4 linhas | idem |
 
+**Ajustes das seções (retorno do Jefferson, 2026-10-25)**
+
+| Decisão | Motivo |
+| --- | --- |
+| Seções centralizadas na área visível (padding de cima = header + o de baixo) | "não está bem centralizada" |
+| Sobre: 13 tópicos viram 7 (Verisure Líder + Executivo; 3 certificações em 1; Valores/Motivação/Apoio em "Família e valores"). Fotos extras (`morePhotos` em `timeline.ts`) aparecem como miniaturas no detalhe. Lista em duas colunas (período | título), texto do detalhe maior e mais escuro | "texto ruim de ver e mal tabulado", "não com tantos tópicos", "os com fotos ficaram bons" |
+| Projetos: capas reais e coloridas (telas do SIAS e simulação do ESP32 baixadas dos repositórios públicos do Jefferson, com autorização, e convertidas para WebP em `public/images/projects/`); `gallery` em `projects.ts`; o estudo de caso virou **slides** (visão geral → problema → processo → resultado → fotos extras; setas, pontos e ← →) | pedido de fotos dos projetos e slides ao clicar. NutriSense segue com a capa SVG (o repositório não tem telas) |
+| Habilidades: grupos novos "Cibersegurança", "Design e UI/UX" e "Comercial e marketing" (só itens da trajetória real); prateleiras e títulos centralizados | pedido do Jefferson |
+| Fale comigo + rodapé = uma tela (`--footer-h` publicado pelo Footer); rodapé mais baixo; no celular saem a introdução e as listas de contato/redes | "mostrar o rodapé" |
+
 **Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
 
 **Lançamento (passo a passo)**

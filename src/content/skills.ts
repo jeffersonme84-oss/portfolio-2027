@@ -1,5 +1,14 @@
 import {
+  Accessibility,
+  BellRing,
   BrainCircuit,
+  Gauge,
+  Megaphone,
+  MonitorSmartphone,
+  Network,
+  Palette,
+  ShoppingCart,
+  TrendingUp,
   Handshake,
   Languages,
   Lightbulb,
@@ -87,6 +96,36 @@ export const skills = {
     name: { 'pt-BR': 'Cibersegurança', 'en-US': 'Cybersecurity' },
     icon: ShieldCheck,
   },
+  // Design e UI/UX (Figma e este portfólio: responsivo e acessível).
+  uiux: { name: { 'pt-BR': 'UI/UX Design', 'en-US': 'UI/UX Design' }, icon: Palette },
+  responsive: {
+    name: { 'pt-BR': 'Design responsivo', 'en-US': 'Responsive design' },
+    icon: MonitorSmartphone,
+  },
+  accessibility: {
+    name: { 'pt-BR': 'Acessibilidade', 'en-US': 'Accessibility' },
+    icon: Accessibility,
+  },
+  // Segurança (Security+ Network Infrastructure; segurança eletrônica na Verisure).
+  networkSecurity: {
+    name: { 'pt-BR': 'Segurança de redes', 'en-US': 'Network security' },
+    icon: Network,
+  },
+  electronicSecurity: {
+    name: { 'pt-BR': 'Segurança eletrônica', 'en-US': 'Electronic security' },
+    icon: BellRing,
+  },
+  // Comercial e marketing (Verisure e DMANDA).
+  sales: { name: { 'pt-BR': 'Vendas B2B/B2C', 'en-US': 'B2B/B2C sales' }, icon: TrendingUp },
+  kpis: { name: { 'pt-BR': 'Gestão de KPIs', 'en-US': 'KPI management' }, icon: Gauge },
+  ecommerce: {
+    name: { 'pt-BR': 'E-commerce', 'en-US': 'E-commerce' },
+    icon: ShoppingCart,
+  },
+  campaigns: {
+    name: { 'pt-BR': 'Campanhas e feiras', 'en-US': 'Campaigns and fairs' },
+    icon: Megaphone,
+  },
   cpp: { name: 'C++', icon: SiCplusplus, color: '#00599C' },
   esp32: { name: 'ESP32', icon: SiEspressif, color: '#E7352C' },
   arduino: { name: 'Arduino', icon: SiArduino, color: '#00878F' },
@@ -128,7 +167,17 @@ export const hardSkillGroups: SkillGroup[] = [
   {
     id: 'cloud',
     title: { 'pt-BR': 'Cloud e infraestrutura', 'en-US': 'Cloud & infrastructure' },
-    skills: ['aws', 'vercel', 'linux', 'cybersecurity'],
+    skills: ['aws', 'vercel', 'linux'],
+  },
+  {
+    id: 'security',
+    title: { 'pt-BR': 'Cibersegurança', 'en-US': 'Cybersecurity' },
+    skills: ['cybersecurity', 'networkSecurity', 'linux', 'electronicSecurity'],
+  },
+  {
+    id: 'design',
+    title: { 'pt-BR': 'Design e UI/UX', 'en-US': 'Design & UI/UX' },
+    skills: ['figma', 'uiux', 'responsive', 'accessibility'],
   },
   {
     id: 'mobile-iot',
@@ -141,9 +190,14 @@ export const hardSkillGroups: SkillGroup[] = [
     skills: ['generativeAi', 'gemini', 'python'],
   },
   {
+    id: 'business',
+    title: { 'pt-BR': 'Comercial e marketing', 'en-US': 'Sales & marketing' },
+    skills: ['sales', 'kpis', 'ecommerce', 'campaigns'],
+  },
+  {
     id: 'tools',
     title: { 'pt-BR': 'Ferramentas', 'en-US': 'Tools' },
-    skills: ['git', 'github', 'figma'],
+    skills: ['git', 'github'],
   },
   {
     id: 'languages',

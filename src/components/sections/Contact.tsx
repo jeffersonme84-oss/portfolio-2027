@@ -23,13 +23,17 @@ export function Contact() {
     <section
       id="contato"
       aria-labelledby="contato-titulo"
-      className={cn(screenSection, 'mx-auto w-full max-w-[1200px] px-4 md:px-6')}
+      className={cn(
+        screenSection,
+        // Fale comigo + rodapé = uma tela (--footer-h vem do Footer).
+        'mx-auto min-h-[calc(100svh-var(--footer-h,0px))] w-full max-w-[1200px] px-4 md:px-6',
+      )}
     >
       <SectionHeading id="contato-titulo">{t('contact.title')}</SectionHeading>
 
       <div className="grid gap-6 md:grid-cols-12 md:gap-12">
         <div className="flex flex-col gap-5 md:col-span-5 md:gap-7">
-          <p className="text-lg leading-relaxed">{t('contact.intro')}</p>
+          <p className="hidden text-lg leading-relaxed md:block">{t('contact.intro')}</p>
 
           {/* No celular, contato direto e redes saem (botões flutuantes e rodapé já têm os links). */}
           <div className="hidden md:block">

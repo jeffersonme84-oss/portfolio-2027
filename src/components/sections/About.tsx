@@ -29,8 +29,8 @@ export function About() {
 
       {/* Biografia e valores numa faixa larga; a trajetória (lista + detalhe) embaixo. */}
       <div className="mb-5 grid gap-4 md:mb-7 lg:grid-cols-12 lg:gap-10">
-        {/* No celular a biografia fica em 3 linhas, para a trajetória caber na tela. */}
-        <p className="line-clamp-3 text-base leading-relaxed md:line-clamp-4 lg:col-span-7 lg:line-clamp-none">
+        {/* No celular a biografia fica em 2 linhas, para a trajetória caber na tela. */}
+        <p className="line-clamp-2 text-base leading-relaxed md:line-clamp-4 lg:col-span-7 lg:line-clamp-none">
           {l(about.bio)}
         </p>
         <p className="hidden text-sm leading-relaxed text-muted-foreground lg:col-span-5 lg:block">

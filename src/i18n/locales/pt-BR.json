@@ -96,7 +96,8 @@
     },
     "animated": "versão animada",
     "keyboardHint": "Use as setas para navegar pela trajetória; o item escolhido aparece ao lado.",
-    "detail": "Detalhes"
+    "detail": "Detalhes",
+    "morePhotos": "Mais fotos"
   },
   "projects": {
     "title": "Projetos",
@@ -108,7 +109,8 @@
     "process": "Processo de criação",
     "result": "Resultado final",
     "technologies": "Tecnologias",
-    "close": "Fechar"
+    "close": "Fechar",
+    "gallery": "Galeria"
   },
   "skills": {
     "title": "Habilidades",

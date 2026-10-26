@@ -12,6 +12,8 @@ export type TimelineItem = {
   details: Localized // visível ao expandir
   photo?: string // caminho em /images/about/editorial/
   photoAlt?: Localized
+  // Fotos extras, mostradas como miniaturas no detalhe (a principal é photo).
+  morePhotos?: { src: string; alt: Localized }[]
   // Foto da família que revela a ilustração com 3 cliques (easter egg).
   revealsIllustration?: boolean
 }
@@ -47,22 +49,28 @@ export const about = {
 }
 
 // Do mais recente para o mais antigo. Fonte: perfil do LinkedIn (out. 2026).
+// Itens parecidos foram agrupados para a trajetória caber em uma tela (pedido do Jefferson);
+// as fotos extras de cada item aparecem como miniaturas no detalhe.
 export const timeline: TimelineItem[] = [
   {
-    id: 'verisure-lider',
+    id: 'verisure',
     type: 'work',
-    period: '2026 →', // em andamento
-    title: { 'pt-BR': 'Líder de equipe', 'en-US': 'Team leader' },
+    // TODO(jefferson): no LinkedIn, Júnior (ago. 2024 – nov. 2025) e Pleno (jul. 2024 – abr. 2026) se sobrepõem; conferir as datas
+    period: '2024 →',
+    title: {
+      'pt-BR': 'Líder de equipe · Executivo de vendas',
+      'en-US': 'Team leader · Sales executive',
+    },
     subtitle: { 'pt-BR': 'Verisure · São Paulo', 'en-US': 'Verisure · São Paulo' },
     summary: {
-      'pt-BR': 'Formação de equipe de vendas com foco em resultados e desenvolvimento de pessoas.',
-      'en-US': 'Building a sales team focused on results and people development.',
+      'pt-BR': 'Liderança de vendas e segurança eletrônica com IA e IoT.',
+      'en-US': 'Sales leadership and electronic security with AI and IoT.',
     },
     details: {
       'pt-BR':
-        'Prospecção de negócios, treinamento de campo e gestão de KPIs para transformar vendedores em profissionais de alta performance, além da instalação de equipamentos tecnológicos de segurança e vigilância. Foco em liderança, vendas B2B/B2C, treinamento de equipes e gestão de indicadores.',
+        'Hoje lidero uma equipe de vendas: prospecção de negócios, treinamento de campo e gestão de KPIs para formar profissionais de alta performance. Antes, como executivo Júnior e Pleno, fiz vendas consultivas de alarmes inteligentes com demonstrações presenciais, além de instalação e manutenção de sistemas de segurança com IA e IoT, o que ampliou minha visão sobre automação e infraestrutura tecnológica.',
       'en-US':
-        'Business prospecting, field training and KPI management to turn salespeople into high performers, plus installing technological security and surveillance equipment. Focus on leadership, B2B/B2C sales, team training and performance indicators.',
+        'I currently lead a sales team: business prospecting, field training and KPI management to develop high performers. Before that, as a Junior and Mid-level executive, I did consultative sales of smart alarms with in-person demos, plus installing and maintaining AI and IoT security systems, which broadened my view of automation and tech infrastructure.',
     },
     photo: '/images/about/editorial/retrato-carro.webp',
     photoAlt: {
@@ -71,30 +79,9 @@ export const timeline: TimelineItem[] = [
     },
   },
   {
-    id: 'verisure-executivo',
-    type: 'work',
-    // TODO(jefferson): no LinkedIn, Júnior (ago. 2024 – nov. 2025) e Pleno (jul. 2024 – abr. 2026) se sobrepõem; conferir as datas
-    period: '2024 – 2026',
-    title: {
-      'pt-BR': 'Executivo de vendas Júnior → Pleno',
-      'en-US': 'Sales executive, Junior → Mid-level',
-    },
-    subtitle: { 'pt-BR': 'Verisure · São Paulo', 'en-US': 'Verisure · São Paulo' },
-    summary: {
-      'pt-BR': 'Vendas consultivas de alarmes inteligentes com IA e IoT.',
-      'en-US': 'Consultative sales of smart alarms with AI and IoT.',
-    },
-    details: {
-      'pt-BR':
-        'Prospecção de clientes e vendas consultivas de sistemas de alarmes inteligentes, com demonstrações presenciais, além de manutenções preventivas e instalação de sistemas de segurança com IA e IoT. Experiência que ampliou minha visão sobre Internet das Coisas, automação e infraestrutura tecnológica.',
-      'en-US':
-        'Client prospecting and consultative sales of smart alarm systems, with in-person demos, plus preventive maintenance and installation of AI and IoT security systems. This broadened my view of the Internet of Things, automation and tech infrastructure.',
-    },
-  },
-  {
     id: 'pos-puc',
     type: 'education',
-    period: '2025',
+    period: '2025 →',
     // TODO(jefferson): confirmar se a pós está em andamento e a previsão de conclusão
     title: {
       'pt-BR': 'Pós-graduação em Tecnologia da Informação',
@@ -138,82 +125,34 @@ export const timeline: TimelineItem[] = [
       'pt-BR': 'Jefferson de beca e faixa na formatura da Fatec',
       'en-US': 'Jefferson in cap and gown at his Fatec graduation',
     },
+    morePhotos: [
+      {
+        src: '/images/about/editorial/formatura-familia.webp',
+        alt: {
+          'pt-BR': 'Jefferson de beca com a esposa e a filha na formatura',
+          'en-US': 'Jefferson in a graduation gown with his wife and daughter',
+        },
+      },
+    ],
   },
   {
-    id: 'formatura-familia',
-    type: 'education',
-    period: '2025',
-    title: { 'pt-BR': 'Formatura em família', 'en-US': 'Graduation with family' },
-    subtitle: { 'pt-BR': 'Fatec Zona Sul', 'en-US': 'Fatec Zona Sul' },
-    summary: lorem, // TODO(jefferson): preencher
-    details: loremLong,
-    photo: '/images/about/editorial/formatura-familia.webp',
-    photoAlt: {
-      'pt-BR': 'Jefferson de beca com a esposa e a filha na formatura',
-      'en-US': 'Jefferson in a graduation gown with his wife and daughter',
-    },
-  },
-  {
-    id: 'certificacoes-aws',
-    type: 'certification',
-    period: '2024 – 2025',
-    title: { 'pt-BR': 'AWS Academy Graduate', 'en-US': 'AWS Academy Graduate' },
-    subtitle: {
-      'pt-BR': 'Amazon Web Services · Cloud Foundations e Cloud Architecting',
-      'en-US': 'Amazon Web Services · Cloud Foundations and Cloud Architecting',
-    },
-    summary: {
-      'pt-BR': 'Arquitetura de soluções seguras, escaláveis e eficientes na nuvem.',
-      'en-US': 'Designing secure, scalable and efficient cloud solutions.',
-    },
-    details: {
-      'pt-BR':
-        'Cloud Foundations (nov. 2024) e Cloud Architecting (mai. 2025), com prática em EC2, S3, RDS, Lambda e VPC e aplicação do AWS Well-Architected Framework, com foco em performance, segurança e otimização de custos.',
-      'en-US':
-        'Cloud Foundations (Nov 2024) and Cloud Architecting (May 2025), with hands-on EC2, S3, RDS, Lambda and VPC and the AWS Well-Architected Framework, focused on performance, security and cost optimization.',
-    },
-  },
-  {
-    id: 'certificacoes-dev',
+    id: 'certificacoes',
     type: 'certification',
     period: '2022 – 2025',
-    title: { 'pt-BR': 'Desenvolvimento e IA', 'en-US': 'Development and AI' },
+    title: { 'pt-BR': 'Certificações', 'en-US': 'Certifications' },
     subtitle: {
-      'pt-BR': 'Cisco · Fundação Bradesco · Centro Paula Souza · Rocketseat',
-      'en-US': 'Cisco · Fundação Bradesco · Centro Paula Souza · Rocketseat',
+      'pt-BR': 'AWS · Cisco · Fundação Bradesco · Centro Paula Souza',
+      'en-US': 'AWS · Cisco · Fundação Bradesco · Centro Paula Souza',
     },
     summary: {
-      'pt-BR': 'JavaScript, Java, Android, front-end e inteligência artificial.',
-      'en-US': 'JavaScript, Java, Android, front-end and artificial intelligence.',
+      'pt-BR': 'Nuvem, desenvolvimento, IA, segurança e IoT.',
+      'en-US': 'Cloud, development, AI, security and IoT.',
     },
     details: {
       'pt-BR':
-        'Inteligência Artificial Básico (Centro Paula Souza, 2025); JavaScript Essentials 1 (Cisco, 2024); desenvolvimento Android no Android Studio (Fundação Bradesco, 2024); Front-End Básico (Centro Paula Souza, 2024); Linguagem Java Básico (Fundação Bradesco, 2022); Conectar (Rocketseat, 2022).',
+        'AWS Academy Cloud Foundations (2024) e Cloud Architecting (2025), com EC2, S3, RDS, Lambda e VPC. Inteligência Artificial Básico (Centro Paula Souza, 2025), JavaScript Essentials 1 (Cisco, 2024), Android no Android Studio (Fundação Bradesco, 2024), Front-End Básico (2024), Java Básico (Fundação Bradesco, 2022) e Conectar (Rocketseat, 2022). Linux Essentials (2022), Security+ Network Infrastructure (2024) e Arduino (2024). Inglês do A1 ao B2, em preparação para o C1.',
       'en-US':
-        'Basic Artificial Intelligence (Centro Paula Souza, 2025); JavaScript Essentials 1 (Cisco, 2024); Android development in Android Studio (Fundação Bradesco, 2024); Basic Front-End (Centro Paula Souza, 2024); Basic Java Programming (Fundação Bradesco, 2022); Conectar (Rocketseat, 2022).',
-    },
-  },
-  {
-    id: 'certificacoes-infra',
-    type: 'certification',
-    period: '2022 – 2024',
-    title: {
-      'pt-BR': 'Infraestrutura, segurança e IoT',
-      'en-US': 'Infrastructure, security and IoT',
-    },
-    subtitle: {
-      'pt-BR': 'Linux · Security+ · Arduino · Inglês',
-      'en-US': 'Linux · Security+ · Arduino · English',
-    },
-    summary: {
-      'pt-BR': 'Administração Linux, cibersegurança e eletrônica com Arduino.',
-      'en-US': 'Linux administration, cybersecurity and Arduino electronics.',
-    },
-    details: {
-      'pt-BR':
-        'Desenvolvimento Profissional em Linux Essentials (2022, preparação para a LPIC-1); Security+ Network Infrastructure (ProProfs, 2024); Curso de Arduino (iPED, 2024); MOOC English Online 1 (Centro Paula Souza, 2024). Inglês com certificações do A1 ao B2, em preparação para o C1.',
-      'en-US':
-        'Professional Development in Linux Essentials (2022, LPIC-1 preparation); Security+ Network Infrastructure (ProProfs, 2024); Arduino course (iPED, 2024); MOOC English Online 1 (Centro Paula Souza, 2024). English certified from A1 to B2, now preparing for C1.',
+        'AWS Academy Cloud Foundations (2024) and Cloud Architecting (2025), with EC2, S3, RDS, Lambda and VPC. Basic Artificial Intelligence (Centro Paula Souza, 2025), JavaScript Essentials 1 (Cisco, 2024), Android in Android Studio (Fundação Bradesco, 2024), Basic Front-End (2024), Basic Java (Fundação Bradesco, 2022) and Conectar (Rocketseat, 2022). Linux Essentials (2022), Security+ Network Infrastructure (2024) and Arduino (2024). English from A1 to B2, preparing for C1.',
     },
   },
   {
@@ -260,44 +199,34 @@ export const timeline: TimelineItem[] = [
     },
   },
   {
-    id: 'valores',
+    id: 'familia',
     type: 'family',
     period: '∞',
-    title: { 'pt-BR': 'Valores', 'en-US': 'Values' },
+    title: { 'pt-BR': 'Família e valores', 'en-US': 'Family and values' },
     summary: lorem, // TODO(jefferson): preencher
-    details: loremLong,
+    details: loremLong, // TODO(jefferson): preencher (valores, motivação e apoio)
     photo: '/images/about/editorial/familia-selfie.webp',
     photoAlt: {
       'pt-BR': 'Selfie de Jefferson com a esposa e a filha',
       'en-US': 'Selfie of Jefferson with his wife and daughter',
     },
     revealsIllustration: true,
-  },
-  {
-    id: 'motivacao',
-    type: 'family',
-    period: '∞',
-    title: { 'pt-BR': 'Motivação', 'en-US': 'Motivation' },
-    summary: lorem, // TODO(jefferson): preencher
-    details: loremLong,
-    photo: '/images/about/editorial/pai-e-filha-camisa14.webp',
-    photoAlt: {
-      'pt-BR': 'Jefferson de costas, com camisa número 14, carregando a filha no colo',
-      'en-US': 'Jefferson seen from behind in a number 14 shirt, carrying his daughter',
-    },
-  },
-  {
-    id: 'apoio',
-    type: 'family',
-    period: '∞',
-    title: { 'pt-BR': 'Apoio', 'en-US': 'Support' },
-    summary: lorem, // TODO(jefferson): preencher
-    details: loremLong,
-    photo: '/images/about/editorial/esposa-retrato.webp',
-    photoAlt: {
-      'pt-BR': 'Retrato sorridente da esposa de Jefferson',
-      'en-US': "Smiling portrait of Jefferson's wife",
-    },
+    morePhotos: [
+      {
+        src: '/images/about/editorial/pai-e-filha-camisa14.webp',
+        alt: {
+          'pt-BR': 'Jefferson de costas, com camisa número 14, carregando a filha no colo',
+          'en-US': 'Jefferson seen from behind in a number 14 shirt, carrying his daughter',
+        },
+      },
+      {
+        src: '/images/about/editorial/esposa-retrato.webp',
+        alt: {
+          'pt-BR': 'Retrato sorridente da esposa de Jefferson',
+          'en-US': "Smiling portrait of Jefferson's wife",
+        },
+      },
+    ],
   },
 ]
 

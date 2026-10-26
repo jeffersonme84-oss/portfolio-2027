@@ -111,9 +111,9 @@ export function Skills() {
           <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
             {groups.items.map((group) => (
               <div key={group.id}>
-                <h3 className="mb-2 text-sm font-semibold">{l(group.title)}</h3>
+                <h3 className="mb-2 text-center text-sm font-semibold">{l(group.title)}</h3>
                 {/* Prateleira: cada skill é a lombada de uma fita K7 */}
-                <ul className="flex min-h-32 flex-wrap items-end gap-1.5 border-b-4 border-foreground pb-0.5">
+                <ul className="flex min-h-32 flex-wrap items-end justify-center gap-1.5 border-b-4 border-foreground pb-0.5">
                   {group.skills.map((key) => {
                     const skill = skills[key]
                     const Icon = skill.icon
