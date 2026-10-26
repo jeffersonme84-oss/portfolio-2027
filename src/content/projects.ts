@@ -193,7 +193,44 @@ export const projects: Project[] = [
     },
     year: '2025',
     kind: { 'pt-BR': 'App Android · equipe', 'en-US': 'Android app · team' },
-    cover: '/images/projects/nutrisense.svg',
+    cover: '/images/projects/nutrisense.webp',
+    // Telas do README de B0rga/App_Nutricionista (repositório original do projeto em equipe).
+    // A tela de perfil ficou de fora: mostra dados pessoais de um colega.
+    gallery: [
+      {
+        src: '/images/projects/nutrisense-chat.webp',
+        alt: {
+          'pt-BR':
+            'Chat do NutriSense, que pergunta idade e objetivo e aceita fotos pela câmera ou galeria',
+          'en-US':
+            'NutriSense chat, which asks for age and goal and accepts photos from the camera or gallery',
+        },
+        shape: 'phone',
+      },
+      {
+        src: '/images/projects/nutrisense-login.webp',
+        alt: { 'pt-BR': 'Tela de login do NutriSense', 'en-US': 'NutriSense login screen' },
+        shape: 'phone',
+      },
+      {
+        src: '/images/projects/nutrisense-dieta.webp',
+        alt: {
+          'pt-BR': 'Plano de dieta com as refeições e os horários do dia',
+          'en-US': 'Diet plan with the meals and times of the day',
+        },
+        shape: 'phone',
+      },
+      {
+        src: '/images/projects/nutrisense-cadastro.webp',
+        alt: { 'pt-BR': 'Tela de cadastro do NutriSense', 'en-US': 'NutriSense sign-up screen' },
+        shape: 'phone',
+      },
+      {
+        src: '/images/projects/nutrisense-abertura.webp',
+        alt: { 'pt-BR': 'Tela de abertura do NutriSense', 'en-US': 'NutriSense splash screen' },
+        shape: 'phone',
+      },
+    ],
     technologies: ['android', 'java', 'firebase'],
     deployUrl: '',
     githubUrl: 'https://github.com/JeffersonEvangelista/App_Nutricionista',

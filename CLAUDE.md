@@ -469,7 +469,7 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 - [ ] Conteúdo real: timeline, projetos, habilidades finais e depoimentos
 - [ ] Domínio próprio
 - [ ] Intensidade final dos efeitos retro (ajustar após ver o site rodando)
-- [ ] Capas reais dos projetos (hoje placeholders abstratos em SVG em `public/images/projects/`)
+- [x] Capas reais dos projetos: SIAS e ESP32 dos repositórios do Jefferson; NutriSense do README de B0rga/App_Nutricionista (projeto em equipe; a tela de perfil ficou de fora por mostrar dados pessoais de um colega)
 - [ ] Publicar o backend do contato (ver "Lançamento" abaixo) e testar o envio real (grava no Postgres + e-mail)
 - [ ] Revogar o Access Token `sbp_…` e trocar a senha do banco do Supabase (foram expostos no chat)
 
