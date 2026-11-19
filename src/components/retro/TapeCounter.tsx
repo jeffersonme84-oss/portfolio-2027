@@ -7,12 +7,17 @@ type TapeCounterProps = {
 
 // Contador de fita (único detalhe retro do layout): avança com o scroll.
 export function TapeCounter({ rewinding = false }: TapeCounterProps) {
-  const count = Math.min(9999, Math.floor(useScrollY() / 8))
+  const scrollY = useScrollY()
+  const count = Math.min(9999, Math.floor(scrollY / 8))
 
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed bottom-4 left-4 z-30 hidden items-center gap-1.5 border border-border bg-background px-2 py-1 font-mono text-[10px] tabular-nums tracking-[0.2em] sm:flex"
+      className={cn(
+        'pointer-events-none fixed bottom-4 left-4 z-30 hidden items-center gap-1.5 border border-border bg-background px-2 py-1 font-mono text-[10px] tabular-nums tracking-[0.2em] transition-opacity duration-300 sm:flex',
+        // No topo da Home ele cobriria o botão "Ver por dentro" da arte.
+        scrollY < 80 && 'opacity-0',
+      )}
     >
       <span className={cn('text-accent', rewinding && 'motion-safe:animate-pulse')}>
         {rewinding ? '◀◀' : '▶'}

@@ -8,6 +8,8 @@
 /* Animações seguem a classe .reduce-motion (sistema ou botão do site), não só a media query. */
 @custom-variant motion-reduce (&:where(.reduce-motion, .reduce-motion *));
 @custom-variant motion-safe (&:where(:root:not(.reduce-motion) *));
+/* Desktop com tela baixa (ex.: 1280×720): seções compactam para caber numa tela. */
+@custom-variant short (@media (min-width: 64rem) and (max-height: 52rem));
 
 @layer base {
   * {

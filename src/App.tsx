@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { FloatingContacts } from '@/components/layout/FloatingContacts'
 import { Footer } from '@/components/layout/Footer'
 import { Header } from '@/components/layout/Header'
+import { BootLoader } from '@/components/retro/BootLoader'
+import { CustomCursor } from '@/components/retro/CustomCursor'
 import { MotionToggle } from '@/components/retro/MotionToggle'
 import { NotFound } from '@/components/retro/NotFound'
 import { SoundToggle } from '@/components/retro/SoundToggle'
@@ -94,6 +96,8 @@ export default function App() {
         <SoundToggle />
       </FloatingContacts>
       <TapeCounter rewinding={effect === 'rewind'} />
+      <CustomCursor />
+      <BootLoader />
       {effect && (
         <VhsOverlay
           mode={effect}

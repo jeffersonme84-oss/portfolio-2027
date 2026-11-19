@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prévia · Sobre (refinado)</title>
+<style>
+  :root { --red: #ff3d14; --red-ink: #c4241b; --ease: cubic-bezier(.16,1,.3,1);
+    --bg: #e9edf0; --ink: #111; --ink-2: #5b6168; --rule: rgb(17 17 17 / .14); --card: #f3f5f7; --soft: rgb(17 17 17 / .04); }
+  body.dark { --bg: #0d0d0d; --ink: #f2f2f2; --ink-2: #9aa0a6; --rule: rgb(242 242 242 / .14); --card: #151515; --soft: rgb(242 242 242 / .04); --red-ink: #ff6a5c; }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Inter, system-ui, sans-serif; background: var(--bg); color: var(--ink); transition: background .4s, color .4s; }
+  .mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+  .display { font-family: 'Archivo Black', 'Arial Black', sans-serif; letter-spacing: -.04em; text-transform: uppercase; line-height: .9; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .bar { position: fixed; z-index: 30; left: 50%; translate: -50% 0; top: 10px; display: flex; gap: 6px; padding: 5px; border-radius: 99px; background: #111; }
+  .bar button { border: 0; border-radius: 99px; padding: 7px 14px; background: #2a2a2a; color: #eee; font-size: 12.5px; font-weight: 600; }
+  .bar button.on { background: #d42a20; color: #fff; }
+  section { display: none; min-height: 100vh; padding: 84px 24px 32px; }
+  section.on { display: grid; align-content: center; }
+  .wrap { max-width: 1200px; width: 100%; margin: 0 auto; }
+
+  /* ---- Cabeçalho e biografia (mesma estrutura de hoje) ---- */
+  .head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; }
+  .head h2 { font-size: clamp(44px, 6vw, 72px); }
+  .rec { display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .2em; padding-bottom: 6px; }
+  .rec i { width: 8px; height: 8px; border-radius: 50%; background: var(--red); animation: blink 1.2s steps(1) infinite; }
+  .bio { display: grid; grid-template-columns: 7fr 5fr; gap: 40px; margin-bottom: 26px; }
+  .bio .lead { font-size: 16.5px; line-height: 1.6; }
+  .bio .lead b { font-weight: 700; }
+  .bio .lead mark { background: none; color: var(--red-ink); font-weight: 600; }
+  .bio .side { display: grid; gap: 12px; align-content: start; }
+  .bio .side p { font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 11px; letter-spacing: .08em; padding: 5px 10px; border-radius: 99px; border: 1px solid var(--rule); }
+  .chip b { color: var(--red); }
+
+  .grid { display: grid; grid-template-columns: 5fr 6fr; gap: 40px; align-items: start; }
+
+  /* ================= MODELO 1: Refinado ================= */
+  .list { list-style: none; padding: 0; border-top: 1px solid var(--rule); }
+  .row { display: grid; grid-template-columns: 26px 92px 1fr auto; align-items: center; gap: 12px; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--rule); background: none; padding: 12px 12px 12px 8px; position: relative; transition: background .25s; }
+  .row:hover { background: var(--soft); }
+  .row .play { font-size: 10px; color: transparent; transition: color .2s, translate .3s var(--ease); translate: -4px 0; }
+  .row.on .play { color: var(--red); translate: 0 0; }
+  .row .when { font-size: 11px; letter-spacing: .06em; color: var(--ink-2); }
+  .row b { display: block; font-size: 15px; font-weight: 600; line-height: 1.25; transition: color .2s; }
+  .row small { font-size: 12.5px; color: var(--ink-2); }
+  .row .tag { font-size: 9.5px; letter-spacing: .14em; padding: 3px 7px; border-radius: 4px; border: 1px solid var(--rule); color: var(--ink-2); }
+  .row.on { background: var(--soft); }
+  .row.on::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--red); }
+  .row.on b, .row:hover b { color: var(--red-ink); }
+  .progress { display: flex; align-items: center; gap: 12px; margin-top: 14px; font-size: 10.5px; letter-spacing: .14em; color: var(--ink-2); }
+  .progress .line { flex: 1; height: 3px; border-radius: 3px; background: var(--rule); overflow: hidden; }
+  .progress .line i { display: block; height: 100%; background: var(--red); transition: width .5s var(--ease); }
+  .progress button { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--rule); background: none; }
+  .progress button:hover { border-color: var(--ink); }
+
+  .detail { display: grid; grid-template-columns: 168px 1fr; gap: 22px; padding: 20px; border-radius: 14px; border: 1px solid var(--rule); background: var(--card); box-shadow: 0 24px 40px -30px rgb(0 0 0 / .4); min-height: 300px; }
+  .vhs { position: relative; aspect-ratio: 4/5; overflow: hidden; border-radius: 6px; background: #000; box-shadow: 0 0 0 1px var(--rule); }
+  .vhs img { width: 100%; height: 100%; object-fit: cover; display: block; animation: fadein .5s var(--ease); }
+  .vhs::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgb(0 0 0 / .16) 0 1px, transparent 1px 3px); }
+  .vhs .osd { position: absolute; z-index: 2; left: 8px; right: 8px; bottom: 8px; display: flex; justify-content: space-between; font-size: 10px; letter-spacing: .1em; color: #fff; text-shadow: 0 1px 2px #000; }
+  .vhs .osd b { color: #ff5a40; }
+  .vhs.empty { display: grid; place-items: center; background: repeating-linear-gradient(90deg, #ddd 0 14%, #e8e080 14% 28%, #7fd0d6 28% 42%, #6fcf7a 42% 56%, #d06fd0 56% 70%, #d86a5a 70% 84%, #6a78d8 84%); }
+  .vhs.empty span { background: #000; color: #fff; padding: 4px 8px; font-size: 10px; letter-spacing: .2em; }
+  .thumbs { display: flex; gap: 6px; margin-top: 8px; }
+  .thumbs button { width: 40px; height: 40px; padding: 0; border: 1px solid var(--rule); border-radius: 4px; overflow: hidden; opacity: .65; }
+  .thumbs button.on { opacity: 1; border-color: var(--red); }
+  .thumbs img { width: 100%; height: 100%; object-fit: cover; }
+  .meta { display: flex; gap: 8px; align-items: center; font-size: 10.5px; letter-spacing: .14em; color: var(--ink-2); text-transform: uppercase; }
+  .meta .badge { color: #fff; background: var(--ink); padding: 3px 7px; border-radius: 4px; }
+  body.dark .meta .badge { color: #111; }
+  .detail h3 { font-size: clamp(22px, 2.2vw, 30px); margin: 8px 0 6px; }
+  .detail .where { font-size: 14px; font-weight: 600; margin-bottom: 10px; }
+  .detail p.txt { font-size: 15px; line-height: 1.6; color: var(--ink-2); animation: fadein .45s var(--ease); }
+
+  /* ================= MODELO 2: Videocassete ================= */
+  .row2 { display: grid; grid-template-columns: 74px 1fr; gap: 14px; align-items: center; width: 100%; text-align: left; border: 0; background: none; padding: 9px 10px; border-radius: 10px; transition: background .25s; }
+  .row2:hover { background: var(--soft); }
+  .row2 .cnt { font-size: 11px; font-weight: 700; letter-spacing: .06em; color: #f2efe9; background: #141412; padding: 6px 0; border-radius: 5px; text-align: center; box-shadow: inset 0 1px 0 rgb(255 255 255 / .08); }
+  .row2 b { display: block; font-size: 15px; font-weight: 600; line-height: 1.25; }
+  .row2 small { font-size: 12.5px; color: var(--ink-2); }
+  .row2.on { background: var(--card); box-shadow: 0 0 0 1px var(--rule), 0 10px 20px -16px rgb(0 0 0 / .5); }
+  .row2.on .cnt { background: var(--red); color: #111; }
+  .list2 { display: grid; gap: 4px; }
+
+  .vcr { border-radius: 16px; padding: 14px; background: linear-gradient(#2a2a27, #151513); color: #eee; box-shadow: 0 30px 50px -30px rgb(0 0 0 / .6), inset 0 1px 0 rgb(255 255 255 / .08); }
+  .screen { position: relative; display: grid; grid-template-columns: 150px 1fr; gap: 18px; padding: 16px; border-radius: 10px; background: #0b0d0c; box-shadow: inset 0 0 0 1px #000, inset 0 0 50px rgb(0 0 0 / .8); min-height: 270px; overflow: hidden; }
+  .screen::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgb(255 255 255 / .025) 0 1px, transparent 1px 3px); }
+  .osdtop { position: absolute; left: 16px; right: 16px; top: 10px; display: flex; justify-content: space-between; font-size: 10.5px; letter-spacing: .14em; color: #e8e4dc; z-index: 2; }
+  .osdtop b { color: #ff5a40; }
+  .screen .pic { margin-top: 18px; aspect-ratio: 4/5; overflow: hidden; border-radius: 4px; background: #222; }
+  .screen .pic img { width: 100%; height: 100%; object-fit: cover; filter: saturate(.9) contrast(1.05); animation: fadein .5s var(--ease); }
+  .screen .txt { margin-top: 18px; }
+  .screen .k { font-size: 10px; letter-spacing: .18em; color: #9a978f; text-transform: uppercase; }
+  .screen h3 { font-size: clamp(20px, 2vw, 28px); color: #fff; margin: 8px 0 4px; }
+  .screen .where { font-size: 13.5px; color: #e8e4dc; margin-bottom: 10px; }
+  .screen p { font-size: 14px; line-height: 1.6; color: #b9b5ad; animation: fadein .45s var(--ease); }
+  .transport { display: flex; align-items: center; gap: 8px; margin-top: 12px; }
+  .transport button { height: 34px; padding: 0 14px; border-radius: 6px; border: 1px solid #3a3a36; background: linear-gradient(#34342f, #1f1f1c); color: #e8e4dc; font-size: 12px; box-shadow: 0 2px 0 #000; }
+  .transport button:active { translate: 0 2px; box-shadow: none; }
+  .transport .slot { flex: 1; height: 8px; border-radius: 4px; background: #0b0b0a; box-shadow: inset 0 1px 2px #000; overflow: hidden; }
+  .transport .slot i { display: block; height: 100%; background: #d42a20; transition: width .5s var(--ease); }
+  .transport .lbl { font-size: 10.5px; letter-spacing: .14em; color: #9a978f; }
+
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes fadein { from { opacity: 0; filter: blur(3px); } }
+  @media (max-width: 900px) { .bio, .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <div class="bar"><button class="on" data-m="m1">Modelo 1 · Refinado</button><button data-m="m2">Modelo 2 · Videocassete</button><button id="theme">Escuro</button></div>
+
+  <section id="m1" class="on"><div class="wrap">
+    <div class="head"><h2 class="display">Sobre</h2><span class="rec mono"><i></i>REC</span></div>
+    <div class="bio">
+      <p class="lead"><b>Forward Deployed Engineer</b> formado em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul e apaixonado por tecnologia, programação e <mark>inteligência artificial</mark>. Desenvolvo sistemas web, apps mobile, automações e soluções com IA usando Java, JavaScript, Node.js, Spring Boot, Python, SQL e AWS.</p>
+      <div class="side"><p>Uno tecnologia e visão de negócios: a liderança de equipes, as vendas consultivas e os estudos de psicologia me ajudam a entender as pessoas e a criar soluções centradas no cliente.</p>
+        <div class="chips"><span class="chip mono"><b>●</b> São Paulo</span><span class="chip mono">Inglês B2</span><span class="chip mono">Cibersegurança · Cloud</span></div></div>
+    </div>
+    <div class="grid">
+      <div><ol class="list" id="list1"></ol>
+        <div class="progress mono"><button id="pv1">←</button><span class="line"><i id="pl1"></i></span><span id="pc1"></span><button id="nx1">→</button></div></div>
+      <article class="detail" id="det1"></article>
+    </div>
+  </div></section>
+
+  <section id="m2"><div class="wrap">
+    <div class="head"><h2 class="display">Sobre</h2><span class="rec mono"><i></i>REC</span></div>
+    <div class="bio">
+      <p class="lead"><b>Forward Deployed Engineer</b> formado em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul e apaixonado por tecnologia, programação e <mark>inteligência artificial</mark>. Desenvolvo sistemas web, apps mobile, automações e soluções com IA usando Java, JavaScript, Node.js, Spring Boot, Python, SQL e AWS.</p>
+      <div class="side"><p>Uno tecnologia e visão de negócios: a liderança de equipes, as vendas consultivas e os estudos de psicologia me ajudam a entender as pessoas e a criar soluções centradas no cliente.</p>
+        <div class="chips"><span class="chip mono"><b>●</b> São Paulo</span><span class="chip mono">Inglês B2</span><span class="chip mono">Cibersegurança · Cloud</span></div></div>
+    </div>
+    <div class="grid">
+      <div class="list2" id="list2"></div>
+      <div class="vcr">
+        <div class="screen" id="vscreen"></div>
+        <div class="transport mono"><button id="pv2">◀◀</button><button id="pl2b">▶ PLAY</button><button id="nx2">▶▶</button><span class="slot"><i id="pl2"></i></span><span class="lbl" id="pc2"></span></div>
+      </div>
+    </div>
+  </div></section>
+
+<script>
+const T = [
+  { p: '2024 →', tag: 'EXP', type: 'Experiência', t: 'Líder de equipe · Executivo de vendas', s: 'Verisure · São Paulo', d: 'Hoje lidero uma equipe de vendas: prospecção de negócios, treinamento de campo e gestão de KPIs para formar profissionais de alta performance. Antes, como executivo Júnior e Pleno, fiz vendas consultivas de alarmes inteligentes com demonstrações presenciais, além de instalação e manutenção de sistemas de segurança com IA e IoT.', img: ['/images/about/editorial/retrato-carro.webp'] },
+  { p: '2025 →', tag: 'FORM', type: 'Formação', t: 'Pós-graduação em Tecnologia da Informação', s: 'PUC-Campinas · lato sensu', d: 'Pós-graduação lato sensu em Tecnologia da Informação, iniciada em novembro de 2025.', img: [] },
+  { p: '2023 – 2025', tag: 'FORM', type: 'Formação', t: 'Desenvolvimento de Software Multiplataforma', s: 'Fatec Zona Sul', d: 'Projetos práticos de sistemas web, aplicativos mobile, automação de processos e soluções com IA, usando Java, JavaScript, Node.js, Spring Boot, Python, SQL, MySQL, AWS e ferramentas de IA generativa.', img: ['/images/about/editorial/fatec-formatura-solo.webp', '/images/about/editorial/formatura-familia.webp'] },
+  { p: '2022 – 2025', tag: 'CERT', type: 'Certificações', t: 'Certificações', s: 'AWS · Cisco · Fundação Bradesco · Centro Paula Souza', d: 'AWS Academy Cloud Foundations e Cloud Architecting, Inteligência Artificial Básico, JavaScript Essentials 1, Android no Android Studio, Java Básico, Linux Essentials, Security+ Network Infrastructure e Arduino.', img: [] },
+  { p: '2022 – 2023', tag: 'EXP', type: 'Experiência', t: 'Desenvolvedor Full Stack', s: 'DMANDA Services LLC · São Paulo', d: 'Participei da criação de sistemas de e-commerce: lojas virtuais próprias, presença em marketplaces como Mercado Livre e Shopee, aplicativos e sites de vendas e bancos de dados.', img: [] },
+  { p: '2014 – 2025', tag: 'FORM', type: 'Formação', t: 'Psicologia e Psicanálise', s: 'Universidade Anhanguera São Paulo', d: 'Estudos em comportamento humano que hoje aplico na experiência do cliente, nas vendas consultivas e no desenvolvimento de soluções centradas no usuário.', img: [] },
+  { p: '∞', tag: 'VIDA', type: 'Família', t: 'Família e valores', s: '', d: '(Texto a preencher pelo Jefferson.)', img: ['/images/about/editorial/familia-selfie.webp', '/images/about/editorial/pai-e-filha-camisa14.webp', '/images/about/editorial/esposa-retrato.webp'] },
+];
+const tc = (i) => { const s = 420 + i * 437; return `00:${String(Math.floor(s / 60) % 60).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`; };
+const PER = 4;
+
+/* ---------- Modelo 1 ---------- */
+let s1 = 0, ph1 = 0;
+function render1() {
+  const page = Math.floor(s1 / PER);
+  list1.innerHTML = T.slice(page * PER, page * PER + PER).map((x, k) => { const i = page * PER + k; return `<li><button class="row ${i === s1 ? 'on' : ''}" data-i="${i}"><span class="play">▶</span><span class="when mono">${x.p}</span><span><b>${x.t}</b><small>${x.s}</small></span><span class="tag mono">${x.tag}</span></button></li>`; }).join('');
+  list1.querySelectorAll('.row').forEach(b => b.onclick = () => { s1 = +b.dataset.i; ph1 = 0; render1(); });
+  pl1.style.width = `${((s1 + 1) / T.length) * 100}%`; pc1.textContent = `${String(s1 + 1).padStart(2, '0')} / ${String(T.length).padStart(2, '0')}`;
+  const x = T[s1];
+  const pic = x.img.length ? `<div><div class="vhs"><img src="${x.img[ph1]}" alt=""><span class="osd mono"><span><b>●</b> PLAY ▶</span><span>${tc(s1)}</span></span></div>${x.img.length > 1 ? `<div class="thumbs">${x.img.map((src, k) => `<button class="${k === ph1 ? 'on' : ''}" data-k="${k}"><img src="${src}" alt=""></button>`).join('')}</div>` : ''}</div>`
+    : `<div><div class="vhs empty"><span class="mono">SEM FOTO</span></div></div>`;
+  det1.innerHTML = `${pic}<div><p class="meta mono"><span class="badge">${x.type}</span>${x.p}</p><h3 class="display">${x.t}</h3>${x.s ? `<p class="where">${x.s}</p>` : ''}<p class="txt">${x.d}</p></div>`;
+  det1.querySelectorAll('.thumbs button').forEach(b => b.onclick = () => { ph1 = +b.dataset.k; render1(); });
+}
+pv1.onclick = () => { s1 = Math.max(0, s1 - 1); ph1 = 0; render1(); };
+nx1.onclick = () => { s1 = Math.min(T.length - 1, s1 + 1); ph1 = 0; render1(); };
+render1();
+
+/* ---------- Modelo 2 ---------- */
+let s2 = 0;
+function render2() {
+  list2.innerHTML = T.map((x, i) => `<button class="row2 ${i === s2 ? 'on' : ''}" data-i="${i}"><span class="cnt mono">${x.p.replace(' – ', '–')}</span><span><b>${x.t}</b><small>${x.s || 'Lado B'}</small></span></button>`).join('');
+  list2.querySelectorAll('.row2').forEach(b => b.onclick = () => { s2 = +b.dataset.i; render2(); });
+  const x = T[s2];
+  vscreen.innerHTML = `<div class="osdtop mono"><span><b>●</b> PLAY ▶ &nbsp;CH ${String(s2 + 1).padStart(2, '0')}</span><span>${tc(s2)}</span></div>
+    ${x.img.length ? `<div class="pic"><img src="${x.img[0]}" alt=""></div>` : `<div class="pic" style="display:grid;place-items:center;background:repeating-linear-gradient(90deg,#ddd 0 14%,#e8e080 14% 28%,#7fd0d6 28% 42%,#6fcf7a 42% 56%,#d06fd0 56% 70%,#d86a5a 70% 84%,#6a78d8 84%)"><span class="mono" style="background:#000;color:#fff;padding:4px 8px;font-size:10px;letter-spacing:.2em">SEM SINAL</span></div>`}
+    <div class="txt"><p class="k mono">${x.type} · ${x.p}</p><h3 class="display">${x.t}</h3>${x.s ? `<p class="where">${x.s}</p>` : ''}<p>${x.d}</p></div>`;
+  pl2.style.width = `${((s2 + 1) / T.length) * 100}%`; pc2.textContent = `${String(s2 + 1).padStart(2, '0')}/${String(T.length).padStart(2, '0')}`;
+}
+pv2.onclick = () => { s2 = Math.max(0, s2 - 1); render2(); };
+nx2.onclick = () => { s2 = Math.min(T.length - 1, s2 + 1); render2(); };
+pl2b.onclick = () => { s2 = (s2 + 1) % T.length; render2(); };
+render2();
+
+document.querySelectorAll('[data-m]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-m], section').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); document.getElementById(b.dataset.m).classList.add('on');
+});
+theme.onclick = () => { const d = document.body.classList.toggle('dark'); theme.textContent = d ? 'Claro' : 'Escuro'; };
+</script>
+</body>
+</html>

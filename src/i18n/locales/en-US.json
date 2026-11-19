@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Jefferson Moreira Evangelista · Software Developer",
-    "description": "Portfolio of Jefferson Moreira Evangelista, software developer in São Paulo: web, mobile, IoT and AI projects, journey, skills and contact."
+    "title": "Jefferson Moreira Evangelista · Forward Deployed Engineer (FDE)",
+    "description": "Portfolio of Jefferson Moreira Evangelista, Forward Deployed Engineer (FDE) in São Paulo: engineering side by side with clients, from the problem in the field to deploy. Web, mobile, IoT and AI projects."
   },
   "theme": {
     "dark": "Dark mode",
@@ -28,7 +28,10 @@
     "menu": "Menu",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "journey": "Journey",
+    "certifications": "Certifications",
+    "talk": "Let's talk"
   },
   "cv": {
     "download": "Download CV"
@@ -56,10 +59,29 @@
   },
   "hero": {
     "index": "Index",
-    "experience": "years as a full stack dev",
+    "experience": "years as a developer",
     "headline": "Solid systems. Purposeful web.",
     "seeProjects": "See projects",
-    "portraitAlt": "Jefferson in futuristic armor coding on a laptop, between holographic code screens",
+    "portraitAlt": "Jefferson in a red jacket and black beanie, in front of the word PORTFÓLIO in red",
+    "hi": "Hi, I'm",
+    "brand": "DEFT",
+    "role": "Forward Deployed Engineer (FDE)",
+    "intro": "I build web apps, APIs and automations that connect technology, data and artificial intelligence, turning ideas into digital products.",
+    "available": "Available for freelance",
+    "workMode": "São Paulo • On-site & Remote",
+    "tagline": "From the database to the screen.",
+    "insideLook": "Inside look",
+    "contactBar": "Contacts",
+    "whatsappMessage": "Hi Jefferson! I saw your portfolio and I'd like to talk about a project.",
+    "stats": {
+      "label": "Highlights",
+      "technologies": "Technologies",
+      "technologiesSub": "From front end to deploy.",
+      "years": "Years as a developer",
+      "yearsSub": "DMANDA · 2022–2023.",
+      "degree": "Fatec degree",
+      "degreeSub": "Multiplatform Software."
+    },
     "reels": "Spin the tape reels (double click rewinds the name)",
     "side": "SIDE A",
     "code": {
@@ -79,7 +101,14 @@
       "kicker": "Diploma · Technologist",
       "course": "Multiplatform Software Development",
       "caption": "Technologist degree in Multiplatform Software Development from Fatec Zona Sul"
-    }
+    },
+    "matrixHint": "↑ scroll: all code · ↓ back",
+    "cert": {
+      "title": "AWS · Cisco certifications",
+      "sub": "Cloud, AI, security and IoT."
+    },
+    "roleTag": "FORWARD DEPLOYED ENGINEER",
+    "roleFocus": "Web • APIs • AI • Deploy"
   },
   "about": {
     "title": "About",
@@ -97,7 +126,12 @@
     "animated": "animated version",
     "keyboardHint": "Use the arrow keys to browse the journey; the selected item is shown alongside.",
     "detail": "Details",
-    "morePhotos": "More photos"
+    "morePhotos": "More photos",
+    "whoLabel": "Who I am · what I deliver",
+    "goalLabel": "Where I am heading",
+    "noSignal": "NO SIGNAL",
+    "prev": "Previous item",
+    "next": "Next item"
   },
   "projects": {
     "title": "Projects",
@@ -110,7 +144,14 @@
     "result": "Final result",
     "technologies": "Technologies",
     "close": "Close",
-    "gallery": "Gallery"
+    "gallery": "Gallery",
+    "side": "Side {{side}}",
+    "discography": "Selected discography",
+    "count_one": "{{count}} LP",
+    "count_other": "{{count}} LPs",
+    "kinds": "Web, mobile & IoT",
+    "hint": "Hover to play",
+    "listen": "Play the case"
   },
   "skills": {
     "title": "Skills",
@@ -119,7 +160,9 @@
     "tabs": {
       "hard": "Technical",
       "soft": "Soft skills"
-    }
+    },
+    "fde": "Forward Deployed Engineer:",
+    "fdeLine": "from the client problem to deploy, with these tools."
   },
   "testimonials": {
     "title": "Testimonials",
@@ -173,5 +216,33 @@
     "prev": "Previous page",
     "next": "Next page",
     "goTo": "Go to page {{n}} of {{total}}"
+  },
+  "boot": {
+    "label": "Loading the portfolio",
+    "side": "SP · Side A",
+    "cassette": "PORTFOLIO · 2027 · FDE",
+    "skip": "Click to skip",
+    "loaded": "{{count}} technologies loaded",
+    "log": [
+      "react 19 · vite · typescript",
+      "tailwind · shadcn/ui",
+      "supabase · postgres · edge functions",
+      "rest apis · node · java",
+      "aws · cloud · iot",
+      "ai · automation"
+    ]
+  },
+  "cursor": {
+    "play": "PLAY ▶",
+    "view": "SEE ↓",
+    "chat": "CHAT ↗",
+    "rew": "REW ◀◀"
+  },
+  "visits": {
+    "label": "Visits",
+    "online": "{{count}} now",
+    "rew": "REW",
+    "demo": "demo",
+    "aria": "{{total}} visits · {{count}} people on the site now. Click to rewind the counter."
   }
 }

@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prévia · Projetos · Discografia</title>
+<style>
+  :root {
+    --red: #d42a20; --ease: cubic-bezier(.16,1,.3,1); --spring: cubic-bezier(.34,1.4,.64,1);
+    /* Claro: papel de encarte */
+    --paper: #f3efe7; --paper-2: #ebe5d9; --ink: #161512; --ink-2: #6a6356; --rule: rgb(22 21 18 / .14);
+    --sleeve: #fbf9f4; --shadow: 60 44 22;
+  }
+  body.dark {
+    --paper: #121210; --paper-2: #1a1916; --ink: #efebe4; --ink-2: #9a958c; --rule: rgb(239 235 228 / .14);
+    --sleeve: #1d1c19; --shadow: 0 0 0;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Inter, system-ui, sans-serif; color: var(--ink); background: var(--paper); transition: background .4s, color .4s; }
+  .mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+  .display { font-family: 'Archivo Black', 'Arial Black', sans-serif; letter-spacing: -.045em; text-transform: uppercase; line-height: .84; }
+  button, a { font: inherit; color: inherit; }
+
+  .bar { position: fixed; right: 16px; top: 16px; z-index: 30; display: flex; gap: 6px; padding: 5px; border-radius: 99px; background: #111; }
+  .bar button { border: 0; border-radius: 99px; padding: 7px 14px; background: #2a2a2a; color: #eee; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+  .bar button.on { background: var(--red); color: #fff; }
+
+  section { position: relative; min-height: 100vh; padding: clamp(48px, 7vh, 80px) clamp(20px, 6vw, 96px) 64px; overflow: hidden; }
+  /* Grão de papel bem leve + vinheta suave */
+  section::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .55;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .22 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  section::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 80% at 50% 0%, transparent 55%, rgb(var(--shadow) / .08)); }
+
+  /* ---------- Cabeçalho editorial ---------- */
+  .head { position: relative; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 24px; padding-bottom: 22px; border-bottom: 1px solid var(--rule); }
+  .eyebrow { display: flex; gap: 18px; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 14px; }
+  .eyebrow b { color: var(--red); font-weight: 600; }
+  .head h2 { font-size: clamp(48px, 7.4vw, 104px); }
+  .meta { display: grid; justify-items: end; gap: 12px; }
+  .meta p { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-2); text-align: right; line-height: 1.6; }
+  .meta p b { color: var(--ink); font-weight: 600; }
+  .pager { display: flex; gap: 8px; }
+  .pager button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--rule); background: none; cursor: pointer; transition: border-color .2s, background .2s, color .2s; }
+  .pager button:hover { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+
+  /* ---------- Prateleira ---------- */
+  .shelf { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(28px, 4vw, 64px); padding-top: clamp(36px, 5vh, 56px); }
+  .item { position: relative; display: grid; gap: 22px; }
+  .item::after { /* sombra de contato na prateleira */ content: ''; position: absolute; left: 6%; right: 6%; top: calc(var(--size) - 6px); height: 14px; border-radius: 50%;
+    background: rgb(var(--shadow) / .28); filter: blur(10px); z-index: -1; }
+
+  .record { --size: 100%; position: relative; display: block; aspect-ratio: 1; perspective: 1200px; cursor: pointer; text-decoration: none; outline: none; }
+  .record:focus-visible .sleeve { outline: 2px solid var(--red); outline-offset: 6px; }
+
+  /* Vinil: sulcos finos, reflexo cônico que gira, selo com dados do projeto */
+  .vinyl { position: absolute; top: 3%; left: 3%; width: 94%; aspect-ratio: 1; border-radius: 50%;
+    background:
+      radial-gradient(circle, transparent 0 32%, rgb(0 0 0 / .45) 32.4% 33%, transparent 33.4%),
+      repeating-radial-gradient(circle, #0d0d0c 0 1px, #191917 1.2px 2.2px);
+    box-shadow: 0 0 0 1px #000, 0 18px 40px -10px rgb(0 0 0 / .55);
+    transition: translate .9s var(--ease); }
+  .vinyl::before { content: ''; position: absolute; inset: 0; border-radius: 50%;
+    background: conic-gradient(from 20deg, transparent 0 8%, rgb(255 255 255 / .16) 12%, transparent 17% 55%, rgb(255 255 255 / .1) 60%, transparent 65%); }
+  .label { position: absolute; inset: 33.5%; border-radius: 50%; background: var(--red); display: grid; place-items: center; text-align: center; color: #fff;
+    box-shadow: inset 0 0 0 3px rgb(0 0 0 / .12); }
+  .label span { font-size: clamp(7px, .62vw, 9px); letter-spacing: .14em; line-height: 1.5; text-transform: uppercase; }
+  .label b { display: block; font: 900 clamp(10px, 1vw, 14px)/1 'Archivo Black', 'Arial Black', sans-serif; letter-spacing: -.02em; }
+  .label::after { content: ''; position: absolute; left: 50%; top: 50%; width: 7%; aspect-ratio: 1; border-radius: 50%; background: var(--paper); translate: -50% -50%; box-shadow: inset 0 1px 2px rgb(0 0 0 / .5); }
+  .spinner { position: absolute; inset: 0; border-radius: 50%; }
+
+  /* Capa (sleeve): papel impresso, foto em duotone, tipografia suíça */
+  .sleeve { position: absolute; inset: 0; z-index: 2; display: grid; grid-template-rows: auto 1fr auto; background: var(--sleeve); border-radius: 2px; overflow: hidden;
+    box-shadow: 0 1px 0 rgb(0 0 0 / .06), 0 2px 4px rgb(var(--shadow) / .12), 0 30px 50px -24px rgb(var(--shadow) / .55);
+    transform-origin: 0% 50%; transition: transform .9s var(--ease), box-shadow .9s var(--ease); }
+  .sleeve .top { display: flex; justify-content: space-between; padding: 12px 14px 10px; font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); }
+  .sleeve .top b { color: var(--ink); font-weight: 600; }
+  .cover { position: relative; margin: 0 14px; overflow: hidden; background: #222; }
+  .cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: grayscale(1) contrast(1.15) brightness(1.02); transition: filter .8s var(--ease), scale 1.2s var(--ease); }
+  /* duotone: sombras vermelhas, luzes papel */
+  .cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(var(--red), var(--red)); mix-blend-mode: screen; opacity: .0; transition: opacity .8s var(--ease); }
+  .cover::before { content: ''; position: absolute; inset: 0; z-index: 1; background: #f3e9d8; mix-blend-mode: multiply; opacity: .55; transition: opacity .8s var(--ease); }
+  .sleeve .bottom { display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 10px; padding: 12px 14px 14px; }
+  .sleeve h3 { font-size: clamp(22px, 2.3vw, 34px); }
+  .sleeve .side { font-size: 9.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); text-align: right; line-height: 1.6; }
+  /* Obi (faixa lateral de LP de colecionador) */
+  .sleeve { padding-left: 22px; }
+  .obi { position: absolute; z-index: 3; top: 0; bottom: 0; left: 0; width: 22px; background: var(--red); color: #fff; display: grid; place-items: center;
+    box-shadow: -2px 0 6px rgb(0 0 0 / .15), 2px 0 6px rgb(0 0 0 / .15); }
+  .obi span { writing-mode: vertical-rl; rotate: 180deg; font-size: 9px; letter-spacing: .28em; text-transform: uppercase; white-space: nowrap; }
+  /* reflexo do plástico protetor */
+  .sleeve::after { content: ''; position: absolute; inset: 0; z-index: 4; pointer-events: none;
+    background: linear-gradient(115deg, rgb(255 255 255 / .28) 0%, transparent 28%, transparent 72%, rgb(255 255 255 / .08) 100%); }
+
+  /* Hover / foco: a capa gira levemente em 3D, o disco desliza para fora e começa a girar */
+  .record:hover .sleeve, .record:focus-visible .sleeve { transform: rotateY(-14deg) translateX(-7%);
+    box-shadow: 0 1px 0 rgb(0 0 0 / .06), 0 40px 60px -26px rgb(var(--shadow) / .6); }
+  .record:hover .vinyl, .record:focus-visible .vinyl { translate: 38% 0; }
+  .record:hover .cover img, .record:focus-visible .cover img { filter: none; scale: 1.04; }
+  .record:hover .cover::before, .record:focus-visible .cover::before { opacity: 0; }
+  .record:hover .spinner, .record:focus-visible .spinner { animation: spin 1.8s cubic-bezier(.45,0,.2,1) infinite; }
+  .play { position: absolute; z-index: 5; left: 14px; bottom: calc(14px + 4.2em); }
+
+  /* Tracklist */
+  .tracks { display: grid; gap: 14px; }
+  .tracks .summary { font-size: 14px; line-height: 1.5; color: var(--ink-2); max-width: 36ch; }
+  .tl { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 22px; list-style: none; padding: 0; font-size: 11.5px; }
+  .tl li { display: flex; align-items: baseline; gap: 6px; }
+  .tl li i { font-style: normal; color: var(--red); width: 18px; }
+  .tl li em { flex: 1; border-bottom: 1px dotted var(--rule); translate: 0 -3px; }
+  .tl li small { color: var(--ink-2); font-size: 10px; }
+  .actions { display: flex; align-items: center; gap: 16px; padding-top: 14px; border-top: 1px solid var(--rule); }
+  .actions .listen { display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px 9px 10px; border-radius: 99px; background: var(--ink); color: var(--paper); text-decoration: none; font-size: 13px; font-weight: 600; cursor: pointer; border: 0; transition: background .2s; }
+  .actions .listen:hover { background: var(--red); color: #fff; }
+  .actions .listen span { width: 22px; height: 22px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; font-size: 9px; }
+  .actions .listen:hover span { background: #fff; color: var(--red); }
+  .actions a.lnk { font-size: 12.5px; font-weight: 600; text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+  .actions a.lnk.off { opacity: .3; pointer-events: none; border-bottom-style: dashed; }
+
+  @keyframes spin { to { rotate: 360deg; } }
+
+  /* Modal */
+  dialog { margin: auto; border: 0; border-radius: 4px; padding: 0; max-width: 680px; width: 92vw; background: var(--sleeve); color: var(--ink); box-shadow: 0 40px 100px rgb(0 0 0 / .45); }
+  dialog::backdrop { background: rgb(18 16 12 / .6); backdrop-filter: blur(4px); }
+  dialog img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+  dialog .in { padding: 24px; display: grid; gap: 10px; }
+  dialog h3 { font-size: 40px; }
+  dialog .eyebrow { margin: 0; }
+  dialog button { justify-self: start; border: 1px solid var(--ink); background: none; padding: 8px 16px; border-radius: 99px; cursor: pointer; }
+
+  @media (prefers-reduced-motion: reduce) { .record:hover .spinner { animation: none; } }
+  @media (max-width: 960px) { .shelf { grid-template-columns: 1fr; max-width: 440px; margin: 0 auto; } .head { grid-template-columns: 1fr; } .meta { justify-items: start; } .meta p { text-align: left; } }
+</style>
+</head>
+<body>
+  <div class="bar"><button id="tLight" class="on">Claro</button><button id="tDark">Escuro</button></div>
+
+  <section>
+    <header class="head">
+      <div>
+        <p class="eyebrow mono"><b>● Lado A</b><span>Discografia selecionada</span><span>2024 — 2025</span></p>
+        <h2 class="display">Projetos</h2>
+      </div>
+      <div class="meta">
+        <p class="mono"><b>03 LPs</b> · Web, mobile e IoT<br>Passe o mouse para tocar</p>
+        <div class="pager"><button aria-label="Anterior">←</button><button aria-label="Próximo">→</button></div>
+      </div>
+    </header>
+    <div class="shelf" id="shelf"></div>
+  </section>
+
+  <dialog id="dlg"><img id="dimg" alt="" /><div class="in"><p class="eyebrow mono" id="dkind"></p><h3 class="display" id="dtitle"></h3><p id="dsum"></p><button onclick="dlg.close()">Fechar</button></div></dialog>
+
+<script>
+const P = [
+  { t: 'SIAS App', y: '2024', k: 'App mobile', team: 'Equipe', s: 'App mobile que agiliza o agendamento de entrevistas entre RH e candidatos.', img: '/images/projects/sias-app.webp', tech: ['React Native','Expo','TypeScript','Supabase','Firebase','Gemini'], deploy: false, gh: true },
+  { t: 'Estação ESP32', y: '2024', k: 'IoT', team: 'Solo', s: 'Monitoramento de temperatura e umidade via MQTT, com alarme de incêndio.', img: '/images/projects/estacao-esp32.webp', tech: ['ESP32','C++','Arduino','MQTT'], deploy: true, gh: true },
+  { t: 'NutriSense', y: '2025', k: 'App Android', team: 'Equipe', s: 'App Android de acompanhamento nutricional com análise de fotos das refeições.', img: '/images/projects/nutrisense.webp', tech: ['Android','Java','Firebase'], deploy: false, gh: true },
+];
+const pad = (n) => String(n).padStart(3, '0');
+shelf.innerHTML = P.map((p, i) => `
+  <article class="item">
+    <a class="record" href="#" data-i="${i}" aria-label="Abrir estudo de caso: ${p.t}">
+      <span class="vinyl"><span class="spinner"></span><span class="label mono"><span><b>${p.t.split(' ')[0]}</b>${p.y} · 33⅓</span></span></span>
+      <span class="sleeve">
+        <span class="top mono"><span>DEFT—${pad(i + 1)}</span><b>${p.y}</b></span>
+        <span class="cover"><img src="${p.img}" alt=""></span>
+        <span class="bottom"><h3 class="display">${p.t}</h3><span class="side mono">Lado ${'ABC'[i]}<br>${p.team}</span></span>
+        <span class="obi mono"><span>${p.k} · ${p.y}</span></span>
+      </span>
+    </a>
+    <div class="tracks">
+      <p class="summary">${p.s}</p>
+      <ol class="tl mono">${p.tech.map((x, n) => `<li><i>${'AB'[n % 2]}${Math.floor(n / 2) + 1}</i>${x}</li>`).join('')}</ol>
+      <div class="actions">
+        <button class="listen" data-i="${i}"><span>▶</span>Ouvir o case</button>
+        <a href="#" class="lnk ${p.deploy ? '' : 'off'}">Deploy ↗</a>
+        <a href="#" class="lnk ${p.gh ? '' : 'off'}">GitHub ↗</a>
+      </div>
+    </div>
+  </article>`).join('');
+// sombra de contato acompanha a capa
+document.querySelectorAll('.item').forEach(el => el.style.setProperty('--size', el.querySelector('.record').offsetHeight + 'px'));
+document.querySelectorAll('[data-i]').forEach(a => a.onclick = (e) => {
+  e.preventDefault();
+  const p = P[a.dataset.i];
+  dimg.src = p.img; dtitle.textContent = p.t; dkind.textContent = `● ${p.k} · ${p.team} · ${p.y}`; dsum.textContent = p.s; dlg.showModal();
+});
+tLight.onclick = () => { document.body.classList.remove('dark'); tLight.classList.add('on'); tDark.classList.remove('on'); };
+tDark.onclick = () => { document.body.classList.add('dark'); tDark.classList.add('on'); tLight.classList.remove('on'); };
+</script>
+</body>
+</html>

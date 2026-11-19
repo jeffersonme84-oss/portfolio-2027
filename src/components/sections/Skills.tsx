@@ -49,7 +49,7 @@ export function Skills() {
   const desktop = useMediaQuery('(min-width: 1024px)')
   const tablet = useMediaQuery('(min-width: 640px)')
   // Uma tela por seção: todos os grupos no desktop; menos por página em telas menores.
-  const groups = usePager(hardSkillGroups, desktop ? 8 : tablet ? 4 : 2)
+  const groups = usePager(hardSkillGroups, desktop ? 9 : tablet ? 4 : 3)
   const soft = usePager(softSkills, desktop ? 6 : tablet ? 4 : 3)
   const pager = tab === 'hard' ? groups : soft
 
@@ -64,9 +64,16 @@ export function Skills() {
       aria-labelledby="habilidades-titulo"
       className={cn(screenSection, 'mx-auto w-full max-w-[1200px] px-4 md:px-6')}
     >
-      <SectionHeading id="habilidades-titulo">{t('skills.title')}</SectionHeading>
+      <div className="flex flex-wrap items-end justify-between gap-x-8 gap-y-2">
+        <SectionHeading id="habilidades-titulo">{t('skills.title')}</SectionHeading>
+        {/* Cargo em uma linha: Forward Deployed Engineer */}
+        <p className="mb-6 max-w-sm text-sm text-muted-foreground md:mb-8 md:text-right">
+          <strong className="font-semibold text-foreground">{t('skills.fde')}</strong>{' '}
+          {t('skills.fdeLine')}
+        </p>
+      </div>
 
-      <div className="mb-5 flex flex-wrap items-center justify-between gap-4 md:mb-6">
+      <div className="mb-4 flex flex-wrap items-center justify-between gap-4 md:mb-5">
         <div
           role="tablist"
           aria-label={t('skills.title')}
@@ -108,37 +115,63 @@ export function Skills() {
 
       <div id="habilidades-painel" role="tabpanel" aria-labelledby={`habilidades-aba-${tab}`}>
         {tab === 'hard' ? (
-          <div className="grid gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
-            {groups.items.map((group) => (
-              <div key={group.id}>
-                <h3 className="mb-2 text-center text-sm font-semibold">{l(group.title)}</h3>
-                {/* Prateleira: cada skill é a lombada de uma fita K7 */}
-                <ul className="flex min-h-32 flex-wrap items-end justify-center gap-1.5 border-b-4 border-foreground pb-0.5">
-                  {group.skills.map((key) => {
-                    const skill = skills[key]
-                    const Icon = skill.icon
-                    const name = typeof skill.name === 'string' ? skill.name : l(skill.name)
-                    const brand = 'color' in skill ? skill.color : undefined
-                    return (
-                      <li
-                        key={key}
-                        style={{ '--brand': brand ?? 'currentColor' } as CSSProperties}
-                        className="group flex h-28 w-9 origin-bottom flex-col items-center gap-2 rounded-t-sm border-2 border-b-0 border-foreground bg-background py-1.5 transition-transform duration-200 hover:-translate-y-1 hover:-rotate-3 motion-reduce:transition-none motion-reduce:hover:transform-none"
-                      >
-                        <Icon
-                          className="size-4 shrink-0 transition-colors group-hover:text-[var(--brand)]"
-                          aria-hidden
-                        />
-                        <span className="flex-1 overflow-hidden font-mono text-[9px] font-semibold tracking-[0.1em] whitespace-nowrap uppercase [writing-mode:vertical-rl]">
+          // Todas as frentes de uma vez: cada cartão é um "canal" com número, título, para que
+          // serve no trabalho de FDE e as habilidades (ícone + nome, lidos na horizontal).
+          <ul className="grid gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+            {groups.items.map((group) => {
+              const number = String(hardSkillGroups.indexOf(group) + 1).padStart(2, '0')
+              return (
+                <li
+                  key={group.id}
+                  className="group/card relative rounded-xl border border-border bg-background px-4 py-3 transition-[border-color,translate,box-shadow] duration-300 hover:border-foreground hover:shadow-[4px_4px_0_var(--foreground)] motion-safe:hover:-translate-x-0.5 motion-safe:hover:-translate-y-0.5"
+                >
+                  <div className="flex items-center gap-2.5">
+                    {/* Número em visor de contador (detalhe retro) */}
+                    <span
+                      aria-hidden
+                      className="rounded-[4px] bg-[#141412] px-1.5 py-0.5 font-mono text-[10.5px] font-bold tracking-[0.08em] text-[#f2efe9] tabular-nums"
+                    >
+                      {number}
+                    </span>
+                    <h3 className="font-display text-base leading-none font-black tracking-[-0.02em] uppercase">
+                      {l(group.title)}
+                    </h3>
+                    {/* Medidor VU: as barras sobem com o mouse no cartão */}
+                    <span aria-hidden className="skill-vu ml-auto">
+                      <i />
+                      <i />
+                      <i />
+                      <i />
+                    </span>
+                  </div>
+                  <p className="mt-1.5 mb-2.5 border-b border-dashed border-border pb-2 font-mono text-[10px] tracking-[0.14em] text-muted-foreground uppercase">
+                    {l(group.role)}
+                  </p>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {group.skills.map((key) => {
+                      const skill = skills[key]
+                      const Icon = skill.icon
+                      const name = typeof skill.name === 'string' ? skill.name : l(skill.name)
+                      const brand = 'color' in skill ? skill.color : undefined
+                      return (
+                        <li
+                          key={key}
+                          style={{ '--brand': brand ?? 'currentColor' } as CSSProperties}
+                          className="group/skill inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[12.5px] leading-none transition-colors hover:border-foreground"
+                        >
+                          <Icon
+                            aria-hidden
+                            className="size-3.5 shrink-0 transition-colors group-hover/card:text-[var(--brand)]"
+                          />
                           {name}
-                        </span>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </div>
-            ))}
-          </div>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </li>
+              )
+            })}
+          </ul>
         ) : (
           <ul className="grid border-t border-l border-border sm:grid-cols-2 lg:grid-cols-3">
             {soft.items.map((skill, position) => {

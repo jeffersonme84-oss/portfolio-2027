@@ -4,6 +4,8 @@ import { SiWhatsapp } from 'react-icons/si'
 import { ExternalLink } from '@/components/layout/ExternalLink'
 import { socialIcons } from '@/components/layout/socialIcons'
 import { site } from '@/content/site'
+import { useScrollY } from '@/hooks/useScrollY'
+import { cn } from '@/lib/utils'
 
 const buttonClass =
   'flex size-11 items-center justify-center rounded-full border border-border bg-background text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background'
@@ -17,11 +19,19 @@ type FloatingContactsProps = {
 export function FloatingContacts({ children }: FloatingContactsProps) {
   const { t } = useTranslation()
   const LinkedIn = socialIcons.linkedin
+  // Enquanto a Home está na tela, a barra de contatos dela já está visível (e estes botões
+  // cobririam os números e a barra): aparecem quando a Home termina de passar.
+  const scrollY = useScrollY()
+  const heroHeight = document.getElementById('inicio')?.offsetHeight ?? 0
+  const atTop = scrollY < Math.max(80, heroHeight - window.innerHeight + 260)
 
   return (
     <aside
       aria-label={t('floating.label')}
-      className="fixed right-4 bottom-4 z-30 flex flex-col items-center gap-2"
+      className={cn(
+        'fixed right-4 bottom-4 z-30 flex flex-col items-center gap-2 transition-opacity duration-300',
+        atTop && 'invisible opacity-0',
+      )}
     >
       {children}
       {site.social.linkedin && (

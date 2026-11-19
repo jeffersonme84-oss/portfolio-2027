@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prévia · Carregamento DEFT.</title>
+<style>
+  :root { --red: #d42a20; --red2: #ff4a3d; --ink: #0b0b09; --paper: #edeae6; --ease: cubic-bezier(.16,1,.3,1); --io: cubic-bezier(.76,0,.24,1); }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { height: 100%; }
+  body { background: #0d0e09; overflow: hidden; font-family: Inter, system-ui, sans-serif; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace; }
+
+  /* Home por trás (a arte do Jefferson, sem alterações) */
+  .home { position: fixed; inset: 0; display: grid; place-items: center; background: #0d0e09; }
+  .home img { width: 100vw; height: auto; max-height: 100vh; object-fit: contain; }
+  .home.in img { animation: home-in 1.4s var(--ease) both; }
+  @keyframes home-in { from { scale: 1.12; filter: brightness(2) saturate(0); } }
+
+  /* ============ CARREGAMENTO ============ */
+  .boot { position: fixed; inset: 0; z-index: 10; background: var(--ink); color: var(--paper); overflow: hidden; transform-origin: 50% 50%; }
+  /* Granulado de filme (SVG) e scanlines, discretos */
+  .boot::before { content: ''; position: absolute; inset: -50%; opacity: .07; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain .5s steps(4) infinite; }
+  .boot::after { content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgb(255 255 255 / .025) 0 1px, transparent 1px 3px); }
+  @keyframes grain { 25% { translate: -4% 3%; } 50% { translate: 3% -5%; } 75% { translate: -2% -3%; } 100% { translate: 4% 2%; } }
+
+  /* HUD dos cantos (estilo câmera VHS) */
+  .hud { position: absolute; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: #8b8b86; }
+  .hud b { color: var(--paper); font-weight: 500; }
+  .tl { left: 32px; top: 28px; } .tr { right: 32px; top: 28px; text-align: right; }
+  .bl { left: 32px; bottom: 28px; } .br { right: 32px; bottom: 24px; text-align: right; }
+  .rec { display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--red2); animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* Centro: fita K7 */
+  .center { position: absolute; left: 50%; top: 46%; translate: -50% -50%; display: grid; justify-items: center; gap: 34px; }
+  .tape { width: min(440px, 78vw); opacity: 0; translate: 0 24px; rotate: -4deg; animation: tape-in .9s var(--ease) .1s forwards; filter: drop-shadow(0 30px 60px rgb(212 42 32 / .18)); }
+  @keyframes tape-in { to { opacity: 1; translate: 0 0; rotate: 0deg; } }
+  .reel { transform-box: fill-box; transform-origin: center; }
+
+  /* Nome com "decodificação" de caracteres */
+  .name { font: 900 clamp(72px, 13vw, 190px)/.82 'Archivo Black', 'Arial Black', system-ui, sans-serif; letter-spacing: -.055em; display: flex; }
+  .name span { display: inline-block; min-width: .5em; text-align: center; transition: color .2s; }
+  .name span.scr { color: #3b3b37; }
+  .name .dot { color: var(--red); }
+  .tag { font-size: 12px; letter-spacing: .32em; text-transform: uppercase; color: #8b8b86; margin-top: -14px; }
+
+  /* Log de build ao vivo */
+  .log { position: absolute; left: 32px; bottom: 64px; font-size: 12px; line-height: 1.75; color: #6f6f6a; }
+  .log div { animation: log-in .35s var(--ease) both; }
+  .log .ok { color: #2ecc71; } .log b { color: var(--paper); font-weight: 500; }
+  @keyframes log-in { from { opacity: 0; translate: -10px 0; } }
+
+  /* Contador odômetro */
+  .odo { display: flex; align-items: flex-end; gap: 6px; }
+  .digits { display: flex; font: 800 clamp(56px, 7vw, 96px)/1 'Archivo Black', 'Arial Black', sans-serif; color: var(--red); letter-spacing: -.04em; }
+  .col { height: 1.15em; overflow: hidden; -webkit-mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent); mask-image: linear-gradient(transparent, #000 18%, #000 82%, transparent); }
+  .col i { display: block; font-style: normal; transition: translate .45s var(--ease); }
+  .col:last-child i { transition-duration: .12s; }
+  .col i span { display: block; height: 1.15em; line-height: 1.15em; }
+  .pct { font-size: 18px; color: var(--red); padding-bottom: 10px; }
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgb(255 255 255 / .06); }
+  .bar i { display: block; height: 100%; width: 0; background: var(--red); box-shadow: 0 0 12px var(--red); }
+
+  /* Final: glitch de tracking → desliga como TV de tubo e revela a Home */
+  .boot.glitch .center, .boot.glitch .name { animation: rgb .32s steps(2) 2; }
+  .boot.glitch .slice { display: block; }
+  .slice { display: none; position: absolute; left: 0; right: 0; height: 9%; background: inherit; backdrop-filter: invert(1) hue-rotate(160deg); mix-blend-mode: difference; animation: slice .32s steps(3) 2; }
+  @keyframes rgb { 0% { text-shadow: 6px 0 var(--red2), -6px 0 #19e3ff; translate: -50% -50%; } 50% { text-shadow: -4px 0 var(--red2), 4px 0 #19e3ff; translate: calc(-50% + 8px) -50%; } 100% { text-shadow: none; } }
+  @keyframes slice { 0% { translate: -30px 0; } 50% { translate: 40px 0; } 100% { translate: 0 0; } }
+  .boot.off { animation: crt-off .75s var(--io) forwards; }
+  @keyframes crt-off {
+    0%   { transform: scale(1, 1); filter: brightness(1); }
+    45%  { transform: scale(1, .004); filter: brightness(4); background: #fff; }
+    75%  { transform: scale(.25, .004); filter: brightness(6); background: var(--red); }
+    100% { transform: scale(0, 0); filter: brightness(8); background: var(--red); }
+  }
+
+  /* Painel da prévia */
+  .panel { position: fixed; right: 16px; top: 50%; translate: 0 -50%; z-index: 20; display: grid; gap: 6px; padding: 6px; border-radius: 12px; background: rgb(20 20 20 / .9); }
+  .panel button { cursor: pointer; border: 0; border-radius: 8px; padding: 8px 12px; background: var(--red); color: #fff; font: 600 13px Inter, system-ui, sans-serif; }
+  .panel button.ghost { background: #2a2a2a; }
+
+  @media (max-width: 700px) {
+    .hud.tr, .log { display: none; }
+    .center { top: 42%; gap: 26px; }
+  }
+</style>
+</head>
+<body>
+  <div class="home" id="home"><img id="art" src="/images/hero/home-deft.jpg" alt="Home" /></div>
+
+  <div class="boot mono" id="boot" aria-hidden="true"></div>
+
+  <div class="panel">
+    <button id="replay">▶ Rever</button>
+    <button id="slow" class="ghost">Câmera lenta</button>
+    <button id="theme" class="ghost">Home clara</button>
+  </div>
+
+<script>
+const TEMPLATE = `
+  <div class="hud tl"><span class="rec"></span><b>REC</b> &nbsp;SP · LADO A</div>
+  <div class="hud tr">São Paulo, BR — <b id="clock">00:00</b><br><span id="tc">00:00:00:00</span></div>
+  <div class="center">
+    <svg class="tape" viewBox="0 0 440 280" fill="none">
+      <rect x="2" y="2" width="436" height="276" rx="18" fill="#141412" stroke="#2c2c28" stroke-width="2"/>
+      <rect x="28" y="26" width="384" height="70" rx="6" fill="#edeae6"/>
+      <rect x="28" y="26" width="384" height="14" fill="#d42a20"/>
+      <text x="40" y="66" font-family="Arial Black, sans-serif" font-size="22" fill="#111" letter-spacing="-1">DEFT.</text>
+      <text x="122" y="66" font-family="Consolas, monospace" font-size="11" fill="#555" letter-spacing="1.5">PORTFÓLIO · 2027 · FULL STACK</text>
+      <text x="40" y="86" font-family="Consolas, monospace" font-size="10" fill="#888" letter-spacing="1.5">JEFFERSON MOREIRA EVANGELISTA</text>
+      <rect x="92" y="112" width="256" height="100" rx="50" fill="#0b0b09" stroke="#2c2c28"/>
+      <circle id="tapeL" cx="142" cy="162" r="40" fill="#2a1a16"/>
+      <circle id="tapeR" cx="298" cy="162" r="18" fill="#2a1a16"/>
+      <g class="reel" id="reelL"><circle cx="142" cy="162" r="16" fill="#edeae6"/><circle cx="142" cy="162" r="6" fill="#0b0b09"/>
+        <path d="M142 146v8M142 170v8M126 162h8M150 162h8" stroke="#0b0b09" stroke-width="3"/></g>
+      <g class="reel" id="reelR"><circle cx="298" cy="162" r="16" fill="#edeae6"/><circle cx="298" cy="162" r="6" fill="#0b0b09"/>
+        <path d="M298 146v8M298 170v8M282 162h8M306 162h8" stroke="#0b0b09" stroke-width="3"/></g>
+      <path d="M118 236h204l22 40H96z" fill="#1c1c19" stroke="#2c2c28"/>
+      <circle cx="140" cy="256" r="5" fill="#0b0b09"/><circle cx="300" cy="256" r="5" fill="#0b0b09"/>
+      <circle cx="22" cy="22" r="4" fill="#2c2c28"/><circle cx="418" cy="22" r="4" fill="#2c2c28"/>
+      <circle cx="22" cy="258" r="4" fill="#2c2c28"/><circle cx="418" cy="258" r="4" fill="#2c2c28"/>
+    </svg>
+    <div class="name" id="name"></div>
+    <div class="tag">Do banco de dados até a tela</div>
+  </div>
+  <div class="log" id="log"></div>
+  <div class="hud bl">$ deft run portfolio --side A</div>
+  <div class="hud br"><div class="odo"><div class="digits" id="digits"></div><span class="pct">%</span></div></div>
+  <div class="bar"><i id="bar"></i></div>
+  <div class="slice" style="top:22%"></div><div class="slice" style="top:58%"></div><div class="slice" style="top:81%"></div>`;
+
+const LOG = [
+  ['ok', 'react 19 · vite · typescript'],
+  ['ok', 'tailwind · shadcn/ui'],
+  ['ok', 'supabase · postgres · edge functions'],
+  ['ok', 'apis rest · node · java'],
+  ['ok', 'aws · cloud · iot'],
+  ['ok', 'ia · automações'],
+  ['', '<b>30</b> tecnologias carregadas'],
+  ['', '▶ <b>PLAY</b>'],
+];
+const WORD = 'DEFT';
+const GLYPHS = '01<>/{}[]#$%&*+=;:ABCDEFGHJKLMNPQRSTUVWXYZ';
+let speed = 1, runId = 0;
+
+function run() {
+  const id = ++runId;
+  const boot = document.getElementById('boot');
+  const home = document.getElementById('home');
+  boot.className = 'boot mono'; boot.style.display = ''; boot.innerHTML = TEMPLATE;
+  home.classList.remove('in');
+
+  const $ = (s) => boot.querySelector(s);
+  const digits = $('#digits'), bar = $('#bar'), log = $('#log'), name = $('#name');
+  // odômetro de 3 dígitos
+  digits.innerHTML = [0,1,2].map(() => `<span class="col"><i>${[...'0123456789'].map(n => `<span>${n}</span>`).join('')}</i></span>`).join('');
+  const cols = [...digits.querySelectorAll('i')];
+  // nome
+  name.innerHTML = [...WORD].map(() => '<span class="scr">0</span>').join('') + '<span class="dot" style="opacity:0">.</span>';
+  const letters = [...name.querySelectorAll('span:not(.dot)')];
+  const dot = name.querySelector('.dot');
+
+  const clock = $('#clock'), tc = $('#tc');
+  clock.textContent = new Intl.DateTimeFormat('pt-BR', { timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' }).format(new Date());
+
+  const DUR = 2600 * speed;
+  const t0 = performance.now();
+  let shown = 0, lastScr = 0;
+
+  function frame(now) {
+    if (id !== runId) return;
+    const raw = Math.min(1, (now - t0) / DUR);
+    // progresso "humano": acelera, hesita perto de 70%, dispara no fim
+    const p = raw < .55 ? .7 * (raw / .55) ** .8 : raw < .75 ? .7 + .06 * ((raw - .55) / .2) : .76 + .24 * (1 - (1 - (raw - .75) / .25) ** 3);
+    // o número sobe em passos (não a cada quadro), para o odômetro "rolar" com nitidez
+    const v = raw >= 1 ? 100 : Math.min(99, Math.floor(p * 100 / 3) * 3);
+    const s = String(v).padStart(3, '0');
+    cols.forEach((c, i) => c.style.translate = `0 ${-1.15 * +s[i]}em`);
+    bar.style.width = v + '%';
+
+    // carretéis: a fita passa do carretel esquerdo para o direito
+    $('#tapeL').setAttribute('r', 18 + 22 * (1 - p));
+    $('#tapeR').setAttribute('r', 18 + 22 * p);
+    const ang = (now - t0) * .5 / speed;
+    $('#reelL').style.transform = `rotate(${ang}deg)`;
+    $('#reelR').style.transform = `rotate(${ang * 1.4}deg)`;
+
+    // timecode
+    const ms = now - t0, f = Math.floor(ms / 33) % 30, sec = Math.floor(ms / 1000);
+    tc.textContent = `00:00:${String(sec).padStart(2, '0')}:${String(f).padStart(2, '0')}`;
+
+    // log de build
+    const want = Math.min(LOG.length, Math.floor(p * LOG.length + .3));
+    while (shown < want) {
+      const [cls, txt] = LOG[shown++];
+      const row = document.createElement('div');
+      row.innerHTML = `<span class="${cls}">${cls ? '✓' : '›'}</span> ${txt}`;
+      log.appendChild(row);
+      if (log.children.length > 5) log.firstChild.remove();
+    }
+
+    // nome se decodifica letra a letra
+    if (now - lastScr > 55) {
+      lastScr = now;
+      letters.forEach((el, i) => {
+        if (p > .25 + i * .17) { el.textContent = WORD[i]; el.classList.remove('scr'); }
+        else el.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+      });
+      if (p > .95) dot.style.opacity = 1;
+    }
+
+    if (raw < 1) requestAnimationFrame(frame);
+    else finish();
+  }
+
+  function finish() {
+    setTimeout(() => { if (id !== runId) return; boot.classList.add('glitch'); }, 260 * speed);
+    setTimeout(() => {
+      if (id !== runId) return;
+      boot.classList.add('off');
+      home.classList.add('in');
+    }, 900 * speed);
+    setTimeout(() => { if (id === runId) boot.style.display = 'none'; }, 1700 * speed);
+  }
+  requestAnimationFrame(frame);
+}
+
+document.getElementById('replay').onclick = () => { speed = 1; run(); };
+document.getElementById('slow').onclick = () => { speed = 2.5; run(); };
+document.getElementById('theme').onclick = (e) => {
+  const img = document.getElementById('art');
+  const light = img.src.includes('light');
+  img.src = light ? '/images/hero/home-deft.jpg' : '/images/hero/home-deft-light.jpg';
+  document.getElementById('home').style.background = light ? '#0d0e09' : '#f2f4f9';
+  e.currentTarget.textContent = light ? 'Home clara' : 'Home escura';
+  speed = 1; run();
+};
+run();
+</script>
+</body>
+</html>

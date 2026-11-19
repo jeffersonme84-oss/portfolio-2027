@@ -145,64 +145,66 @@ export type SkillKey = keyof typeof skills
 export type SkillGroup = {
   id: string
   title: Localized
+  // Para que serve no trabalho de Forward Deployed Engineer (uma linha curta).
+  role: Localized
   skills: SkillKey[]
 }
 
+// 9 frentes, todas visíveis de uma vez na seção Habilidades.
 export const hardSkillGroups: SkillGroup[] = [
   {
     id: 'frontend',
     title: { 'pt-BR': 'Frontend', 'en-US': 'Frontend' },
+    role: { 'pt-BR': 'Telas que o cliente usa', 'en-US': 'Screens the client uses' },
     skills: ['react', 'javascript', 'typescript', 'vite', 'tailwind', 'shadcn'],
   },
   {
     id: 'backend',
-    title: { 'pt-BR': 'Backend', 'en-US': 'Backend' },
+    title: { 'pt-BR': 'Backend e APIs', 'en-US': 'Backend & APIs' },
+    role: { 'pt-BR': 'Integração com os sistemas', 'en-US': 'Integration with systems' },
     skills: ['java', 'springBoot', 'node', 'python', 'restApi'],
   },
   {
     id: 'database',
-    title: { 'pt-BR': 'Banco de dados', 'en-US': 'Databases' },
+    title: { 'pt-BR': 'Dados', 'en-US': 'Data' },
+    role: { 'pt-BR': 'Dados da operação', 'en-US': 'Operational data' },
     skills: ['mysql', 'postgresql', 'supabase', 'firebase'],
   },
   {
     id: 'cloud',
-    title: { 'pt-BR': 'Cloud e infraestrutura', 'en-US': 'Cloud & infrastructure' },
-    skills: ['aws', 'vercel', 'linux'],
+    title: { 'pt-BR': 'Cloud e deploy', 'en-US': 'Cloud & deploy' },
+    role: { 'pt-BR': 'Em produção e rodando', 'en-US': 'Live in production' },
+    skills: ['aws', 'vercel', 'linux', 'git', 'github'],
   },
   {
-    id: 'security',
-    title: { 'pt-BR': 'Cibersegurança', 'en-US': 'Cybersecurity' },
-    skills: ['cybersecurity', 'networkSecurity', 'linux', 'electronicSecurity'],
-  },
-  {
-    id: 'design',
-    title: { 'pt-BR': 'Design e UI/UX', 'en-US': 'Design & UI/UX' },
-    skills: ['figma', 'uiux', 'responsive', 'accessibility'],
+    id: 'ai',
+    title: { 'pt-BR': 'IA aplicada', 'en-US': 'Applied AI' },
+    role: { 'pt-BR': 'IA em fluxos reais', 'en-US': 'AI in real workflows' },
+    skills: ['generativeAi', 'gemini', 'python'],
   },
   {
     id: 'mobile-iot',
     title: { 'pt-BR': 'Mobile e IoT', 'en-US': 'Mobile & IoT' },
+    role: { 'pt-BR': 'Apps e sensores em campo', 'en-US': 'Apps and sensors in the field' },
     skills: ['reactNative', 'android', 'expo', 'esp32', 'arduino', 'mqtt'],
   },
   {
-    id: 'ai',
-    title: { 'pt-BR': 'Inteligência artificial', 'en-US': 'Artificial intelligence' },
-    skills: ['generativeAi', 'gemini', 'python'],
+    id: 'security',
+    title: { 'pt-BR': 'Segurança', 'en-US': 'Security' },
+    role: { 'pt-BR': 'Seguro desde o 1º deploy', 'en-US': 'Secure from the first deploy' },
+    skills: ['cybersecurity', 'networkSecurity', 'electronicSecurity'],
+  },
+  {
+    id: 'design',
+    title: { 'pt-BR': 'Produto e UX', 'en-US': 'Product & UX' },
+    role: { 'pt-BR': 'Entender antes de construir', 'en-US': 'Understand before building' },
+    skills: ['figma', 'uiux', 'responsive', 'accessibility'],
   },
   {
     id: 'business',
-    title: { 'pt-BR': 'Comercial e marketing', 'en-US': 'Sales & marketing' },
-    skills: ['sales', 'kpis', 'ecommerce', 'campaigns'],
-  },
-  {
-    id: 'tools',
-    title: { 'pt-BR': 'Ferramentas', 'en-US': 'Tools' },
-    skills: ['git', 'github'],
-  },
-  {
-    id: 'languages',
-    title: { 'pt-BR': 'Idiomas', 'en-US': 'Languages' },
-    skills: ['portuguese', 'english'],
+    title: { 'pt-BR': 'Cliente e negócio', 'en-US': 'Client & business' },
+    role: { 'pt-BR': 'A língua do negócio', 'en-US': 'Speaking business' },
+    skills: ['sales', 'kpis', 'ecommerce', 'campaigns', 'portuguese', 'english'],
   },
 ]
 

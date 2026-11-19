@@ -9,12 +9,14 @@ export const THEME_STORAGE_KEY = 'theme'
 const media = window.matchMedia('(prefers-color-scheme: dark)')
 const listeners = new Set<() => void>()
 
+// Sem escolha salva, o site abre no escuro (combina com a Home, que é sempre escura).
+// "Seguir o sistema" passa a ser salvo como 'system'.
 function readPreference(): ThemePreference {
   try {
     const stored = localStorage.getItem(THEME_STORAGE_KEY)
-    return stored === 'light' || stored === 'dark' ? stored : 'system'
+    return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'dark'
   } catch {
-    return 'system'
+    return 'dark'
   }
 }
 
@@ -50,8 +52,7 @@ export function getResolvedTheme(): ResolvedTheme {
 export function setThemePreference(next: ThemePreference) {
   preference = next
   try {
-    if (next === 'system') localStorage.removeItem(THEME_STORAGE_KEY)
-    else localStorage.setItem(THEME_STORAGE_KEY, next)
+    localStorage.setItem(THEME_STORAGE_KEY, next)
   } catch {
     // Sem storage (modo privado): o tema vale só para esta sessão.
   }

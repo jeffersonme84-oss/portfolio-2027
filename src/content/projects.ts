@@ -35,13 +35,15 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: 'sias-app',
-    title: { 'pt-BR': 'SIAS App', 'en-US': 'SIAS App' },
+    title: { 'pt-BR': 'SIAS', 'en-US': 'SIAS' },
+    // Site de empregos com app (informado pelo Jefferson, 2026-11-19).
     summary: {
-      'pt-BR': 'App mobile que agiliza o agendamento de entrevistas entre RH e candidatos.',
-      'en-US': 'Mobile app that streamlines interview scheduling between HR and candidates.',
+      'pt-BR':
+        'Plataforma de empregos, site e app: vagas, cursos, chat com IA e plano de carreira.',
+      'en-US': 'Job platform, web and app: openings, courses, AI chat and career planning.',
     },
     year: '2024',
-    kind: { 'pt-BR': 'App mobile · equipe', 'en-US': 'Mobile app · team' },
+    kind: { 'pt-BR': 'Site + app · equipe', 'en-US': 'Web + app · team' },
     cover: '/images/projects/sias-app.webp',
     // Telas reais do app (github.com/JeffersonEvangelista/SiasApp, pasta img/).
     gallery: [
@@ -117,9 +119,9 @@ export const projects: Project[] = [
       },
       result: {
         'pt-BR':
-          'O RH envia solicitações detalhadas (data, horário e local) e o candidato acompanha, aceita ou recusa cada uma. Um chatbot responde dúvidas frequentes e tem um modo de treino com perguntas simuladas de entrevista.',
+          'Uma plataforma de empregos com site e app: o candidato vê vagas, faz cursos, conversa com uma IA e monta o seu plano de carreira. O RH envia solicitações de entrevista detalhadas (data, horário e local) e o candidato acompanha, aceita ou recusa cada uma. O chatbot também responde dúvidas frequentes e tem um modo de treino com perguntas simuladas de entrevista.',
         'en-US':
-          'HR sends detailed requests (date, time and place) and candidates track, accept or decline each one. A chatbot answers frequent questions and offers a training mode with simulated interview questions.',
+          'A job platform with a website and an app: candidates browse openings, take courses, chat with an AI and build their career plan. HR sends detailed interview requests (date, time and place) and candidates track, accept or decline each one. The chatbot also answers frequent questions and offers a training mode with simulated interview questions.',
       },
     },
   },

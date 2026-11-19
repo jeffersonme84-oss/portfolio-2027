@@ -32,20 +32,29 @@ const loremLong: Localized = {
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.',
 }
 
-// Biografia e valores (topo da seção Sobre), a partir da seção "Resumo" do LinkedIn.
+// Topo da seção Sobre, escrito para recrutadores (pedido do Jefferson, 2026-11-19): responde
+// quem é ele, o que entrega e onde quer chegar. Fatos do LinkedIn.
 export const about = {
+  // Quem sou + o que entrego
   bio: {
     'pt-BR':
-      'Sou formado em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul e apaixonado por tecnologia, programação e inteligência artificial. Desenvolvo sistemas web, aplicativos mobile, automações e soluções com IA usando Java, JavaScript, Node.js, Spring Boot, Python, SQL e AWS, com base em cibersegurança, computação em nuvem e integração de sistemas.',
+      'Sou Jefferson, Forward Deployed Engineer em São Paulo, formado em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul. Trabalho entre o cliente e o código: entendo o problema de quem vai usar, construo a solução com Java, Node.js, Python, SQL, AWS e IA e coloco em produção. Da liderança de vendas e da psicologia trago o que falta em muita equipe técnica: escuta, negociação e visão de negócio.',
     'en-US':
-      'I hold a degree in Multiplatform Software Development from Fatec Zona Sul and I am passionate about technology, programming and artificial intelligence. I build web systems, mobile apps, automations and AI-based solutions with Java, JavaScript, Node.js, Spring Boot, Python, SQL and AWS, backed by cybersecurity, cloud computing and systems integration.',
+      "I'm Jefferson, a Forward Deployed Engineer in São Paulo, with a degree in Multiplatform Software Development from Fatec Zona Sul. I work between the client and the code: I understand the problem of the people who will use it, build the solution with Java, Node.js, Python, SQL, AWS and AI, and ship it to production. From sales leadership and psychology I bring what many tech teams lack: listening, negotiation and business sense.",
   } as Localized,
-  values: {
+  // Onde quero chegar
+  // TODO(jefferson): confirmar o objetivo de carreira
+  goal: {
     'pt-BR':
-      'Uno tecnologia e visão de negócios: a liderança de equipes, as vendas consultivas e os estudos de psicologia e psicanálise me ajudam a entender as pessoas e a criar soluções centradas na experiência do cliente.',
+      'Quero atuar como FDE em empresas que levam software e IA para dentro da operação dos clientes, sendo a ponte entre o produto e quem usa, do primeiro contato ao resultado medido.',
     'en-US':
-      'I combine technology with business sense: team leadership, consultative sales and my studies in psychology and psychoanalysis help me understand people and build customer-centered solutions.',
+      'I want to work as an FDE at companies that bring software and AI into their clients’ operations, being the bridge between the product and the people who use it, from first contact to measured results.',
   } as Localized,
+  tags: [
+    { 'pt-BR': 'São Paulo', 'en-US': 'São Paulo' },
+    { 'pt-BR': 'Inglês B2', 'en-US': 'English B2' },
+    { 'pt-BR': 'Cloud · IA · Segurança', 'en-US': 'Cloud · AI · Security' },
+  ] as Localized[],
 }
 
 // Do mais recente para o mais antigo. Fonte: perfil do LinkedIn (out. 2026).

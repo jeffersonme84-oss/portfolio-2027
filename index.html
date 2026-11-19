@@ -18,8 +18,9 @@
       // Mesmas chaves de src/lib/theme.ts, src/lib/motion.ts e src/i18n/index.ts.
       try {
         var t = localStorage.getItem('theme')
+        // Sem escolha salva: escuro (mesma regra de src/lib/theme.ts).
         var dark =
-          t === 'dark' || (t !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
+          t !== 'light' && (t !== 'system' || matchMedia('(prefers-color-scheme: dark)').matches)
         if (dark) document.documentElement.classList.add('dark')
         var m = localStorage.getItem('motion')
         var reduce =

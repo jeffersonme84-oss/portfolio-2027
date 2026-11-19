@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prévia · Habilidades v2</title>
+<style>
+  :root {
+    --red: #d42a20; --ease: cubic-bezier(.16,1,.3,1);
+    --paper: #f3efe7; --ink: #161512; --ink-2: #6a6356; --rule: rgb(22 21 18 / .12); --card: #fbf9f4; --shadow: 60 44 22;
+    --metal: #e4ded2; --metal-2: #d3cbbd;
+  }
+  body.dark { --paper: #121210; --ink: #efebe4; --ink-2: #a39d92; --rule: rgb(239 235 228 / .12); --card: #1d1c19; --shadow: 0 0 0; --metal: #24231f; --metal-2: #1a1916; }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Inter, system-ui, sans-serif; background: var(--paper); color: var(--ink); transition: background .4s, color .4s; }
+  .mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+  .display { font-family: 'Archivo Black', 'Arial Black', sans-serif; letter-spacing: -.045em; text-transform: uppercase; line-height: .85; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+
+  .bar { position: fixed; z-index: 30; left: 50%; translate: -50% 0; top: 10px; display: flex; gap: 6px; padding: 5px; border-radius: 99px; background: #111; }
+  .bar button { border: 0; border-radius: 99px; padding: 7px 14px; background: #2a2a2a; color: #eee; font-size: 12.5px; font-weight: 600; }
+  .bar button.on { background: var(--red); color: #fff; }
+
+  section { display: none; min-height: 100vh; padding: 80px clamp(20px, 6vw, 96px) 48px; }
+  section.on { display: grid; align-content: center; }
+  .wrap { max-width: 1100px; width: 100%; margin: 0 auto; }
+
+  /* Cabeçalho mínimo: título + uma frase */
+  .head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-bottom: 36px; }
+  .eyebrow { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--red); margin-bottom: 12px; }
+  .head h2 { font-size: clamp(44px, 6.5vw, 80px); }
+  .lead { font-size: 15px; line-height: 1.5; color: var(--ink-2); max-width: 30ch; text-align: right; }
+  .lead b { color: var(--ink); font-weight: 600; }
+
+  /* Habilidade = ícone + nome, grande e legível */
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { display: inline-flex; align-items: center; gap: 10px; padding: 9px 16px 9px 9px; border-radius: 99px; background: var(--card); border: 1px solid var(--rule);
+    font-size: 15px; font-weight: 500; box-shadow: 0 6px 14px -10px rgb(var(--shadow) / .5); animation: pop .45s var(--ease) backwards; }
+  .chip i { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 700 11px/1 'JetBrains Mono', monospace; font-style: normal; color: #fff; background: var(--c, #555); }
+  @keyframes pop { from { opacity: 0; translate: 0 8px; } }
+
+  /* ============ MODELO 1: Mesa (6 canais) ============ */
+  .console { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; padding: 12px; border-radius: 16px;
+    background: linear-gradient(var(--metal), var(--metal-2)); border: 1px solid var(--rule); box-shadow: inset 0 1px 0 rgb(255 255 255 / .3), 0 24px 40px -26px rgb(var(--shadow) / .5); }
+  .ch { display: grid; justify-items: center; gap: 12px; padding: 14px 8px 12px; border: 1px solid transparent; border-radius: 10px; background: rgb(0 0 0 / .03); transition: background .25s, border-color .25s; }
+  .ch:hover { background: rgb(0 0 0 / .06); }
+  .ch.on { border-color: var(--red); background: rgb(212 42 32 / .07); }
+  .knob { width: 34px; height: 34px; border-radius: 50%; position: relative; rotate: -50deg; transition: rotate .6s var(--ease);
+    background: radial-gradient(circle at 35% 30%, #fff8, transparent 40%), linear-gradient(#3b3a36, #161512); box-shadow: 0 3px 6px rgb(0 0 0 / .35); }
+  .knob::after { content: ''; position: absolute; left: 50%; top: 4px; width: 2px; height: 10px; background: #f2efe9; translate: -50% 0; }
+  .ch.on .knob { rotate: 50deg; }
+  .led { width: 8px; height: 8px; border-radius: 50%; background: rgb(0 0 0 / .2); }
+  .ch.on .led { background: var(--red); box-shadow: 0 0 8px var(--red); }
+  .ch .name { font-size: 13.5px; font-weight: 600; text-align: center; line-height: 1.2; min-height: 2.4em; display: grid; place-items: center; }
+  .ch small { font-size: 10px; letter-spacing: .14em; color: var(--ink-2); }
+  .panel { margin-top: 18px; padding: 22px; border-radius: 16px; background: var(--card); border: 1px solid var(--rule); min-height: 150px; }
+  .panel .t { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; }
+  .panel .t b { font: 900 24px/1 'Archivo Black', 'Arial Black', sans-serif; text-transform: uppercase; letter-spacing: -.03em; }
+  .panel .t span { font-size: 13px; color: var(--ink-2); }
+
+  /* ============ MODELO 2: Fitas (6) ============ */
+  .tapes { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+  .tape { position: relative; aspect-ratio: 1.6; border-radius: 8px; background: #1b1a18; border: 1px solid #34332f; padding: 8px; text-align: left;
+    box-shadow: 0 14px 24px -16px rgb(var(--shadow) / .7); transition: translate .45s var(--ease), box-shadow .45s var(--ease); }
+  .tape:hover { translate: 0 -6px; }
+  .tape.on { translate: 0 -10px; box-shadow: 0 0 0 2px var(--red), 0 22px 30px -18px rgb(var(--shadow) / .8); }
+  .tape .lbl small { display: block; }
+  .tape .lbl { display: block; height: 50%; border-radius: 3px; background: #f6f0dc; color: #1b1a18; padding: 6px 7px 0; position: relative; overflow: hidden; }
+  .tape .lbl::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 5px; background: var(--c); }
+  .tape .lbl b { display: block; margin-top: 2px; font: 900 13px/1.05 'Archivo Black', 'Arial Black', sans-serif; text-transform: uppercase; letter-spacing: -.02em; }
+  .tape .win { position: absolute; left: 22%; right: 22%; bottom: 14%; height: 24%; border-radius: 99px; background: #0a0a09; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; padding: 0 8%; }
+  .tape .win span { width: 12px; height: 12px; border-radius: 50%; border: 3px solid #e9e4da; }
+  .tape.on .win span { animation: spin 1.6s linear infinite; border-style: dotted; }
+  .jcard { margin-top: 22px; padding: 22px; border-radius: 16px; background: var(--card); border: 1px solid var(--rule); min-height: 150px; }
+  .jcard .t { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; }
+  .jcard .t b { font: 900 24px/1 'Archivo Black', 'Arial Black', sans-serif; text-transform: uppercase; letter-spacing: -.03em; }
+  .jcard .t span { font-size: 13px; color: var(--ink-2); }
+  .jcard .t em { margin-left: auto; font-style: normal; font-size: 10px; letter-spacing: .2em; color: var(--red); }
+
+  .soft { margin-top: 26px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; font-size: 13.5px; color: var(--ink-2); }
+  .soft b { font-size: 10.5px; letter-spacing: .2em; color: var(--ink); }
+  .soft span { padding: 6px 12px; border-radius: 99px; border: 1px dashed var(--rule); }
+
+  @keyframes spin { to { rotate: 360deg; } }
+  @media (max-width: 900px) { .console, .tapes { grid-template-columns: repeat(3, 1fr); } .lead { text-align: left; } }
+</style>
+</head>
+<body>
+  <div class="bar"><button class="on" data-m="m1">Modelo 1 · Mesa</button><button data-m="m2">Modelo 2 · Fitas</button><button id="theme">Escuro</button></div>
+
+  <section id="m1" class="on"><div class="wrap">
+    <header class="head">
+      <div><p class="eyebrow mono">● Lado B</p><h2 class="display">Habilidades</h2></div>
+      <p class="lead"><b>Forward Deployed Engineer:</b> do problema do cliente ao deploy.</p>
+    </header>
+    <div class="console" id="console"></div>
+    <div class="panel" id="panel"></div>
+    <p class="soft"><b class="mono">EM CAMPO</b><span>Comunicação</span><span>Liderança</span><span>Negociação</span><span>Resolução de problemas</span></p>
+  </div></section>
+
+  <section id="m2"><div class="wrap">
+    <header class="head">
+      <div><p class="eyebrow mono">● Lado B</p><h2 class="display">Habilidades</h2></div>
+      <p class="lead"><b>Forward Deployed Engineer:</b> do problema do cliente ao deploy.</p>
+    </header>
+    <div class="tapes" id="tapes"></div>
+    <div class="jcard" id="jcard"></div>
+    <p class="soft"><b class="mono">EM CAMPO</b><span>Comunicação</span><span>Liderança</span><span>Negociação</span><span>Resolução de problemas</span></p>
+  </div></section>
+
+<script>
+// 6 frentes, poucas palavras. Cada habilidade: [sigla do ícone, nome, cor da marca]
+const G = [
+  { n: 'Frontend', sub: 'Telas que o cliente usa', c: '#3b82c4', s: [['Re','React','#149eca'],['TS','TypeScript','#3178c6'],['Tw','Tailwind CSS','#06b6d4'],['Vi','Vite','#9135ff'],['RN','React Native','#149eca']] },
+  { n: 'Backend e APIs', sub: 'Integração com os sistemas do cliente', c: '#6aa84f', s: [['Ja','Java','#e76f00'],['Sp','Spring Boot','#6db33f'],['No','Node.js','#5fa04e'],['Py','Python','#3776ab'],['API','APIs REST','#555']] },
+  { n: 'Dados', sub: 'Bancos e dados da operação', c: '#c98a1b', s: [['Pg','PostgreSQL','#4169e1'],['My','MySQL','#4479a1'],['Sb','Supabase','#3fcf8e'],['Fb','Firebase','#dd2c00']] },
+  { n: 'Cloud e deploy', sub: 'Em produção e rodando', c: '#e07b20', s: [['AWS','AWS','#ff9900'],['Vc','Vercel','#111'],['Lx','Linux','#c9a400'],['Git','Git e GitHub','#f05032']] },
+  { n: 'IA e IoT', sub: 'IA aplicada e dispositivos', c: '#8e75b2', s: [['IA','IA generativa','#8e75b2'],['Ge','Google Gemini','#8e75b2'],['32','ESP32','#e7352c'],['Ar','Arduino','#00878f'],['MQ','MQTT','#660066']] },
+  { n: 'Produto e negócio', sub: 'UX, vendas e resultado', c: '#b8860b', s: [['Fi','Figma','#f24e1e'],['UX','UI/UX Design','#d42a20'],['KPI','Gestão de KPIs','#555'],['B2B','Vendas B2B/B2C','#555'],['EN','Inglês B2','#555']] },
+];
+const chips = (g) => `<div class="chips">${g.s.map(([a, n, c], k) => `<span class="chip" style="animation-delay:${k * 0.04}s"><i style="--c:${c}">${a}</i>${n}</span>`).join('')}</div>`;
+
+/* Modelo 1 */
+consoleEl = document.getElementById('console');
+consoleEl.innerHTML = G.map((g, i) => `<button class="ch" data-i="${i}"><small class="mono">CH ${i + 1}</small><span class="knob"></span><span class="led"></span><span class="name">${g.n}</span></button>`).join('');
+function pick1(i) {
+  document.querySelectorAll('.ch').forEach((b, k) => b.classList.toggle('on', k === i));
+  panel.innerHTML = `<div class="t"><b>${G[i].n}</b><span>${G[i].sub}</span></div>${chips(G[i])}`;
+}
+document.querySelectorAll('.ch').forEach(b => { b.onclick = () => pick1(+b.dataset.i); b.onmouseenter = () => pick1(+b.dataset.i); });
+pick1(0);
+
+/* Modelo 2 */
+tapes.innerHTML = G.map((g, i) => `<button class="tape" data-i="${i}" style="--c:${g.c}"><span class="lbl"><small class="mono" style="font-size:8px;letter-spacing:.14em;color:#6b6255">FITA ${i + 1}</small><b>${g.n}</b></span><span class="win"><span></span><span></span></span></button>`).join('');
+function pick2(i) {
+  document.querySelectorAll('.tape').forEach((b, k) => b.classList.toggle('on', k === i));
+  jcard.innerHTML = `<div class="t"><b>${G[i].n}</b><span>${G[i].sub}</span><em class="mono">▶ TOCANDO</em></div>${chips(G[i])}`;
+}
+document.querySelectorAll('.tape').forEach(b => { b.onclick = () => pick2(+b.dataset.i); b.onmouseenter = () => pick2(+b.dataset.i); });
+pick2(0);
+
+document.querySelectorAll('[data-m]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-m], section').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); document.getElementById(b.dataset.m).classList.add('on');
+});
+theme.onclick = () => { const d = document.body.classList.toggle('dark'); theme.textContent = d ? 'Claro' : 'Escuro'; };
+</script>
+</body>
+</html>

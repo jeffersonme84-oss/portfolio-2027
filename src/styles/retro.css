@@ -117,3 +117,422 @@
     #0d0d0d 85.68%
   );
 }
+
+/* ---------- Cursor personalizado (CustomCursor.tsx) ----------
+   Ponto vermelho + halo com inércia. O halo cresce em links/botões e mostra um texto com
+   data-cursor. O cursor do sistema só some com o componente ativo (classe has-cursor). */
+:root.has-cursor,
+:root.has-cursor * {
+  cursor: none !important;
+}
+
+:root.has-cursor input,
+:root.has-cursor textarea,
+:root.has-cursor select,
+:root.has-cursor [contenteditable='true'] {
+  cursor: text !important;
+}
+
+.cursor-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 110;
+  pointer-events: none;
+}
+
+:root.cursor-out .cursor-layer {
+  opacity: 0;
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  will-change: transform;
+}
+
+.cursor-dot::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d42a20;
+}
+
+.cursor-ring span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 34px;
+  height: 34px;
+  translate: -50% -50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid rgb(212 42 32 / 0.7);
+  border-radius: 50%;
+  font:
+    700 10px/1 'JetBrains Mono Variable',
+    ui-monospace,
+    monospace;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  color: transparent;
+  transition:
+    width 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    height 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s,
+    border-color 0.3s,
+    color 0.2s,
+    scale 0.15s;
+}
+
+.cursor-ring[data-state='hover'] span {
+  width: 52px;
+  height: 52px;
+  background: rgb(212 42 32 / 0.12);
+}
+
+.cursor-ring[data-state='label'] span {
+  width: 84px;
+  height: 84px;
+  border-color: transparent;
+  background: rgb(212 42 32 / 0.88);
+  color: #fff;
+}
+
+.cursor-ring.is-down span {
+  scale: 0.85;
+}
+
+.cursor-ring[data-state='hidden'],
+.cursor-dot[data-state='hidden'] {
+  display: none;
+}
+
+/* ---------- Contador de visitas "deck K7" (TapeDeckCounter.tsx) ----------
+   O aparelho é sempre escuro (objeto físico), nos dois temas; os rótulos seguem o tema. */
+.deck {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.deck:focus-visible {
+  outline: 2px solid #d42a20;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+/* Mini fita K7 (à direita do contador). Corpo escuro, etiqueta creme com faixa vermelha. */
+.deck-tape {
+  width: 40px;
+  height: 26px;
+  flex: none;
+  filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.35));
+  transition: rotate 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.deck:hover .deck-tape {
+  rotate: -6deg;
+}
+
+.deck-tape-body {
+  fill: #1a1a18;
+  stroke: #3a3a36;
+  stroke-width: 1.5;
+}
+
+.deck-tape-label {
+  fill: #edeae6;
+}
+
+.deck-tape-stripe {
+  fill: #d42a20;
+}
+
+.deck-tape-window {
+  fill: #0a0a09;
+  stroke: #3a3a36;
+  stroke-width: 0.75;
+}
+
+.deck-tape-band {
+  stroke: #5a2a22;
+  stroke-width: 1;
+}
+
+.deck-tape-foot {
+  fill: none;
+  stroke: #3a3a36;
+  stroke-width: 1;
+}
+
+.deck-tape-reel {
+  transform-box: fill-box;
+  transform-origin: center;
+  fill: #edeae6;
+  stroke: #0a0a09;
+  stroke-width: 1;
+  stroke-linecap: round;
+}
+
+:root:not(.reduce-motion) .deck-tape-reel {
+  animation: deck-spin var(--deck-speed, 2.4s) linear infinite;
+}
+
+:root:not(.reduce-motion) .deck.is-rew .deck-tape-reel {
+  animation: deck-spin 0.35s linear infinite reverse;
+}
+
+@keyframes deck-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+/* Janela do contador: chassi com bisel, rodas de números e reflexo de vidro. */
+.deck-window {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid #3a3a36;
+  border-radius: 6px;
+  background: linear-gradient(#2c2c29, #111110);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.09),
+    inset 0 -1px 0 rgb(0 0 0 / 0.6),
+    0 6px 16px rgb(0 0 0 / 0.35);
+  transition:
+    box-shadow 0.25s,
+    border-color 0.25s;
+}
+
+/* Linha vermelha de leitura, como a marca do contador real. */
+.deck-window::before {
+  content: '';
+  position: absolute;
+  inset-inline: 2px;
+  top: 50%;
+  height: 1px;
+  background: rgb(212 42 32 / 0.55);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.deck-window::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(rgb(255 255 255 / 0.1), transparent 45%);
+  pointer-events: none;
+  z-index: 3;
+}
+
+.deck:hover .deck-window {
+  border-color: #d42a20;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.09),
+    0 6px 20px rgb(212 42 32 / 0.35);
+}
+
+.deck-wheel {
+  position: relative;
+  width: 15px;
+  height: 22px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: #050505;
+  font:
+    700 15px/22px 'JetBrains Mono Variable',
+    ui-monospace,
+    monospace;
+  color: #f2efe9;
+  text-align: center;
+}
+
+/* Sombra de tambor: os números "curvam" para dentro em cima e embaixo. */
+.deck-wheel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgb(0 0 0 / 0.75),
+    transparent 35%,
+    transparent 65%,
+    rgb(0 0 0 / 0.75)
+  );
+  pointer-events: none;
+}
+
+.deck-strip {
+  display: block;
+  transition: translate 1.3s cubic-bezier(0.2, 0.9, 0.25, 1);
+}
+
+.deck.is-rew .deck-strip {
+  transition-duration: 0.6s;
+  transition-timing-function: cubic-bezier(0.6, 0, 0.4, 1);
+}
+
+:root.reduce-motion .deck-strip {
+  transition: none;
+}
+
+.deck-strip span {
+  display: block;
+  height: 22px;
+}
+
+.deck-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font:
+    500 10px/1.15 'JetBrains Mono Variable',
+    ui-monospace,
+    monospace;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.deck-labels b {
+  font-weight: 600;
+}
+
+.deck.is-rew .deck-labels b {
+  color: #ff4a3d;
+}
+
+.deck-live {
+  color: #2ecc71;
+}
+
+.deck-live::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  background: #2ecc71;
+  vertical-align: 1px;
+}
+
+:root:not(.reduce-motion) .deck-live::before {
+  animation: deck-pulse 1.6s infinite;
+}
+
+@keyframes deck-pulse {
+  50% {
+    box-shadow: 0 0 0 4px rgb(46 204 113 / 0.22);
+  }
+}
+
+.deck-demo {
+  padding: 2px 5px;
+  border: 1px dashed currentColor;
+  border-radius: 4px;
+  font:
+    9px/1 'JetBrains Mono Variable',
+    ui-monospace,
+    monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+
+/* ---------- Medidor VU dos cartões de Habilidades ---------- */
+.skill-vu {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+
+.skill-vu i {
+  width: 3px;
+  height: 25%;
+  border-radius: 1px;
+  background: color-mix(in oklab, currentColor 25%, transparent);
+  transition: height 0.3s;
+}
+
+.group\/card:hover .skill-vu i {
+  background: linear-gradient(to top, #2ecc71 0 55%, #f1c40f 55% 80%, #d42a20 80%);
+}
+
+:root:not(.reduce-motion) .group\/card:hover .skill-vu i {
+  animation: skill-vu 0.8s ease-in-out infinite alternate;
+}
+
+.group\/card:hover .skill-vu i:nth-child(2) {
+  animation-delay: -0.3s;
+}
+.group\/card:hover .skill-vu i:nth-child(3) {
+  animation-delay: -0.55s;
+}
+.group\/card:hover .skill-vu i:nth-child(4) {
+  animation-delay: -0.15s;
+}
+
+@keyframes skill-vu {
+  0% {
+    height: 25%;
+  }
+  50% {
+    height: 100%;
+  }
+  100% {
+    height: 55%;
+  }
+}
+
+/* ---------- Videocassete da trajetória (Timeline.tsx) ---------- */
+.vcr-screen::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgb(255 255 255 / 0.025) 0 1px, transparent 1px 3px);
+}
+
+.vcr-bars {
+  background: repeating-linear-gradient(
+    90deg,
+    #dcdcdc 0 14%,
+    #e8e080 14% 28%,
+    #7fd0d6 28% 42%,
+    #6fcf7a 42% 56%,
+    #d06fd0 56% 70%,
+    #d86a5a 70% 84%,
+    #6a78d8 84% 100%
+  );
+}
+
+:root:not(.reduce-motion) .vcr-text {
+  animation: vcr-in 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes vcr-in {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+  }
+}

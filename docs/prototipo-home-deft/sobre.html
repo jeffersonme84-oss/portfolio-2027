@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prévia · Sobre</title>
+<style>
+  :root { --red: #d42a20; --ease: cubic-bezier(.16,1,.3,1);
+    --bg: #e9edf0; --ink: #111; --ink-2: #5b6168; --rule: rgb(17 17 17 / .12); --card: #f6f8f9; }
+  body.dark { --bg: #0d0d0d; --ink: #f2f2f2; --ink-2: #9aa0a6; --rule: rgb(242 242 242 / .12); --card: #161616; }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Inter, system-ui, sans-serif; background: var(--bg); color: var(--ink); transition: background .4s, color .4s; }
+  .mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+  .display { font-family: 'Archivo Black', 'Arial Black', sans-serif; letter-spacing: -.045em; text-transform: uppercase; line-height: .85; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  .bar { position: fixed; z-index: 30; left: 50%; translate: -50% 0; top: 10px; display: flex; gap: 6px; padding: 5px; border-radius: 99px; background: #111; }
+  .bar button { border: 0; border-radius: 99px; padding: 7px 14px; background: #2a2a2a; color: #eee; font-size: 12.5px; font-weight: 600; }
+  .bar button.on { background: var(--red); color: #fff; }
+  section { display: none; min-height: 100vh; padding: 76px clamp(20px, 6vw, 96px) 40px; }
+  section.on { display: grid; align-content: center; }
+  .wrap { max-width: 1140px; width: 100%; margin: 0 auto; }
+  .eyebrow { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--red); margin-bottom: 10px; display: flex; gap: 8px; align-items: center; }
+  .rec { width: 7px; height: 7px; border-radius: 50%; background: var(--red); animation: blink 1.2s steps(1) infinite; }
+  h2 { font-size: clamp(44px, 6vw, 76px); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { padding: 6px 12px; border-radius: 99px; border: 1px solid var(--rule); font-size: 12.5px; background: var(--card); }
+  .chip b { color: var(--red); font-weight: 600; }
+
+  /* Foto VHS (mantém a identidade da seção) */
+  .vhs { position: relative; overflow: hidden; border-radius: 6px; background: #000; box-shadow: 0 0 0 1px var(--rule), 0 24px 40px -24px rgb(0 0 0 / .5); }
+  .vhs img { display: block; width: 100%; height: 100%; object-fit: cover; filter: contrast(1.05) saturate(.9); transition: filter .5s, scale .8s var(--ease); }
+  .vhs::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgb(0 0 0 / .14) 0 1px, transparent 1px 3px); }
+  .vhs .tc { position: absolute; z-index: 2; left: 10px; top: 10px; font-size: 10.5px; letter-spacing: .14em; color: #fff; text-shadow: 0 1px 2px #000; }
+  .vhs .tc b { color: #ff4a3d; }
+
+  /* =============== OPÇÃO 1: Fita VHS (linha do tempo horizontal) =============== */
+  .o1 { display: grid; grid-template-columns: 300px 1fr; gap: 40px; align-items: center; }
+  .o1 .vhs { aspect-ratio: 4/5; }
+  .bio { font-size: 17px; line-height: 1.6; max-width: 56ch; margin: 18px 0 18px; }
+  .bio b { font-weight: 600; }
+  .scrub { margin-top: 40px; }
+  .track { position: relative; height: 54px; }
+  .track::before { content: ''; position: absolute; left: 0; right: 0; top: 26px; height: 2px; background: var(--rule); }
+  .track .fill { position: absolute; left: 0; top: 26px; height: 2px; background: var(--red); transition: width .6s var(--ease); }
+  .mark { position: absolute; top: 0; translate: -50% 0; display: grid; justify-items: center; gap: 6px; border: 0; background: none; padding: 0; }
+  .mark .y { font-size: 10.5px; letter-spacing: .1em; color: var(--ink-2); white-space: nowrap; }
+  .mark .dot { width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid var(--ink-2); transition: .3s var(--ease); }
+  .mark:hover .dot { border-color: var(--ink); scale: 1.2; }
+  .mark.on .dot { background: var(--red); border-color: var(--red); box-shadow: 0 0 0 5px rgb(212 42 32 / .18); }
+  .mark.on .y { color: var(--ink); font-weight: 600; }
+  .now { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; margin-top: 16px; padding: 16px 18px; border-radius: 12px; background: var(--card); border: 1px solid var(--rule); min-height: 92px; }
+  .now .st { font-size: 10px; letter-spacing: .2em; color: var(--red); writing-mode: vertical-rl; rotate: 180deg; }
+  .now h3 { font-size: 18px; font-weight: 700; }
+  .now small { display: block; font-size: 12.5px; color: var(--ink-2); margin: 2px 0 6px; }
+  .now p { font-size: 14px; color: var(--ink-2); }
+  .now .thumb { width: 72px; height: 72px; border-radius: 6px; object-fit: cover; }
+
+  /* =============== OPÇÃO 2: Ficha em duas colunas =============== */
+  .o2 { display: grid; grid-template-columns: 320px 1fr; gap: 44px; align-items: start; }
+  .o2 .vhs { aspect-ratio: 4/5; }
+  .o2 .side .bio { font-size: 15px; margin: 18px 0 14px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .col h3 { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2); padding-bottom: 10px; border-bottom: 2px solid var(--ink); margin-bottom: 4px; display: flex; justify-content: space-between; }
+  .item { display: grid; grid-template-columns: 74px 1fr; gap: 12px; width: 100%; text-align: left; border: 0; background: none; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+  .item .p { font-size: 11px; color: var(--ink-2); padding-top: 3px; }
+  .item b { font-size: 15px; font-weight: 600; display: block; line-height: 1.25; }
+  .item small { font-size: 12.5px; color: var(--ink-2); }
+  .item .more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .4s var(--ease); }
+  .item .more > span { overflow: hidden; font-size: 13px; color: var(--ink-2); line-height: 1.5; }
+  .item.on .more { grid-template-rows: 1fr; }
+  .item.on .more > span { padding-top: 6px; }
+  .item:hover b { color: var(--red); }
+  .family { margin-top: 22px; display: grid; grid-template-columns: 84px 1fr; gap: 14px; align-items: center; padding: 12px; border-radius: 12px; background: var(--card); border: 1px solid var(--rule); }
+  .family img { width: 84px; height: 84px; border-radius: 8px; object-fit: cover; }
+  .family b { font-size: 15px; }
+  .family p { font-size: 13px; color: var(--ink-2); margin-top: 3px; }
+
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (max-width: 900px) { .o1, .o2, .cols { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+  <div class="bar"><button class="on" data-m="m1">Opção 1 · Fita VHS</button><button data-m="m2">Opção 2 · Ficha</button><button id="theme">Escuro</button></div>
+
+  <!-- ============ OPÇÃO 1 ============ -->
+  <section id="m1" class="on"><div class="wrap">
+    <div class="o1">
+      <div class="vhs"><span class="tc mono"><b>●</b> REC · 00:14:32</span><img id="p1" src="/images/about/editorial/retrato-carro.webp" alt=""></div>
+      <div>
+        <p class="eyebrow mono"><span class="rec"></span>Sobre</p>
+        <h2 class="display">Jefferson</h2>
+        <p class="bio"><b>Forward Deployed Engineer</b> formado em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul. Uno tecnologia e visão de negócio: liderança, vendas consultivas e psicologia me ajudam a entender pessoas e criar soluções centradas no cliente.</p>
+        <div class="chips"><span class="chip"><b>●</b> São Paulo</span><span class="chip">Java · Node · Python · AWS</span><span class="chip">IA e IoT</span><span class="chip">Inglês B2</span></div>
+      </div>
+    </div>
+    <div class="scrub">
+      <p class="eyebrow mono" style="color:var(--ink-2)">▶ Trajetória · arraste ou clique nos pontos</p>
+      <div class="track" id="track"><span class="fill" id="fill"></span></div>
+      <div class="now" id="now"></div>
+    </div>
+  </div></section>
+
+  <!-- ============ OPÇÃO 2 ============ -->
+  <section id="m2"><div class="wrap">
+    <div class="o2">
+      <div class="side">
+        <div class="vhs"><span class="tc mono"><b>●</b> REC · 00:14:32</span><img src="/images/about/editorial/fatec-formatura-solo.webp" alt=""></div>
+        <p class="bio"><b>Forward Deployed Engineer</b> formado pela Fatec Zona Sul. Uno tecnologia e visão de negócio para criar soluções centradas no cliente.</p>
+        <div class="chips"><span class="chip"><b>●</b> São Paulo</span><span class="chip">Inglês B2</span></div>
+      </div>
+      <div>
+        <p class="eyebrow mono"><span class="rec"></span>Sobre</p>
+        <h2 class="display" style="margin-bottom:26px">Trajetória</h2>
+        <div class="cols">
+          <div class="col"><h3 class="mono"><span>Experiência</span><span>02</span></h3><div id="work"></div></div>
+          <div class="col"><h3 class="mono"><span>Formação</span><span>04</span></h3><div id="edu"></div></div>
+        </div>
+        <div class="family"><img src="/images/about/editorial/familia-selfie.webp" alt=""><div><b>Família e valores</b><p>O que me motiva todos os dias. (texto a preencher)</p></div></div>
+      </div>
+    </div>
+  </div></section>
+
+<script>
+const T = [
+  { y: '2014', p: '2014 – 2025', t: 'Psicologia e Psicanálise', s: 'Universidade Anhanguera São Paulo', d: 'Três anos e meio de Psicologia e formação em Psicanálise.', k: 'edu' },
+  { y: '2022', p: '2022 – 2023', t: 'Desenvolvedor Full Stack', s: 'DMANDA Services LLC · São Paulo', d: 'E-commerce, marketplaces, aplicativos, sites e bancos de dados.', k: 'work' },
+  { y: '2022+', p: '2022 – 2025', t: 'Certificações', s: 'AWS · Cisco · Fundação Bradesco · Centro Paula Souza', d: 'Nuvem, desenvolvimento, IA, segurança e IoT.', k: 'edu' },
+  { y: '2023', p: '2023 – 2025', t: 'Desenvolvimento de Software Multiplataforma', s: 'Fatec Zona Sul', d: 'Graduação tecnológica com projetos web, mobile, automação e IA.', k: 'edu', img: '/images/about/editorial/fatec-formatura-solo.webp' },
+  { y: '2024', p: '2024 →', t: 'Líder de equipe · Executivo de vendas', s: 'Verisure · São Paulo', d: 'Liderança de vendas e segurança eletrônica com IA e IoT.', k: 'work', img: '/images/about/editorial/retrato-carro.webp' },
+  { y: '2025', p: '2025 →', t: 'Pós-graduação em Tecnologia da Informação', s: 'PUC-Campinas · lato sensu', d: 'Especialização lato sensu em Tecnologia da Informação.', k: 'edu' },
+  { y: 'hoje', p: '∞', t: 'Família e valores', s: '', d: 'O que me motiva todos os dias. (texto a preencher)', k: 'fam', img: '/images/about/editorial/familia-selfie.webp' },
+];
+
+/* Opção 1 */
+track.insertAdjacentHTML('beforeend', T.map((x, i) => `<button class="mark" data-i="${i}" style="left:${4 + i * (92 / (T.length - 1))}%"><span class="y mono">${x.y}</span><span class="dot"></span></button>`).join(''));
+function show(i) {
+  document.querySelectorAll('.mark').forEach((m, k) => m.classList.toggle('on', k === i));
+  fill.style.width = `${4 + i * (92 / (T.length - 1))}%`;
+  const x = T[i];
+  now.innerHTML = `<span class="st mono">PLAY ▶</span><div><h3>${x.t}</h3><small class="mono">${x.p}${x.s ? ' · ' + x.s : ''}</small><p>${x.d}</p></div>${x.img ? `<img class="thumb" src="${x.img}" alt="">` : '<span></span>'}`;
+}
+document.querySelectorAll('.mark').forEach(m => { m.onclick = () => show(+m.dataset.i); m.onmouseenter = () => show(+m.dataset.i); });
+show(4);
+addEventListener('keydown', (e) => { const cur = [...document.querySelectorAll('.mark')].findIndex(m => m.classList.contains('on')); if (e.key === 'ArrowRight') show(Math.min(T.length - 1, cur + 1)); if (e.key === 'ArrowLeft') show(Math.max(0, cur - 1)); });
+
+/* Opção 2 */
+const item = (x) => `<button class="item"><span class="p mono">${x.p}</span><span><b>${x.t}</b><small>${x.s}</small><span class="more"><span>${x.d}</span></span></span></button>`;
+work.innerHTML = T.filter(x => x.k === 'work').reverse().map(item).join('');
+edu.innerHTML = T.filter(x => x.k === 'edu').reverse().map(item).join('');
+document.querySelectorAll('.item').forEach(b => b.onclick = () => { const on = b.classList.contains('on'); document.querySelectorAll('.item').forEach(x => x.classList.remove('on')); if (!on) b.classList.add('on'); });
+
+document.querySelectorAll('[data-m]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-m], section').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); document.getElementById(b.dataset.m).classList.add('on');
+});
+theme.onclick = () => { const d = document.body.classList.toggle('dark'); theme.textContent = d ? 'Claro' : 'Escuro'; };
+</script>
+</body>
+</html>

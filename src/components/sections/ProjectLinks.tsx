@@ -10,17 +10,22 @@ const linkClass =
 
 type ProjectLinksProps = {
   project: Project
-  // Na parede escura da galeria ou dentro do modal (tema do site).
-  tone: 'wall' | 'page'
+  // 'record': links discretos sob as capas de LP; 'page': dentro do modal (tema do site);
+  // 'wall': cores da antiga parede escura.
+  tone: 'wall' | 'page' | 'record'
+}
+
+const toneClasses = {
+  wall: 'border-wall-foreground/40 text-wall-foreground hover:border-wall-foreground hover:bg-wall-foreground hover:text-wall',
+  page: 'border-foreground text-foreground hover:bg-foreground hover:text-background',
+  record:
+    'h-auto border-0 border-b border-current px-0 pb-0.5 text-[12px] tracking-[0.04em] normal-case text-current hover:text-(--records-red-text) [&_svg]:size-3',
 }
 
 // Botões Deploy e GitHub: com URL vazia ficam desabilitados.
 export function ProjectLinks({ project, tone }: ProjectLinksProps) {
   const { t, l } = useLocale()
-  const toneClass =
-    tone === 'wall'
-      ? 'border-wall-foreground/40 text-wall-foreground hover:border-wall-foreground hover:bg-wall-foreground hover:text-wall'
-      : 'border-foreground text-foreground hover:bg-foreground hover:text-background'
+  const toneClass = toneClasses[tone]
 
   const links = [
     { key: 'deploy', url: project.deployUrl, label: t('projects.deploy'), Icon: ExternalIcon },
@@ -28,7 +33,7 @@ export function ProjectLinks({ project, tone }: ProjectLinksProps) {
   ]
 
   return (
-    <div className="flex gap-2">
+    <div className={cn('flex', tone === 'record' ? 'gap-4' : 'gap-2')}>
       {links.map(({ key, url, label, Icon }) =>
         url ? (
           <ExternalLink key={key} href={url} className={cn(linkClass, toneClass)}>

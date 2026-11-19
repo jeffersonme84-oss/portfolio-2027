@@ -1,290 +1,477 @@
-import { ArrowRight, Award, GraduationCap } from 'lucide-react'
-import { useEffect, useRef } from 'react'
-import { CvButton } from '@/components/layout/CvButton'
+import { ArrowDown, ArrowRight, Download, MapPin, Play } from 'lucide-react'
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
+import { SiWhatsapp } from 'react-icons/si'
 import { ExternalLink } from '@/components/layout/ExternalLink'
-import { HeroBooks } from '@/components/sections/HeroBooks'
-import { HeroDiploma } from '@/components/sections/HeroDiploma'
-import { HeroMug } from '@/components/sections/HeroMug'
-import { buttonVariants } from '@/components/ui/button-variants'
-import { KineticMatrix } from '@/components/ui/kinetic-matrix'
-import { site, splitName } from '@/content/site'
+import { MatrixPortrait } from '@/components/retro/MatrixPortrait'
+import { TapeDeckCounter } from '@/components/retro/TapeDeckCounter'
+import { useVisitStats } from '@/hooks/useVisitStats'
+import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher'
+import { ThemeToggle } from '@/components/layout/ThemeToggle'
+import { projects } from '@/content/projects'
+import { site } from '@/content/site'
+import { useBootDone } from '@/hooks/useBootDone'
 import { useClock } from '@/hooks/useClock'
 import { useLocale } from '@/hooks/useLocale'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
+import { useTheme } from '@/hooks/useTheme'
 import { useTypewriter } from '@/hooks/useTypewriter'
+import { NAV_SECTIONS } from '@/lib/sections'
 import { cn } from '@/lib/utils'
 
-const { first, rest } = splitName(site.name)
-// Linha 2 (MOREIRA EVANGELISTA) é digitável: no carregamento só o último sobrenome é digitado
-// (MOREIRA já aparece); ao passar o mouse no nome, a linha inteira é digitada de novo.
-const restWords = rest.split(' ')
-const wordOffsets = restWords.map((_, index) => restWords.slice(0, index).join('').length)
-const restLength = restWords.join('').length
-const firstRunStart = wordOffsets.at(-1) ?? 0
+// Home "DEFT." (pedido do Jefferson, 2026-11-19): a arte dele (foto + PORTFÓLIO ao fundo) entra
+// sem alterações. No desktop ela vira uma "cena" de 1376 × 768 escalada para a largura da tela;
+// textos e botões novos ficam por cima nas mesmas coordenadas da arte. Onde a arte já tinha um
+// texto que mudou, uma "tampa" (deft-patch) na cor do fundo cobre o original.
+// No celular, a foto aparece recortada no topo e o conteúdo vem em HTML embaixo.
+// Estilos em src/styles/hero.css.
 
-const microText = 'font-mono text-[11px] leading-snug tracking-[0.14em] uppercase'
+const STAGE_W = 1376
+const STAGE_H = 768
 
-type TypedProps = { text: string; offset: number; count: number; typing: boolean }
+function at(left: number, top: number, width?: number, height?: number): CSSProperties {
+  return { left, top, width, height }
+}
 
-// Letras ainda não digitadas ficam invisíveis: o layout não se move durante a digitação.
-// O cursor aparece só na palavra que está sendo digitada.
-function Typed({ text, offset, count, typing }: TypedProps) {
-  const typed = Math.max(0, Math.min(text.length, count - offset))
-  const active = typing && count >= offset && count < offset + text.length
+const featured = projects.find((project) => project.slug === site.hero.featuredProject)
+
+function whatsappHref(message: string) {
+  return `${site.whatsappUrl}?text=${encodeURIComponent(message)}`
+}
+
+// Número que sobe contando (0 → valor). Com animações reduzidas, aparece pronto.
+function CountUp({ to, pad = 0 }: { to: number; pad?: number }) {
+  const reduced = useReducedMotion()
+  const ready = useBootDone()
+  const [value, setValue] = useState(0)
+
+  useEffect(() => {
+    if (reduced || !ready) return
+    let frame = 0
+    const start = performance.now() + 500
+    const tick = (now: number) => {
+      const progress = Math.min(1, Math.max(0, (now - start) / 1200))
+      setValue(Math.round(to * (1 - Math.pow(1 - progress, 3))))
+      if (progress < 1) frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [to, reduced, ready])
+
+  return <>{String(reduced ? to : value).padStart(pad, '0')}</>
+}
+
+// Nome completo digitado letra a letra, com cursor no acento. Só começa depois do carregamento.
+function TypedName() {
+  const ready = useBootDone()
+  if (!ready) return <span aria-hidden className="deft-caret" />
+  return <TypedNameRun />
+}
+
+// Redigita a cada 7 s depois de terminar (pedido do Jefferson). Com animações reduzidas, fica fixo.
+const RETYPE_MS = 7000
+
+function TypedNameRun() {
+  const { count, done, restart } = useTypewriter(site.name.length, { speed: 70, delay: 700 })
+  const reduced = useReducedMotion()
+
+  useEffect(() => {
+    if (!done || reduced) return
+    const timer = window.setTimeout(restart, RETYPE_MS)
+    return () => window.clearTimeout(timer)
+  }, [done, reduced, restart])
+
   return (
-    <>
-      {text.slice(0, typed)}
-      {active && (
-        <span className="retro-cursor relative inline-block h-[0.78em] w-[0.06em] translate-y-[0.04em] bg-accent align-baseline" />
-      )}
-      <span className="invisible">{text.slice(typed)}</span>
-    </>
+    <span aria-hidden>
+      {site.name.slice(0, count)}
+      <span className={cn('deft-caret', done && 'is-done')} />
+    </span>
+  )
+}
+
+type Stat = { to: number; pad: number; label: string; sub: string; href: string }
+type Contact = { href: string; label: string; icon: ReactNode; external: boolean }
+
+function ContactLink({ item, className }: { item: Contact; className?: string }) {
+  if (!item.external) {
+    return (
+      <a href={item.href} className={className}>
+        {item.icon}
+        {item.label}
+      </a>
+    )
+  }
+  return (
+    <ExternalLink href={item.href} className={className}>
+      {item.icon}
+      {item.label}
+    </ExternalLink>
   )
 }
 
 export function Hero() {
   const { t, l, locale } = useLocale()
   const time = useClock(site.timeZone, locale)
-  const { count, done, restart } = useTypewriter(restLength, {
-    speed: 95,
-    delay: 700,
-    startAt: firstRunStart,
-  })
-  const sectionRef = useRef<HTMLElement>(null)
-  const photoRef = useRef<HTMLDivElement>(null)
-  const reducedMotion = useReducedMotion()
+  const reduced = useReducedMotion()
+  const isLight = useTheme().resolved === 'light'
+  const visits = useVisitStats()
+  const artSrc = isLight ? site.hero.backgroundLight : site.hero.background.src
+  const heroRef = useRef<HTMLDivElement>(null)
+  const stageRef = useRef<HTMLDivElement>(null)
+  const photoRef = useRef<HTMLAnchorElement>(null)
 
-  // Paralaxe suave: a foto acompanha o mouse e o scroll (variáveis CSS, sem re-render).
-  useEffect(() => {
-    const section = sectionRef.current
-    if (!section || reducedMotion) return
-    let frame = 0
-    const pointer = { x: 0, y: 0, overPhoto: false }
-    function apply() {
-      frame = 0
-      section!.style.setProperty('--px', pointer.x.toFixed(3))
-      section!.style.setProperty('--py', pointer.y.toFixed(3))
-      section!.style.setProperty('--ph', pointer.overPhoto ? '1' : '0')
-      section!.style.setProperty('--sy', `${Math.min(window.scrollY, 900) * 0.12}px`)
-    }
-    function schedule() {
-      if (!frame) frame = requestAnimationFrame(apply)
-    }
-    function onPointerMove(event: PointerEvent) {
-      if (event.pointerType === 'touch') return
-      const rect = section!.getBoundingClientRect()
-      pointer.x = (event.clientX - rect.left) / rect.width - 0.5
-      pointer.y = (event.clientY - rect.top) / rect.height - 0.5
-      // A foto fica atrás do conteúdo: o hover nela é detectado pela posição do ponteiro.
-      const photo = photoRef.current?.getBoundingClientRect()
-      pointer.overPhoto = Boolean(
-        photo &&
-        event.clientX >= photo.left &&
-        event.clientX <= photo.right &&
-        event.clientY >= photo.top &&
-        event.clientY <= photo.bottom,
-      )
-      schedule()
-    }
-    function onPointerLeave() {
-      pointer.x = 0
-      pointer.y = 0
-      pointer.overPhoto = false
-      schedule()
-    }
-    section.addEventListener('pointermove', onPointerMove)
-    section.addEventListener('pointerleave', onPointerLeave)
-    window.addEventListener('scroll', schedule, { passive: true })
-    return () => {
-      cancelAnimationFrame(frame)
-      section.removeEventListener('pointermove', onPointerMove)
-      section.removeEventListener('pointerleave', onPointerLeave)
-      window.removeEventListener('scroll', schedule)
-      for (const name of ['--px', '--py', '--ph', '--sy']) section.style.removeProperty(name)
-    }
-  }, [reducedMotion])
+  const cvHref = site.cv[locale]
+  const waHref = whatsappHref(t('hero.whatsappMessage'))
+  const caseHref = featured ? `#projeto-${featured.slug}` : '#projetos'
 
-  // Passar o mouse sobre o nome digita MOREIRA EVANGELISTA de novo (quando a digitação anterior terminou).
-  function retypeSurname() {
-    if (done) restart()
-  }
-
-  const miniIndex = [
-    { href: '#sobre', label: t('nav.about') },
-    { href: '#projetos', label: t('nav.projects') },
-    { href: '#habilidades', label: t('nav.skills') },
-    { href: '#contato', label: t('nav.contactShort') },
+  // Destaques com dados do LinkedIn (experiência primeiro: é o que o recrutador procura).
+  const stats: Stat[] = [
+    {
+      to: site.hero.stats.years,
+      pad: 2,
+      label: t('hero.stats.years'),
+      sub: t('hero.stats.yearsSub'),
+      href: '#sobre',
+    },
+    {
+      to: site.hero.stats.technologies,
+      pad: 2,
+      label: t('hero.stats.technologies'),
+      sub: t('hero.stats.technologiesSub'),
+      href: '#habilidades',
+    },
+    {
+      to: site.hero.stats.degrees,
+      pad: 2,
+      label: t('hero.stats.degree'),
+      sub: t('hero.stats.degreeSub'),
+      href: '#sobre',
+    },
   ]
 
+  // Menu na ordem da rolagem (Início → Contato), o mesmo do header.
+  const menu = NAV_SECTIONS.map(({ id, labelKey }) => ({
+    href: `#${id}`,
+    label: t(id === 'contato' ? 'nav.contactShort' : labelKey),
+  }))
+
+  const contacts: Contact[] = [
+    { href: waHref, label: t('social.whatsapp'), icon: <SiWhatsapp aria-hidden />, external: true },
+    ...(site.social.linkedin
+      ? [{ href: site.social.linkedin, label: t('social.linkedin'), icon: null, external: true }]
+      : []),
+    ...(site.social.github
+      ? [{ href: site.social.github, label: t('social.github'), icon: null, external: true }]
+      : []),
+    { href: `mailto:${site.email}`, label: t('social.email'), icon: null, external: false },
+  ]
+
+  // Desktop: a cena 1376 × 768 cabe inteira na tela (largura e altura), centralizada, como as
+  // outras seções. A sobra vira faixa na cor do fundo da arte.
+  useEffect(() => {
+    const hero = heroRef.current
+    const stage = stageRef.current
+    if (!hero || !stage) return
+    const observer = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect
+      const scale = Math.min(width / STAGE_W, height / STAGE_H)
+      stage.style.setProperty('--scale', String(scale))
+      stage.style.left = `${(width - STAGE_W * scale) / 2}px`
+      stage.style.top = `${(height - STAGE_H * scale) / 2}px`
+    })
+    observer.observe(hero)
+    return () => observer.disconnect()
+  }, [])
+
+  // Mouse na Home: paralaxe leve da arte, inclinação 2.5D da cena e brilho vermelho que segue
+  // o ponteiro (--px/--py de -0.5 a 0.5, lidos pelo hero.css). Nada disso com animações reduzidas.
+  useEffect(() => {
+    const hero = heroRef.current
+    if (!hero || reduced) return
+    let frame = 0
+    const pointer = { x: 0, y: 0 }
+    const apply = () => {
+      frame = 0
+      hero.style.setProperty('--px', pointer.x.toFixed(3))
+      hero.style.setProperty('--py', pointer.y.toFixed(3))
+    }
+    const onMove = (event: PointerEvent) => {
+      if (event.pointerType === 'touch') return
+      const rect = hero.getBoundingClientRect()
+      pointer.x = (event.clientX - rect.left) / rect.width - 0.5
+      pointer.y = (event.clientY - rect.top) / rect.height - 0.5
+      if (!frame) frame = requestAnimationFrame(apply)
+    }
+    const onLeave = () => {
+      pointer.x = 0
+      pointer.y = 0
+      if (!frame) frame = requestAnimationFrame(apply)
+    }
+    hero.addEventListener('pointermove', onMove)
+    hero.addEventListener('pointerleave', onLeave)
+    return () => {
+      cancelAnimationFrame(frame)
+      hero.removeEventListener('pointermove', onMove)
+      hero.removeEventListener('pointerleave', onLeave)
+      hero.style.removeProperty('--px')
+      hero.style.removeProperty('--py')
+    }
+  }, [reduced])
+
   return (
+    // A Home segue o tema: arte escura ou clara (cores em hero.css, `.deft-hero.is-light`).
     <section
       id="inicio"
-      ref={sectionRef}
       aria-labelledby="inicio-titulo"
-      className="relative isolate h-svh min-h-[600px] overflow-hidden pt-14"
+      className={cn('deft-hero', isLight && 'is-light')}
+      style={{ '--deft-art': `url('${artSrc}')` } as CSSProperties}
     >
-      {/* Véu da cena: protege a leitura dos textos sobre a imagem (tema escuro e celular). */}
-      <div aria-hidden className="hero-scene" />
-      {/* Cena da Home (degradê + armadura) cobrindo a primeira dobra (posição em hero.css).
-          Fica abaixo do nome e se move em paralaxe com o mouse e o scroll. */}
-      <div
-        ref={photoRef}
-        className="hero-photo absolute inset-x-0 bottom-0 -z-20 h-[44%] sm:h-[48%] lg:inset-x-auto lg:right-[7%] lg:h-[56%] lg:w-[48%]"
-      >
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="hero-photo-in size-full">
-            <div className="size-full transition-transform duration-700 ease-out [transform:translate3d(calc(var(--px,0)*-18px),calc(var(--py,0)*-12px_+_var(--sy,0px)),0)_scale(calc(1.04_+_var(--ph,0)*0.05))_rotate(calc(var(--px,0)*var(--ph,0)*-3deg))] motion-reduce:[transform:none]">
-              <img
-                src={site.hero.background.src}
-                srcSet={site.hero.background.srcSet}
-                sizes="100vw"
-                alt={t('hero.portraitAlt')}
-                width={site.hero.background.width}
-                height={site.hero.background.height}
-                fetchPriority="high"
-                decoding="async"
-                className="size-full object-cover select-none"
-              />
+      <h1 id="inicio-titulo" className="sr-only">
+        {site.name} · {t('hero.role')}
+      </h1>
+
+      {/* ================= Desktop (lg+) ================= */}
+      <div ref={heroRef} className="deft-desktop">
+        <div className="deft-tilt">
+          <div ref={stageRef} className="deft-stage">
+            <img
+              key={artSrc}
+              src={artSrc}
+              alt={t('hero.portraitAlt')}
+              width={STAGE_W}
+              height={STAGE_H}
+              fetchPriority="high"
+              decoding="async"
+              className="deft-art"
+            />
+            <MatrixPortrait src={artSrc} targetRef={photoRef} />
+
+            {/* Menu: "Summit" sai, Habilidades entra. */}
+            <div aria-hidden className="deft-patch" style={at(396, 8, 508, 38)} />
+            <nav
+              aria-label={t('nav.label')}
+              className="deft-nav deft-in"
+              style={at(400, 12, 500, 30)}
+            >
+              {menu.map((item, index) => (
+                <a key={item.label} href={item.href} className={cn(index === 0 && 'is-first')}>
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+            <div className="deft-tools deft-in" style={{ right: STAGE_W - 1180, top: 11 }}>
+              <ThemeToggle />
+              <LanguageSwitcher />
             </div>
-          </div>
-        </div>
-      </div>
+            {/* Área da foto: o cursor vira "PLAY ▶" e o clique leva ao Sobre. */}
+            <a
+              href="#sobre"
+              ref={photoRef}
+              className="deft-photo"
+              data-cursor-ring="off"
+              style={at(565, 112, 335, 598)}
+            >
+              <span className="sr-only">{t('nav.about')}</span>
+            </a>
+            {/* Dica que aparece com o mouse na foto: rolar para cima vira tudo código. */}
+            <p aria-hidden className="deft-matrix-hint" style={at(612, 668)}>
+              {t('hero.matrixHint')}
+            </p>
+            <ExternalLink
+              href={waHref}
+              className="deft-hot"
+              data-cursor={t('cursor.chat')}
+              style={at(1191, 7, 150, 40)}
+            >
+              <span className="sr-only">{t('nav.talk')}</span>
+            </ExternalLink>
+            <a href="#inicio" className="deft-hot is-square" style={at(22, 8, 94, 38)}>
+              <span className="sr-only">{t('nav.home')}</span>
+            </a>
 
-      {/* Malha tecnológica com paralaxe 3D: camada decorativa sobre a foto, mais leve no centro */}
-      <KineticMatrix
-        interactionRef={sectionRef}
-        className="-z-10 [mask-image:radial-gradient(ellipse_40%_50%_at_50%_60%,rgb(0_0_0/0.35)_0%,black_100%)]"
-      />
-      <div className="relative mx-auto flex h-full max-w-[1200px] flex-col px-4 md:px-6">
-        {/* Nome gigante */}
-        <h1
-          id="inicio-titulo"
-          onPointerEnter={retypeSurname}
-          className="relative z-20 cursor-default pt-4 font-display font-black uppercase lg:pt-6"
-        >
-          <span className="sr-only">{site.name}</span>
-          <span aria-hidden className="block">
-            {/* Cada linha sobe por trás de uma máscara (entrada em hero.css). */}
-            <span className="hero-mask">
-              <span className="hero-line hero-name-first block text-[min(14vw,11.2rem)] leading-[0.85] tracking-[-0.04em] text-accent">
-                {first}
-              </span>
-            </span>
-            <span className="hero-mask mt-2">
-              <span className="hero-line hero-line-2 block text-[min(8.5vw,3.5rem)] leading-[0.9] tracking-[-0.03em] lg:text-[min(4.6vw,3.5rem)]">
-                {restWords.map((word, index) => (
-                  <span key={word} className="block whitespace-nowrap lg:inline">
-                    {index > 0 && <span className="hidden lg:inline"> </span>}
-                    <Typed text={word} offset={wordOffsets[index]} count={count} typing={!done} />
-                  </span>
-                ))}
-              </span>
-            </span>
-          </span>
-        </h1>
+            {/* Topo direito: acento corrigido + relógio de São Paulo. */}
+            <div aria-hidden className="deft-patch" style={at(1192, 71, 160, 27)} />
+            <p className="deft-free deft-in" style={{ right: 34, top: 77 }}>
+              {t('hero.available')}
+            </p>
+            <p className="deft-clock deft-in" style={{ right: 34, top: 94 }}>
+              {site.location} — <time>{time}</time>
+            </p>
 
-        {/* Micro-textos superiores */}
-        <div className="hero-in hero-in-3 relative z-20 mt-5 flex justify-between gap-6">
-          <p className={microText}>
-            {l(site.title)}
-            <br />
-            {site.location} — <time>{time}</time>
-          </p>
-          <nav aria-label={t('hero.index')} className="hidden lg:block">
-            <ul className={cn(microText, 'hero-index text-right')}>
-              {miniIndex.map((item) => (
-                <li key={item.href}>
-                  <a href={item.href} className="inline-block py-[5px] hover:text-accent">
-                    {item.label}
+            {/* Nome completo, digitado. */}
+            <div aria-hidden className="deft-patch" style={at(20, 496, 320, 35)} />
+            <p className="deft-full deft-in" style={at(28, 498)}>
+              <span className="sr-only">{site.name}</span>
+              <TypedName />
+            </p>
+
+            {/* Cargo: Forward Deployed Engineer (FDE) no lugar do "Full Stack" desenhado na arte
+                (canto de cima e linha vermelha embaixo do nome). */}
+            <div aria-hidden className="deft-patch" style={at(20, 74, 222, 36)} />
+            <p className="deft-roletag deft-in" style={at(25, 77)}>
+              {t('hero.roleTag')}
+              <span>{t('hero.roleFocus')}</span>
+            </p>
+            <div aria-hidden className="deft-patch" style={at(22, 534, 300, 31)} />
+            <p className="deft-role-line deft-in" style={at(28, 536)}>
+              {t('hero.role')}
+            </p>
+
+            {/* "Ver projetos" já está na arte: área clicável por cima. */}
+            <a
+              href="#projetos"
+              className="deft-hot is-red"
+              data-cursor={t('cursor.view')}
+              style={at(28, 654, 142, 44)}
+            >
+              <span className="sr-only">{t('hero.seeProjects')}</span>
+            </a>
+            <div aria-hidden className="deft-patch" style={at(178, 652, 304, 50)} />
+            {cvHref && (
+              <a href={cvHref} download className="deft-cv deft-in" style={at(185, 654)}>
+                {t('cv.download')}
+                <Download aria-hidden />
+              </a>
+            )}
+            <p className="deft-loc deft-in" style={at(cvHref ? 330 : 190, 667)}>
+              <MapPin aria-hidden />
+              {t('hero.workMode')}
+            </p>
+
+            {/* Canto de baixo: contador de visitas (deck K7). Sem Supabase, volta o "Ver por
+                dentro" do projeto em destaque. A tampa cobre também o botão de play da arte. */}
+            {visits.status === 'ready' ? (
+              <>
+                <div aria-hidden className="deft-patch" style={at(16, 728, 300, 40)} />
+                <TapeDeckCounter stats={visits} className="deft-deck deft-in" style={at(24, 732)} />
+              </>
+            ) : visits.status === 'loading' ? (
+              <div aria-hidden className="deft-patch" style={at(16, 728, 300, 40)} />
+            ) : (
+              featured && (
+                <>
+                  <div aria-hidden className="deft-patch" style={at(56, 738, 200, 26)} />
+                  <a href={caseHref} className="deft-case deft-in" style={at(24, 737)}>
+                    <span aria-hidden className="deft-case-dot" />
+                    <span className="deft-muted">{t('hero.insideLook')} •</span> {l(featured.title)}
+                  </a>
+                </>
+              )
+            )}
+
+            {/* Ao lado do ícone da arte: certificações (LinkedIn) no lugar de "Do banco de dados
+                até a tela.". */}
+            <div aria-hidden className="deft-patch" style={at(1140, 448, 205, 50)} />
+            <a href="#sobre" className="deft-cert deft-in" style={at(1146, 452, 196, 44)}>
+              {t('hero.cert.title')}
+              <small>{t('hero.cert.sub')}</small>
+            </a>
+
+            {/* Destaques com dados reais; cada linha leva à seção correspondente. */}
+            <div aria-hidden className="deft-patch" style={at(1082, 520, 266, 54)} />
+            <div aria-hidden className="deft-patch" style={at(1082, 581, 266, 54)} />
+            <div aria-hidden className="deft-patch" style={at(1082, 642, 266, 55)} />
+            <ul aria-label={t('hero.stats.label')}>
+              {stats.map((stat, index) => (
+                <li key={stat.label}>
+                  <a
+                    href={stat.href}
+                    className="deft-row deft-in"
+                    style={at(1087, 522 + index * 61, 252, 50)}
+                  >
+                    <b>
+                      <CountUp to={stat.to} pad={stat.pad} />
+                    </b>
+                    <span>
+                      {stat.label}
+                      <small>{stat.sub}</small>
+                    </span>
+                    <ArrowRight aria-hidden className="deft-row-arrow" />
                   </a>
                 </li>
               ))}
             </ul>
-          </nav>
-        </div>
 
-        {/* Rodapé da dobra: número + CTAs */}
-        <div className="hero-in hero-in-4 relative z-20 mt-auto flex items-end gap-10 pb-6 sm:pb-14 lg:pb-10">
-          <div className="flex w-full flex-col gap-5 bg-gradient-to-t from-background from-60% to-transparent pt-10 lg:w-auto lg:bg-none lg:pt-0">
-            <p className="hidden items-end gap-3 lg:flex">
-              <span className="font-display text-7xl leading-[0.85] font-black tracking-[-0.04em]">
-                {site.experienceYears}
-              </span>
-              <span className={cn(microText, 'max-w-[8rem] pb-1')}>{t('hero.experience')}</span>
-            </p>
-            <div className="flex flex-wrap items-center gap-3">
-              <a href="#projetos" className={cn(buttonVariants({ variant: 'default' }), 'group')}>
-                {t('hero.seeProjects')}
-                <ArrowRight
-                  aria-hidden
-                  className="transition-transform duration-300 ease-out group-hover:translate-x-1"
-                />
-              </a>
-              <CvButton />
-            </div>
-            <div className="flex gap-5 text-[11px] font-semibold tracking-[0.14em] uppercase">
-              <a href="#contato" className="underline-offset-4 hover:underline">
-                {t('nav.contact')}
-              </a>
-              {site.social.linkedin && (
-                <ExternalLink
-                  href={site.social.linkedin}
-                  className="underline-offset-4 hover:underline"
-                >
-                  {t('social.linkedin')}
-                </ExternalLink>
-              )}
-            </div>
+            {/* Barra de contatos no lugar da barra da arte original. No modo claro as pernas da
+              foto passam atrás da barra, então a própria barra (opaca) cobre a original. */}
+            <div aria-hidden className="deft-patch is-dock" style={at(346, 713, 684, 55)} />
+            <nav
+              aria-label={t('hero.contactBar')}
+              className="deft-dock deft-in"
+              style={at(350, 715, 676, 51)}
+            >
+              {contacts.map((item, index) => (
+                <ContactLink key={item.label} item={item} className={cn(index === 0 && 'is-wa')} />
+              ))}
+            </nav>
+
+            {/* Brilho vermelho que segue o mouse, por cima de tudo (sem bloquear cliques). */}
+            <div aria-hidden className="deft-glare" />
           </div>
         </div>
       </div>
-      {/* Cards de dev e estudo (telas largas): código, formação e certificações. Estilo em hero.css. */}
-      <div className="hero-cards">
-        <div aria-hidden className="hero-card hero-code">
-          <div className="hero-code-dots">
+
+      {/* ================= Celular e tablet (< lg) ================= */}
+      <div className="deft-mobile">
+        <div className="deft-mobile-art" role="img" aria-label={t('hero.portraitAlt')}>
+          <span className="deft-mobile-free">{t('hero.available')}</span>
+        </div>
+        <div className="relative z-10 -mt-8 px-4 pb-10 sm:px-6">
+          <p className="deft-hi deft-in">{t('hero.hi')}</p>
+          <p aria-hidden className="deft-brand deft-in">
+            {t('hero.brand')}
             <i />
-            <i />
-            <i />
+          </p>
+          <p className="mt-1 text-lg font-light deft-muted deft-in">
+            <span className="sr-only">{site.name}</span>
+            <TypedName />
+          </p>
+          <p className="mt-2 text-[17px] deft-role deft-in">{t('hero.role')}</p>
+          <p className="mt-2 max-w-xl text-[15px] leading-relaxed deft-soft deft-in">
+            {t('hero.intro')}
+          </p>
+          <div className={cn('mt-5 grid gap-2.5 deft-in', cvHref && 'grid-cols-2')}>
+            <a href="#projetos" className="deft-btn is-red">
+              {t('hero.seeProjects')}
+              <ArrowDown aria-hidden />
+            </a>
+            {cvHref && (
+              <a href={cvHref} download className="deft-btn">
+                {t('cv.download')}
+                <Download aria-hidden />
+              </a>
+            )}
           </div>
-          <div className="hero-code-body">
-            <span className="line">
-              <span className="tk">const</span> <span className="tv">jefferson</span> = {'{'}
-            </span>
-            <span className="line ind">
-              stack: [<span className="ts">'React'</span>, <span className="ts">'TS'</span>,{' '}
-              <span className="ts">'Supabase'</span>],
-            </span>
-            <span className="line ind">
-              {t('hero.code.learning')}: [<span className="ts">'AWS'</span>,{' '}
-              <span className="ts">'{t('hero.code.ai')}'</span>],
-            </span>
-            <span className="line ind">
-              {t('hero.code.coffee')}: <span className="tk">true</span>,{' '}
-              <span className="tc">
-                {'// '}
-                {t('hero.code.always')}
+          <p className="mt-3.5 flex items-center gap-1.5 text-[13.5px] deft-soft deft-in">
+            <MapPin aria-hidden className="size-3.5 text-[#d42a20]" />
+            {t('hero.workMode')}
+          </p>
+          <ul aria-label={t('hero.stats.label')} className="mt-5 grid grid-cols-3 gap-2 deft-in">
+            {stats.map((stat) => (
+              <li key={stat.label}>
+                <a href={stat.href} className="deft-card">
+                  <b>
+                    <CountUp to={stat.to} pad={stat.pad} />
+                  </b>
+                  <span>{stat.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+          {visits.status === 'ready' && <TapeDeckCounter stats={visits} className="mt-5 deft-in" />}
+          {featured && visits.status === 'off' && (
+            <a href={caseHref} className="mt-5 flex items-center gap-2.5 text-sm deft-soft deft-in">
+              <span className="flex size-7 items-center justify-center rounded-full bg-[#d42a20] text-white">
+                <Play aria-hidden className="size-3 fill-current" />
               </span>
-            </span>
-            <span className="line">{'}'}</span>
-          </div>
+              {t('hero.insideLook')} • <span className="deft-strong">{l(featured.title)}</span>
+            </a>
+          )}
+          <nav aria-label={t('hero.contactBar')} className="deft-mobile-dock deft-in">
+            {contacts.map((item, index) => (
+              <ContactLink key={item.label} item={item} className={cn(index === 0 && 'is-wa')} />
+            ))}
+          </nav>
         </div>
-        <div className="hero-card hero-chip hero-edu">
-          <GraduationCap aria-hidden className="hero-chip-icon" />
-          <div>
-            <p className="hero-chip-title">{t('hero.cards.educationTitle')}</p>
-            <p className="hero-chip-label">{t('hero.cards.education')}</p>
-          </div>
-        </div>
-        <div className="hero-card hero-chip hero-cert">
-          <Award aria-hidden className="hero-chip-icon" />
-          <div>
-            <p className="hero-chip-title">{t('hero.cards.certificationsTitle')}</p>
-            <p className="hero-chip-label">{t('hero.cards.certifications')}</p>
-          </div>
-        </div>
-        <HeroBooks />
-        <HeroDiploma />
-        <HeroMug />
       </div>
     </section>
   )

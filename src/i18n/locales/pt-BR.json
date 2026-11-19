@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Jefferson Moreira Evangelista · Desenvolvedor de Software",
-    "description": "Portfólio de Jefferson Moreira Evangelista, desenvolvedor de software em São Paulo: projetos web, mobile, IoT e IA, trajetória, habilidades e contato."
+    "title": "Jefferson Moreira Evangelista · Forward Deployed Engineer (FDE)",
+    "description": "Portfólio de Jefferson Moreira Evangelista, Forward Deployed Engineer (FDE) em São Paulo: engenharia ao lado do cliente, do problema em campo ao deploy. Projetos web, mobile, IoT e IA."
   },
   "theme": {
     "dark": "Modo escuro",
@@ -28,7 +28,10 @@
     "menu": "Menu",
     "openMenu": "Abrir menu",
     "closeMenu": "Fechar menu",
-    "skipToContent": "Pular para o conteúdo"
+    "skipToContent": "Pular para o conteúdo",
+    "journey": "Trajetória",
+    "certifications": "Certificações",
+    "talk": "Vamos conversar"
   },
   "cv": {
     "download": "Baixar CV"
@@ -56,10 +59,29 @@
   },
   "hero": {
     "index": "Índice",
-    "experience": "anos como dev full stack",
+    "experience": "anos como desenvolvedor",
     "headline": "Sistemas sólidos. Web com propósito.",
     "seeProjects": "Ver projetos",
-    "portraitAlt": "Jefferson com armadura futurista programando no notebook, entre telas holográficas de código",
+    "portraitAlt": "Jefferson com jaqueta vermelha e gorro preto, na frente da palavra PORTFÓLIO em vermelho",
+    "hi": "Olá, eu sou",
+    "brand": "DEFT",
+    "role": "Forward Deployed Engineer (FDE)",
+    "intro": "Construo aplicações web, APIs e automações que conectam tecnologia, dados e inteligência artificial, transformando ideias em soluções digitais.",
+    "available": "Disponível para freelas",
+    "workMode": "São Paulo • Presencial e Remoto",
+    "tagline": "Do banco de dados até a tela.",
+    "insideLook": "Ver por dentro",
+    "contactBar": "Contatos",
+    "whatsappMessage": "Olá Jefferson! Vi seu portfólio e gostaria de conversar sobre um projeto.",
+    "stats": {
+      "label": "Destaques",
+      "technologies": "Tecnologias",
+      "technologiesSub": "Do front ao deploy.",
+      "years": "Anos como desenvolvedor",
+      "yearsSub": "DMANDA · 2022–2023.",
+      "degree": "Graduação Fatec",
+      "degreeSub": "Software Multiplataforma."
+    },
     "reels": "Girar os carretéis da fita (duplo clique rebobina o nome)",
     "side": "LADO A",
     "code": {
@@ -79,7 +101,14 @@
       "kicker": "Diploma · Tecnólogo",
       "course": "Desenvolvimento de Software Multiplataforma",
       "caption": "Diploma de tecnólogo em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul"
-    }
+    },
+    "matrixHint": "↑ role: tudo em código · ↓ volta",
+    "cert": {
+      "title": "Certificações AWS · Cisco",
+      "sub": "Nuvem, IA, segurança e IoT."
+    },
+    "roleTag": "FORWARD DEPLOYED ENGINEER",
+    "roleFocus": "Web • APIs • IA • Deploy"
   },
   "about": {
     "title": "Sobre",
@@ -97,7 +126,12 @@
     "animated": "versão animada",
     "keyboardHint": "Use as setas para navegar pela trajetória; o item escolhido aparece ao lado.",
     "detail": "Detalhes",
-    "morePhotos": "Mais fotos"
+    "morePhotos": "Mais fotos",
+    "whoLabel": "Quem sou · o que entrego",
+    "goalLabel": "Onde quero chegar",
+    "noSignal": "SEM SINAL",
+    "prev": "Item anterior",
+    "next": "Próximo item"
   },
   "projects": {
     "title": "Projetos",
@@ -110,7 +144,14 @@
     "result": "Resultado final",
     "technologies": "Tecnologias",
     "close": "Fechar",
-    "gallery": "Galeria"
+    "gallery": "Galeria",
+    "side": "Lado {{side}}",
+    "discography": "Discografia selecionada",
+    "count_one": "{{count}} LP",
+    "count_other": "{{count}} LPs",
+    "kinds": "Web, mobile e IoT",
+    "hint": "Passe o mouse para tocar",
+    "listen": "Ouvir o case"
   },
   "skills": {
     "title": "Habilidades",
@@ -119,7 +160,9 @@
     "tabs": {
       "hard": "Técnicas",
       "soft": "Comportamentais"
-    }
+    },
+    "fde": "Forward Deployed Engineer:",
+    "fdeLine": "do problema do cliente ao deploy, com estas ferramentas."
   },
   "testimonials": {
     "title": "Depoimentos",
@@ -173,5 +216,33 @@
     "prev": "Página anterior",
     "next": "Próxima página",
     "goTo": "Ir para a página {{n}} de {{total}}"
+  },
+  "boot": {
+    "label": "Carregando o portfólio",
+    "side": "SP · Lado A",
+    "cassette": "PORTFÓLIO · 2027 · FDE",
+    "skip": "Clique para pular",
+    "loaded": "{{count}} tecnologias carregadas",
+    "log": [
+      "react 19 · vite · typescript",
+      "tailwind · shadcn/ui",
+      "supabase · postgres · edge functions",
+      "apis rest · node · java",
+      "aws · cloud · iot",
+      "ia · automações"
+    ]
+  },
+  "cursor": {
+    "play": "PLAY ▶",
+    "view": "VER ↓",
+    "chat": "CHAT ↗",
+    "rew": "REW ◀◀"
+  },
+  "visits": {
+    "label": "Visitas",
+    "online": "{{count}} agora",
+    "rew": "REW",
+    "demo": "demo",
+    "aria": "{{total}} visitas · {{count}} pessoas no site agora. Clique para rebobinar o contador."
   }
 }

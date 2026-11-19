@@ -1,6 +1,7 @@
-import { Menu } from 'lucide-react'
+import { ArrowUpRight, Menu } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { CvButton } from '@/components/layout/CvButton'
+import { ExternalLink } from '@/components/layout/ExternalLink'
 import { LanguageSwitcher } from '@/components/layout/LanguageSwitcher'
 import { ThemeToggle } from '@/components/layout/ThemeToggle'
 import { site } from '@/content/site'
@@ -11,10 +12,20 @@ import { NAV_SECTIONS } from '@/lib/sections'
 import { cn } from '@/lib/utils'
 
 const sectionIds = NAV_SECTIONS.map((section) => section.id)
-const initials = site.name
-  .split(' ')
-  .map((part) => part[0])
-  .join('')
+
+// Marca "DEFT." no mesmo desenho da arte da Home: monograma em quadrado + nome com ponto vermelho.
+function Brand() {
+  return (
+    <span aria-hidden className="flex items-center gap-2">
+      <span className="flex size-7 items-center justify-center rounded-md border-2 border-[#d42a20] font-display text-sm font-black text-[#d42a20]">
+        D
+      </span>
+      <span className="font-display text-xl font-black tracking-[-0.04em]">
+        DEFT<span className="text-[#d42a20]">.</span>
+      </span>
+    </span>
+  )
+}
 
 type HeaderProps = {
   onBrandClick?: () => void
@@ -28,19 +39,17 @@ export function Header({ onBrandClick }: HeaderProps) {
   return (
     <header
       className={cn(
-        'fixed inset-x-0 top-0 z-40 border-b transition-colors duration-200',
-        // header-top: no topo da Home, o menu fica sobre a cena (cores em hero.css).
+        'fixed inset-x-0 top-0 z-40 border-b transition-[background-color,opacity,visibility] duration-200',
         scrolled
           ? 'border-border bg-background/95 backdrop-blur-sm'
-          : 'header-top border-transparent',
+          : // No desktop a própria arte da Home já traz o menu, então este some até rolar.
+            'border-transparent text-foreground lg:invisible lg:opacity-0',
       )}
     >
       <div className="mx-auto flex h-14 max-w-[1200px] items-center gap-4 px-4 md:gap-6 md:px-6">
-        <a href="#inicio" onClick={onBrandClick} className="flex items-baseline gap-3">
-          <span className="font-display text-xl font-black tracking-[-0.04em]">{initials}</span>
-          <span className="sr-only text-[11px] font-medium tracking-[0.12em] uppercase xl:not-sr-only">
-            {site.name}
-          </span>
+        <a href="#inicio" onClick={onBrandClick} className="flex items-center">
+          <Brand />
+          <span className="sr-only">{site.name}</span>
         </a>
 
         {/* Menu à direita, junto dos controles de tema e idioma */}
@@ -71,6 +80,13 @@ export function Header({ onBrandClick }: HeaderProps) {
           <ThemeToggle />
           <LanguageSwitcher />
           <CvButton size="sm" variant="default" />
+          <ExternalLink
+            href={`${site.whatsappUrl}?text=${encodeURIComponent(t('hero.whatsappMessage'))}`}
+            className="hidden items-center gap-1.5 rounded-full border border-border px-4 py-1.5 text-sm transition-colors hover:border-foreground lg:flex"
+          >
+            {t('nav.talk')}
+            <ArrowUpRight aria-hidden className="size-4" />
+          </ExternalLink>
         </div>
 
         <Sheet>

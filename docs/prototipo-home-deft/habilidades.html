@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Prévia · Habilidades (FDE)</title>
+<style>
+  :root {
+    --red: #d42a20; --ease: cubic-bezier(.16,1,.3,1);
+    --paper: #f3efe7; --ink: #161512; --ink-2: #5f584c; --rule: rgb(22 21 18 / .14); --card: #fbf9f4; --shadow: 60 44 22;
+    --metal: #e4ded2; --metal-2: #cfc7b8; --lcd: #1b2a17; --lcd-ink: #b8f28a;
+  }
+  body.dark {
+    --paper: #121210; --ink: #efebe4; --ink-2: #a39d92; --rule: rgb(239 235 228 / .14); --card: #1d1c19; --shadow: 0 0 0;
+    --metal: #24231f; --metal-2: #1a1916;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body { font-family: Inter, system-ui, sans-serif; background: var(--paper); color: var(--ink); transition: background .4s, color .4s; }
+  .mono { font-family: 'JetBrains Mono', Consolas, monospace; }
+  .display { font-family: 'Archivo Black', 'Arial Black', sans-serif; letter-spacing: -.045em; text-transform: uppercase; line-height: .85; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+
+  .bar { position: fixed; z-index: 30; left: 50%; translate: -50% 0; top: 10px; display: flex; gap: 6px; padding: 5px; border-radius: 99px; background: #111; }
+  .bar button { border: 0; border-radius: 99px; padding: 7px 14px; background: #2a2a2a; color: #eee; font-size: 12.5px; font-weight: 600; }
+  .bar button.on { background: var(--red); color: #fff; }
+  .bar i { width: 1px; background: #333; }
+
+  section { display: none; min-height: 100vh; padding: 64px clamp(20px, 5vw, 80px) 40px; position: relative; overflow: hidden; }
+  section.on { display: block; }
+  section::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35 0 0 0 0 .3 0 0 0 0 .22 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .wrap { position: relative; max-width: 1200px; margin: 0 auto; }
+
+  /* Cabeçalho comum */
+  .head { display: grid; grid-template-columns: 1fr minmax(280px, 420px); gap: 24px; align-items: end; padding-bottom: 16px; border-bottom: 1px solid var(--rule); }
+  .eyebrow { display: flex; gap: 14px; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 12px; }
+  .eyebrow b { color: var(--red); font-weight: 600; }
+  .head h2 { font-size: clamp(40px, 6vw, 72px); }
+  .fde { font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+  .fde b { color: var(--ink); }
+  .fde abbr { text-decoration: none; border-bottom: 1px dotted currentColor; cursor: help; }
+  /* Ciclo FDE (conceito) */
+  .loop { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; margin: 16px 0 22px; border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; }
+  .loop div { padding: 10px 12px; border-right: 1px solid var(--rule); position: relative; transition: background .3s; }
+  .loop div:last-child { border-right: 0; }
+  .loop div:hover { background: rgb(212 42 32 / .06); }
+  .loop small { display: block; font-size: 10px; letter-spacing: .18em; color: var(--red); }
+  .loop b { display: block; font-size: 13.5px; margin: 2px 0 2px; }
+  .loop span { font-size: 11.5px; color: var(--ink-2); line-height: 1.35; }
+  .loop div:not(:last-child)::after { content: '→'; position: absolute; right: -8px; top: 50%; translate: 0 -50%; z-index: 1; font-size: 12px; color: var(--ink-2); background: var(--paper); padding: 0 1px; }
+
+  .tabs { display: inline-flex; gap: 4px; padding: 4px; border: 1px solid var(--rule); border-radius: 99px; margin-bottom: 14px; }
+  .tabs button { border: 0; background: none; padding: 6px 14px; border-radius: 99px; font-size: 12.5px; font-weight: 600; }
+  .tabs button.on { background: var(--ink); color: var(--paper); }
+
+  /* ================== MODELO 1: Mesa de mixagem ================== */
+  .studio { display: grid; grid-template-columns: 1fr 340px; gap: 22px; align-items: stretch; }
+  .console { display: grid; grid-template-columns: repeat(9, 1fr); gap: 6px; padding: 14px 12px 12px; border-radius: 12px;
+    background: linear-gradient(var(--metal), var(--metal-2)); border: 1px solid var(--rule);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .35), 0 24px 40px -24px rgb(var(--shadow) / .5); }
+  .strip { position: relative; display: grid; justify-items: center; gap: 10px; padding: 10px 4px 10px; border-radius: 8px; border: 1px solid transparent; background: rgb(0 0 0 / .03); transition: background .25s, border-color .25s; }
+  .strip:hover { background: rgb(0 0 0 / .06); }
+  .strip.solo { border-color: var(--red); background: rgb(212 42 32 / .07); }
+  .strip .ch { font-size: 9.5px; letter-spacing: .14em; color: var(--ink-2); }
+  .knob { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff8, transparent 40%), linear-gradient(#3b3a36, #161512);
+    box-shadow: 0 3px 6px rgb(0 0 0 / .35), inset 0 -2px 3px rgb(0 0 0 / .5); position: relative; transition: rotate .6s var(--ease); rotate: -40deg; }
+  .knob::after { content: ''; position: absolute; left: 50%; top: 3px; width: 2px; height: 9px; background: #f2efe9; translate: -50% 0; border-radius: 1px; }
+  .strip:hover .knob, .strip.solo .knob { rotate: 40deg; }
+  .meter { display: grid; gap: 2px; width: 10px; }
+  .meter i { height: 5px; border-radius: 1px; background: rgb(0 0 0 / .15); }
+  .strip.live .meter i.on { background: #2ecc71; } .strip.live .meter i.on.y { background: #f1c40f; } .strip.live .meter i.on.r { background: var(--red); }
+  .fader { position: relative; width: 6px; height: 92px; border-radius: 3px; background: #0b0b0a; box-shadow: inset 0 1px 2px rgb(0 0 0 / .6); }
+  .fader::before { content: ''; position: absolute; left: -9px; right: -9px; top: 50%; height: 1px; background: var(--ink-2); opacity: .4; } /* 0 dB */
+  .cap { position: absolute; left: 50%; top: 50%; width: 26px; height: 14px; translate: -50% -50%; border-radius: 3px;
+    background: linear-gradient(#f4f1ea, #c9c2b4); box-shadow: 0 3px 5px rgb(0 0 0 / .35); transition: top .5s var(--spring, var(--ease)); }
+  .cap::after { content: ''; position: absolute; inset: 6px 3px auto; height: 2px; background: var(--red); }
+  .strip.solo .cap { top: 30%; }
+  .tape-label { width: 100%; padding: 6px 2px; background: #f6f0dc; color: #2a261f; border-radius: 2px; rotate: -1.5deg; font-size: 9.5px; font-weight: 600; letter-spacing: .04em; text-align: center; line-height: 1.15;
+    box-shadow: 0 1px 2px rgb(0 0 0 / .2); min-height: 34px; display: grid; place-items: center; }
+  .strip:nth-child(even) .tape-label { rotate: 1.2deg; }
+  .solo-btn { font-size: 9px; letter-spacing: .14em; border: 1px solid var(--rule); background: var(--card); border-radius: 4px; padding: 3px 6px; }
+  .strip.solo .solo-btn { background: var(--red); color: #fff; border-color: var(--red); }
+
+  .lcd { display: grid; grid-template-rows: auto auto 1fr; gap: 12px; padding: 16px; border-radius: 12px; background: var(--lcd); color: var(--lcd-ink);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / .5), inset 0 0 40px rgb(0 0 0 / .45), 0 24px 40px -24px rgb(var(--shadow) / .5); position: relative; overflow: hidden; }
+  .lcd::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: repeating-linear-gradient(0deg, rgb(0 0 0 / .18) 0 1px, transparent 1px 3px); }
+  .lcd .now { font-size: 10px; letter-spacing: .22em; opacity: .75; display: flex; justify-content: space-between; }
+  .lcd h3 { font-size: 26px; color: #d8ffb8; text-shadow: 0 0 10px rgb(184 242 138 / .45); }
+  .lcd p { font-size: 12.5px; line-height: 1.5; color: #a6dc7d; }
+  .lcd ul { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; font-size: 12px; align-content: start; }
+  .lcd li::before { content: '▸ '; opacity: .6; }
+
+  /* ================== MODELO 2: Rack de fitas + deck ================== */
+  .rackstudio { display: grid; grid-template-columns: 420px 1fr; gap: 26px; align-items: start; }
+  .deck { position: relative; padding: 16px; border-radius: 14px; background: linear-gradient(var(--metal), var(--metal-2)); border: 1px solid var(--rule);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / .35), 0 30px 50px -28px rgb(var(--shadow) / .55); }
+  .deck .door { position: relative; height: 170px; border-radius: 8px; background: #0e0e0d; box-shadow: inset 0 0 0 1px #000, inset 0 10px 30px rgb(0 0 0 / .6); display: grid; place-items: center; overflow: hidden; }
+  .deck .door::after { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, rgb(255 255 255 / .12), transparent 35%); pointer-events: none; }
+  .cass { width: 300px; height: 150px; border-radius: 8px; background: #1b1a18; border: 1px solid #3a3a36; position: relative; transition: translate .6s var(--ease), opacity .4s; }
+  .cass.out { translate: 0 -120%; opacity: 0; }
+  .cass .lbl { position: absolute; left: 14px; right: 14px; top: 10px; height: 52px; border-radius: 4px; background: #f6f0dc; color: #1b1a18; padding: 6px 10px; }
+  .cass .lbl::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 8px; background: var(--c, var(--red)); border-radius: 4px 4px 0 0; }
+  .cass .lbl b { display: block; margin-top: 8px; font: 900 17px/1 'Archivo Black', 'Arial Black', sans-serif; text-transform: uppercase; letter-spacing: -.02em; }
+  .cass .lbl small { font-size: 9px; letter-spacing: .16em; color: #6b6255; }
+  .cass .win { position: absolute; left: 70px; right: 70px; top: 74px; height: 44px; border-radius: 22px; background: #0a0a09; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; padding: 0 14px; }
+  .reel { width: 30px; height: 30px; border-radius: 50%; background: repeating-conic-gradient(#f2efe9 0 12deg, transparent 12deg 60deg), #f2efe9; -webkit-mask: radial-gradient(circle, transparent 0 4px, #000 5px); mask: radial-gradient(circle, transparent 0 4px, #000 5px); animation: spin 2.2s linear infinite; }
+  .ctrls { display: flex; gap: 6px; margin-top: 12px; }
+  .ctrls button { flex: 1; height: 34px; border-radius: 6px; border: 1px solid var(--rule); background: linear-gradient(var(--card), var(--metal-2)); font-size: 12px; box-shadow: 0 2px 0 rgb(0 0 0 / .15); }
+  .ctrls button:active { translate: 0 2px; box-shadow: none; }
+  .jcard { margin-top: 14px; padding: 14px; border-radius: 6px; background: var(--card); border: 1px solid var(--rule); }
+  .jcard .t { display: flex; justify-content: space-between; font-size: 10px; letter-spacing: .2em; color: var(--ink-2); }
+  .jcard p { font-size: 13px; line-height: 1.5; color: var(--ink-2); margin: 8px 0 10px; }
+  .jcard ol { list-style: none; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 5px 16px; font-size: 12px; }
+  .jcard ol i { font-style: normal; color: var(--red); margin-right: 6px; }
+  .rack { display: grid; gap: 8px; padding: 14px; border-radius: 12px; border: 1px solid var(--rule); background: rgb(0 0 0 / .025); }
+  .spine { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 12px; height: 40px; padding: 0 14px 0 0; border-radius: 4px; border: 0; text-align: left;
+    background: #1b1a18; color: #f2efe9; box-shadow: 0 2px 0 rgb(0 0 0 / .3), inset 0 1px 0 rgb(255 255 255 / .08); transition: translate .4s var(--ease), box-shadow .3s; }
+  .spine .n { height: 100%; display: grid; place-items: center; background: var(--c, var(--red)); color: #fff; font-size: 11px; border-radius: 4px 0 0 4px; }
+  .spine .lab { background: #f6f0dc; color: #1b1a18; height: 26px; display: flex; align-items: center; padding: 0 10px; border-radius: 2px; font-size: 12.5px; font-weight: 600; }
+  .spine small { font-size: 10px; letter-spacing: .14em; opacity: .65; }
+  .spine:hover { translate: 14px 0; }
+  .spine.on { translate: 26px 0; box-shadow: 0 2px 0 rgb(0 0 0 / .3), -4px 0 0 var(--red); }
+
+  @keyframes spin { to { rotate: 360deg; } }
+  @media (max-width: 980px) { .studio, .rackstudio, .head { grid-template-columns: 1fr; } .console { grid-template-columns: repeat(3, 1fr); } .loop { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <button class="on" data-m="m1">Modelo 1 · Mesa de mixagem</button>
+    <button data-m="m2">Modelo 2 · Rack de fitas</button>
+    <i></i>
+    <button id="theme">Escuro</button>
+  </div>
+
+  <!-- ================= MODELO 1 ================= -->
+  <section id="m1" class="on">
+    <div class="wrap">
+      <header class="head">
+        <div>
+          <p class="eyebrow mono"><b>● Lado B</b><span>Estúdio</span><span>Forward Deployed Engineer</span></p>
+          <h2 class="display">Habilidades</h2>
+        </div>
+        <p class="fde"><b>Forward Deployed Engineer (<abbr title="Forward Deployed Engineer">FDE</abbr>)</b>: engenheiro que trabalha junto do cliente. Entende o problema em campo, constrói, integra aos sistemas que já existem e coloca em produção. Cada canal da mesa é uma parte desse trabalho.</p>
+      </header>
+      <div class="loop" id="loop1"></div>
+      <div class="tabs"><button class="on">Técnicas</button><button>Em campo (comportamentais)</button></div>
+      <div class="studio">
+        <div class="console" id="console"></div>
+        <aside class="lcd mono" id="lcd"></aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MODELO 2 ================= -->
+  <section id="m2">
+    <div class="wrap">
+      <header class="head">
+        <div>
+          <p class="eyebrow mono"><b>● Lado B</b><span>Coleção de fitas</span><span>Forward Deployed Engineer</span></p>
+          <h2 class="display">Habilidades</h2>
+        </div>
+        <p class="fde"><b>Forward Deployed Engineer (<abbr title="Forward Deployed Engineer">FDE</abbr>)</b>: engenheiro que trabalha junto do cliente. Entende o problema em campo, constrói, integra aos sistemas que já existem e coloca em produção. Escolha uma fita para tocar.</p>
+      </header>
+      <div class="loop" id="loop2"></div>
+      <div class="rackstudio">
+        <div class="deck">
+          <div class="door"><div class="cass" id="cass"><div class="lbl"><small class="mono" id="cnum"></small><b id="cname"></b></div><div class="win"><span class="reel"></span><span class="reel"></span></div></div></div>
+          <div class="ctrls mono"><button id="prev">◀◀</button><button>▶ PLAY</button><button id="next">▶▶</button><button id="eject">⏏</button></div>
+          <div class="jcard"><div class="t mono"><span id="jside">LADO A</span><span id="jcount"></span></div><p id="jconcept"></p><ol class="mono" id="jtracks"></ol></div>
+        </div>
+        <div class="rack" id="rack"></div>
+      </div>
+    </div>
+  </section>
+
+<script>
+const LOOP = [
+  ['01', 'Descobrir', 'Ir até o cliente e entender o problema real.'],
+  ['02', 'Construir', 'Protótipo rápido, depois produto.'],
+  ['03', 'Integrar', 'Conectar aos sistemas e dados que já existem.'],
+  ['04', 'Implantar', 'Colocar em produção no ambiente do cliente.'],
+  ['05', 'Medir', 'Acompanhar resultado e iterar com o time.'],
+];
+const G = [
+  { n: 'Discovery e UX', c: '#d42a20', concept: 'Descobrir: mapear o problema do cliente e desenhar a solução antes do código.', s: ['Figma','UI/UX Design','Design responsivo','Acessibilidade'] },
+  { n: 'Frontend', c: '#3b82c4', concept: 'Construir: as telas que o usuário do cliente usa no dia a dia.', s: ['React','TypeScript','JavaScript','Vite','Tailwind CSS','shadcn/ui'] },
+  { n: 'Backend e APIs', c: '#6aa84f', concept: 'Integrar: conectar o produto aos sistemas do cliente por APIs.', s: ['Java','Spring Boot','Node.js','Python','APIs REST'] },
+  { n: 'Dados', c: '#c98a1b', concept: 'Integrar: modelar e conectar os dados que já existem na operação.', s: ['MySQL','PostgreSQL','Supabase','Firebase'] },
+  { n: 'Cloud e deploy', c: '#e07b20', concept: 'Implantar: colocar em produção e manter rodando.', s: ['AWS','Vercel','Linux','Git','GitHub'] },
+  { n: 'IA aplicada', c: '#8e75b2', concept: 'Construir: levar IA para fluxos reais, como assistentes e automações.', s: ['IA generativa','Google Gemini','Python'] },
+  { n: 'Mobile e IoT', c: '#2a9d8f', concept: 'Implantar em campo: apps e sensores fora da tela do computador.', s: ['React Native','Android','Expo','ESP32','Arduino','MQTT'] },
+  { n: 'Segurança', c: '#5b6168', concept: 'Implantar com segurança desde o primeiro deploy.', s: ['Cibersegurança','Segurança de redes','Linux','Segurança eletrônica'] },
+  { n: 'Cliente e negócio', c: '#b8860b', concept: 'Medir: falar a língua do negócio, com metas, KPIs e resultados.', s: ['Vendas B2B/B2C','Gestão de KPIs','E-commerce','Campanhas e feiras','Português · nativo','Inglês · B2'] },
+];
+const loopHtml = LOOP.map(([n, t, d]) => `<div><small class="mono">${n}</small><b>${t}</b><span>${d}</span></div>`).join('');
+loop1.innerHTML = loopHtml; loop2.innerHTML = loopHtml;
+
+/* ---------- Modelo 1 ---------- */
+consoleEl = document.getElementById('console');
+consoleEl.innerHTML = G.map((g, i) => `
+  <button class="strip" data-i="${i}">
+    <span class="ch mono">CH ${String(i + 1).padStart(2, '0')}</span>
+    <span class="knob"></span>
+    <span class="meter">${Array.from({ length: 8 }, (_, k) => `<i class="${k < 2 ? 'r' : k < 4 ? 'y' : ''}"></i>`).join('')}</span>
+    <span class="fader"><span class="cap"></span></span>
+    <span class="solo-btn mono">SOLO</span>
+    <span class="tape-label">${g.n}</span>
+  </button>`).join('');
+function solo(i) {
+  document.querySelectorAll('.strip').forEach((s, k) => s.classList.toggle('solo', k === i));
+  const g = G[i];
+  lcd.innerHTML = `<div class="now"><span>● AO VIVO · CH ${String(i + 1).padStart(2, '0')}</span><span>${g.s.length} ITENS</span></div>
+    <div><h3 class="display">${g.n}</h3><p>${g.concept}</p></div>
+    <ul>${g.s.map(x => `<li>${x}</li>`).join('')}</ul>`;
+}
+document.querySelectorAll('.strip').forEach(s => s.onclick = () => solo(+s.dataset.i));
+solo(0);
+// medidores VU "tocando"
+setInterval(() => document.querySelectorAll('.strip').forEach((s) => {
+  s.classList.add('live');
+  const lvl = s.classList.contains('solo') ? 3 + Math.floor(Math.random() * 5) : Math.floor(Math.random() * 4);
+  [...s.querySelectorAll('.meter i')].reverse().forEach((m, k) => m.classList.toggle('on', k < lvl));
+}), 140);
+
+/* ---------- Modelo 2 ---------- */
+rack.innerHTML = G.map((g, i) => `
+  <button class="spine" data-i="${i}" style="--c:${g.c}">
+    <span class="n mono">${String(i + 1).padStart(2, '0')}</span>
+    <span class="lab">${g.n}</span>
+    <small class="mono">${g.s.length} FAIXAS</small>
+  </button>`).join('');
+let cur = 0;
+function play(i) {
+  cur = (i + G.length) % G.length;
+  const g = G[cur];
+  document.querySelectorAll('.spine').forEach((s, k) => s.classList.toggle('on', k === cur));
+  cass.classList.add('out');
+  setTimeout(() => {
+    cass.style.setProperty('--c', g.c);
+    cnum.textContent = `FITA ${String(cur + 1).padStart(2, '0')} · FDE`; cname.textContent = g.n;
+    jside.textContent = `LADO ${cur % 2 ? 'B' : 'A'}`; jcount.textContent = `${g.s.length} FAIXAS`;
+    jconcept.textContent = g.concept;
+    jtracks.innerHTML = g.s.map((x, n) => `<li><i>${n % 2 ? 'B' : 'A'}${Math.floor(n / 2) + 1}</i>${x}</li>`).join('');
+    cass.classList.remove('out');
+  }, 300);
+}
+document.querySelectorAll('.spine').forEach(s => s.onclick = () => play(+s.dataset.i));
+prev.onclick = () => play(cur - 1); next.onclick = () => play(cur + 1); eject.onclick = () => cass.classList.toggle('out');
+play(0);
+
+/* ---------- Barra ---------- */
+document.querySelectorAll('[data-m]').forEach(b => b.onclick = () => {
+  document.querySelectorAll('[data-m], section').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); document.getElementById(b.dataset.m).classList.add('on');
+});
+theme.onclick = () => { const d = document.body.classList.toggle('dark'); theme.textContent = d ? 'Claro' : 'Escuro'; };
+</script>
+</body>
+</html>

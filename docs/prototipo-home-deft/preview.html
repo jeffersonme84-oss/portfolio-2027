@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prévia interativa</title>
+<style>
+*{box-sizing:border-box;margin:0}
+body{background:#1b1c18;font-family:system-ui,sans-serif;color:#eee;height:100vh;display:flex;flex-direction:column}
+.bar{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid #333;flex-wrap:wrap}
+.bar strong{font-size:14px}
+.seg{display:flex;background:#2a2b26;border-radius:99px;padding:3px}
+.seg button{border:0;background:none;color:#bbb;padding:7px 16px;border-radius:99px;font:inherit;font-size:13px;cursor:pointer}
+.seg button.on{background:#d42a20;color:#fff}
+.hint{font-size:12px;color:#999}
+.wrap{flex:1;display:grid;place-items:center;overflow:auto;padding:16px}
+iframe{border:0;background:#0d0e09;width:100%;height:100%}
+.phone iframe{width:390px;height:780px;border-radius:36px;border:10px solid #000;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+</style>
+</head>
+<body>
+<div class="bar">
+  <strong>Prévia interativa</strong>
+  <div class="seg"><button class="on" data-v="desk">Computador</button><button data-v="phone">Celular</button></div>
+  <span class="hint">Teste: botão ☾/☀ no menu, PT/EN, passe o mouse nos números, clique em "Ver por dentro" e no WhatsApp.</span>
+</div>
+<div class="wrap" id="wrap"><iframe id="f" src="index.html" title="Prévia da home"></iframe></div>
+<script>
+document.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{
+  document.querySelectorAll('[data-v]').forEach(x=>x.classList.toggle('on',x===b));
+  document.getElementById('wrap').className='wrap'+(b.dataset.v==='phone'?' phone':'');
+  document.getElementById('f').src='index.html?'+Date.now();
+});
+</script>
+</body>
+</html>
