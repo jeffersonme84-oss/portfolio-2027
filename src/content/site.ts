@@ -17,7 +17,7 @@ export const site = {
   // Redes com string vazia não aparecem. A ordem aqui é a ordem de exibição.
   social: {
     linkedin: 'https://www.linkedin.com/in/jeffersonmevangelista/',
-    github: 'https://github.com/JeffersonEvangelista',
+    github: 'https://github.com/jeffersonme84-oss',
     behance: '', // opcional
     instagram: 'https://www.instagram.com/jeffinhooficial20/',
     dribbble: '', // opcional
