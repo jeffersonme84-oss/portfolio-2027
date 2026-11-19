@@ -44,11 +44,6 @@
   --deft-dock-shadow: 0 6px 20px rgb(0 0 0 / 0.08);
 }
 
-/* No claro, as pernas da foto passam atrás da barra: sem tampa, a barra opaca cobre a original. */
-.deft-hero.is-light .deft-patch.is-dock {
-  display: none;
-}
-
 .deft-muted {
   color: var(--deft-muted);
 }
@@ -196,6 +191,17 @@
 .deft-patch {
   position: absolute;
   background: var(--deft-bg);
+}
+
+/* Degradê que dissolve a base da foto na cor do fundo (esconde a barra desenhada na arte). */
+.deft-fade {
+  position: absolute;
+  pointer-events: none;
+  background: linear-gradient(180deg, transparent 0%, var(--deft-bg) 44%);
+}
+
+.deft-fade.is-side {
+  background: linear-gradient(180deg, transparent 0%, var(--deft-bg) 30%);
 }
 
 .deft-nav,
@@ -445,6 +451,7 @@
 /* Contador de visitas (deck K7) no canto de baixo; estilos do aparelho em retro.css. */
 .deft-deck {
   position: absolute;
+  z-index: 1; /* acima do degradê do canto */
 }
 
 .deft-deck .deck-labels b {
@@ -474,16 +481,19 @@
 .deft-row {
   display: flex;
   align-items: center;
-  border-radius: 6px;
+  padding-top: 4px;
+  border-top: 1px solid var(--deft-line);
+  border-radius: 0 0 6px 6px;
   transition:
     background 0.2s,
     padding 0.2s;
 }
 
 .deft-row b {
-  width: 68px;
+  flex: none;
+  width: 58px;
   font-family: 'Archivo Variable', system-ui, sans-serif;
-  font-size: 40px;
+  font-size: 31px;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -491,7 +501,7 @@
 }
 
 .deft-row span {
-  font-size: 15px;
+  font-size: 14.5px;
   line-height: 1.2;
   white-space: nowrap;
 }
@@ -523,18 +533,57 @@
   opacity: 1;
 }
 
+/* Desktop: ícones redondos embaixo da foto; WhatsApp em vermelho cheio. */
 .deft-dock {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  border: 1px solid var(--deft-line);
-  border-radius: 999px;
-  background: var(--deft-dock);
-  box-shadow: var(--deft-dock-shadow);
+  gap: 10px;
 }
 
-.deft-dock a,
+.deft-dock a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--deft-line-2);
+  border-radius: 50%;
+  color: var(--deft-text);
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    color 0.2s,
+    translate 0.2s;
+}
+
+.deft-dock a svg {
+  width: 15px;
+  height: 15px;
+}
+
+.deft-dock a:hover,
+.deft-dock a:focus-visible {
+  border-color: var(--deft-red);
+  color: var(--deft-red-2);
+}
+
+.deft-dock a.is-wa {
+  border-color: var(--deft-red);
+  background: var(--deft-red);
+  color: #fff;
+}
+
+.deft-dock a.is-wa:hover,
+.deft-dock a.is-wa:focus-visible {
+  background: var(--deft-red-2);
+  color: #fff;
+}
+
+:root:not(.reduce-motion) .deft-dock a:hover {
+  translate: 0 -2px;
+}
+
 .deft-mobile-dock a {
   display: flex;
   align-items: center;
@@ -549,22 +598,25 @@
     color 0.2s;
 }
 
-.deft-dock a:hover,
 .deft-mobile-dock a:hover {
   background: var(--deft-hover);
   color: var(--deft-strong);
 }
 
-.deft-dock a.is-wa,
 .deft-mobile-dock a.is-wa {
-  background: #25d366;
-  color: #08240f;
+  background: var(--deft-red);
+  color: #fff;
   font-weight: 600;
 }
 
-.deft-dock a.is-wa:hover,
 .deft-mobile-dock a.is-wa:hover {
-  background: #3ae07a;
+  background: var(--deft-red-2);
+}
+
+.deft-mobile-dock a svg {
+  flex: none;
+  width: 14px;
+  height: 14px;
 }
 
 /* ---------- Celular e tablet ---------- */

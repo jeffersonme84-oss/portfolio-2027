@@ -41,7 +41,9 @@ export const site = {
     backgroundLight: '/images/hero/home-deft-light.jpg',
     // Números da Home. Tecnologias = itens técnicos de skills.ts (linguagens, frameworks, bancos,
     // nuvem, ferramentas, IoT e IA), sem soft skills, design, comercial e idiomas.
-    stats: { technologies: 30, years: 2, degrees: 1 },
+    // postAreas = frentes da pós na PUC-Campinas + PUCPR (Arquitetura de Software, Ciência de
+    // Dados e Cybersecurity).
+    stats: { technologies: 30, years: 2, degrees: 1, postAreas: 3 },
     // Projeto aberto por "Ver por dentro" (slug de projects.ts).
     featuredProject: 'sias-app',
   },

@@ -1,6 +1,7 @@
-import { ArrowDown, ArrowRight, Download, MapPin, Play } from 'lucide-react'
+import { ArrowDown, ArrowRight, Download, Mail, MapPin, Play } from 'lucide-react'
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react'
-import { SiWhatsapp } from 'react-icons/si'
+import { FaLinkedinIn } from 'react-icons/fa'
+import { SiGithub, SiWhatsapp } from 'react-icons/si'
 import { ExternalLink } from '@/components/layout/ExternalLink'
 import { MatrixPortrait } from '@/components/retro/MatrixPortrait'
 import { TapeDeckCounter } from '@/components/retro/TapeDeckCounter'
@@ -91,19 +92,33 @@ function TypedNameRun() {
 type Stat = { to: number; pad: number; label: string; sub: string; href: string }
 type Contact = { href: string; label: string; icon: ReactNode; external: boolean }
 
-function ContactLink({ item, className }: { item: Contact; className?: string }) {
+// `iconOnly`: só o ícone na tela (o nome fica para leitores de tela e na dica do mouse).
+function ContactLink({
+  item,
+  className,
+  iconOnly = false,
+}: {
+  item: Contact
+  className?: string
+  iconOnly?: boolean
+}) {
+  const content = (
+    <>
+      {item.icon}
+      {iconOnly ? <span className="sr-only">{item.label}</span> : item.label}
+    </>
+  )
+  const title = iconOnly ? item.label : undefined
   if (!item.external) {
     return (
-      <a href={item.href} className={className}>
-        {item.icon}
-        {item.label}
+      <a href={item.href} className={className} title={title}>
+        {content}
       </a>
     )
   }
   return (
-    <ExternalLink href={item.href} className={className}>
-      {item.icon}
-      {item.label}
+    <ExternalLink href={item.href} className={className} title={title}>
+      {content}
     </ExternalLink>
   )
 }
@@ -146,6 +161,13 @@ export function Hero() {
       sub: t('hero.stats.degreeSub'),
       href: '#sobre',
     },
+    {
+      to: site.hero.stats.postAreas,
+      pad: 2,
+      label: t('hero.stats.post'),
+      sub: t('hero.stats.postSub'),
+      href: '#sobre',
+    },
   ]
 
   // Menu na ordem da rolagem (Início → Contato), o mesmo do header.
@@ -157,12 +179,31 @@ export function Hero() {
   const contacts: Contact[] = [
     { href: waHref, label: t('social.whatsapp'), icon: <SiWhatsapp aria-hidden />, external: true },
     ...(site.social.linkedin
-      ? [{ href: site.social.linkedin, label: t('social.linkedin'), icon: null, external: true }]
+      ? [
+          {
+            href: site.social.linkedin,
+            label: t('social.linkedin'),
+            icon: <FaLinkedinIn aria-hidden />,
+            external: true,
+          },
+        ]
       : []),
     ...(site.social.github
-      ? [{ href: site.social.github, label: t('social.github'), icon: null, external: true }]
+      ? [
+          {
+            href: site.social.github,
+            label: t('social.github'),
+            icon: <SiGithub aria-hidden />,
+            external: true,
+          },
+        ]
       : []),
-    { href: `mailto:${site.email}`, label: t('social.email'), icon: null, external: false },
+    {
+      href: `mailto:${site.email}`,
+      label: t('social.email'),
+      icon: <Mail aria-hidden />,
+      external: false,
+    },
   ]
 
   // Desktop: a cena 1376 × 768 cabe inteira na tela (largura e altura), centralizada, como as
@@ -337,12 +378,17 @@ export function Hero() {
               {t('hero.workMode')}
             </p>
 
-            {/* Canto de baixo: contador de visitas (deck K7). Sem Supabase, volta o "Ver por
-                dentro" do projeto em destaque. A tampa cobre também o botão de play da arte. */}
+            {/* Canto de baixo: o contador de visitas (deck K7) fica à direita, na coluna dos
+                destaques. Sem Supabase, volta o "Ver por dentro" à esquerda. A tampa da esquerda
+                cobre o botão de play da arte. */}
             {visits.status === 'ready' ? (
               <>
                 <div aria-hidden className="deft-patch" style={at(16, 728, 300, 40)} />
-                <TapeDeckCounter stats={visits} className="deft-deck deft-in" style={at(24, 732)} />
+                <TapeDeckCounter
+                  stats={visits}
+                  className="deft-deck deft-in"
+                  style={at(STAGE_W - 34 - 262, 727)}
+                />
               </>
             ) : visits.status === 'loading' ? (
               <div aria-hidden className="deft-patch" style={at(16, 728, 300, 40)} />
@@ -366,17 +412,16 @@ export function Hero() {
               <small>{t('hero.cert.sub')}</small>
             </a>
 
-            {/* Destaques com dados reais; cada linha leva à seção correspondente. */}
-            <div aria-hidden className="deft-patch" style={at(1082, 520, 266, 54)} />
-            <div aria-hidden className="deft-patch" style={at(1082, 581, 266, 54)} />
-            <div aria-hidden className="deft-patch" style={at(1082, 642, 266, 55)} />
+            {/* Destaques com dados reais; cada linha leva à seção correspondente. Uma tampa só
+                cobre as 3 linhas da arte; as 4 linhas novas têm a própria linha divisória. */}
+            <div aria-hidden className="deft-patch" style={at(1082, 503, 266, 200)} />
             <ul aria-label={t('hero.stats.label')}>
               {stats.map((stat, index) => (
                 <li key={stat.label}>
                   <a
                     href={stat.href}
                     className="deft-row deft-in"
-                    style={at(1087, 522 + index * 61, 252, 50)}
+                    style={at(1087, 506 + index * 48, 252, 44)}
                   >
                     <b>
                       <CountUp to={stat.to} pad={stat.pad} />
@@ -391,16 +436,23 @@ export function Hero() {
               ))}
             </ul>
 
-            {/* Barra de contatos no lugar da barra da arte original. No modo claro as pernas da
-              foto passam atrás da barra, então a própria barra (opaca) cobre a original. */}
-            <div aria-hidden className="deft-patch is-dock" style={at(346, 713, 684, 55)} />
+            {/* Contatos em ícones redondos, centralizados embaixo da foto (proposta C, aprovada).
+                A base da foto se dissolve na cor do fundo e esconde a barra desenhada na arte;
+                outro degradê limpa o canto do contador. */}
+            <div aria-hidden className="deft-fade" style={at(330, 672, 716, 96)} />
+            <div aria-hidden className="deft-fade is-side" style={at(1056, 684, 320, 84)} />
             <nav
               aria-label={t('hero.contactBar')}
               className="deft-dock deft-in"
-              style={at(350, 715, 676, 51)}
+              style={at(612, 722, 240, 34)}
             >
               {contacts.map((item, index) => (
-                <ContactLink key={item.label} item={item} className={cn(index === 0 && 'is-wa')} />
+                <ContactLink
+                  key={item.label}
+                  item={item}
+                  iconOnly
+                  className={cn(index === 0 && 'is-wa')}
+                />
               ))}
             </nav>
 
@@ -445,7 +497,10 @@ export function Hero() {
             <MapPin aria-hidden className="size-3.5 text-[#d42a20]" />
             {t('hero.workMode')}
           </p>
-          <ul aria-label={t('hero.stats.label')} className="mt-5 grid grid-cols-3 gap-2 deft-in">
+          <ul
+            aria-label={t('hero.stats.label')}
+            className="mt-5 grid grid-cols-2 gap-2 deft-in sm:grid-cols-4"
+          >
             {stats.map((stat) => (
               <li key={stat.label}>
                 <a href={stat.href} className="deft-card">

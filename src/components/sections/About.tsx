@@ -39,7 +39,7 @@ export function About() {
           <p className="mb-1.5 font-mono text-[10.5px] tracking-[0.2em] text-muted-foreground uppercase">
             {t('about.whoLabel')}
           </p>
-          <p className="line-clamp-3 text-[15px] leading-relaxed md:line-clamp-none md:text-base short:text-[15px] short:leading-[1.55]">
+          <p className="line-clamp-3 text-[15px] leading-relaxed md:line-clamp-none md:text-base short:text-[15px] short:leading-[1.5]">
             <strong className="font-semibold">{firstName}</strong>
             {rest.length > 0 && `, ${rest.join(', ')}`}
           </p>

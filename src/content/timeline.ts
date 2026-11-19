@@ -38,9 +38,9 @@ export const about = {
   // Quem sou + o que entrego
   bio: {
     'pt-BR':
-      'Sou Jefferson, Forward Deployed Engineer em São Paulo, formado em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul. Trabalho entre o cliente e o código: entendo o problema de quem vai usar, construo a solução com Java, Node.js, Python, SQL, AWS e IA e coloco em produção. Da liderança de vendas e da psicologia trago o que falta em muita equipe técnica: escuta, negociação e visão de negócio.',
+      'Sou Jefferson, Forward Deployed Engineer em São Paulo, formado em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul e pós-graduando em Arquitetura de Software, Ciência de Dados e Cybersecurity na PUC-Campinas e na PUCPR. Trabalho entre o cliente e o código: entendo o problema de quem vai usar, construo a solução com Java, Node.js, Python, SQL, AWS e IA e coloco em produção. Da liderança de vendas e da psicologia trago o que falta em muita equipe técnica: escuta, negociação e visão de negócio.',
     'en-US':
-      "I'm Jefferson, a Forward Deployed Engineer in São Paulo, with a degree in Multiplatform Software Development from Fatec Zona Sul. I work between the client and the code: I understand the problem of the people who will use it, build the solution with Java, Node.js, Python, SQL, AWS and AI, and ship it to production. From sales leadership and psychology I bring what many tech teams lack: listening, negotiation and business sense.",
+      "I'm Jefferson, a Forward Deployed Engineer in São Paulo, with a degree in Multiplatform Software Development from Fatec Zona Sul, now in graduate studies in Software Architecture, Data Science and Cybersecurity at PUC-Campinas and PUCPR. I work between the client and the code: I understand the problem of the people who will use it, build the solution with Java, Node.js, Python, SQL, AWS and AI, and ship it to production. From sales leadership and psychology I bring what many tech teams lack: listening, negotiation and business sense.",
   } as Localized,
   // Onde quero chegar
   // TODO(jefferson): confirmar o objetivo de carreira
@@ -53,7 +53,10 @@ export const about = {
   tags: [
     { 'pt-BR': 'São Paulo', 'en-US': 'São Paulo' },
     { 'pt-BR': 'Inglês B2', 'en-US': 'English B2' },
-    { 'pt-BR': 'Cloud · IA · Segurança', 'en-US': 'Cloud · AI · Security' },
+    {
+      'pt-BR': 'Pós · Arquitetura · Dados · Cyber',
+      'en-US': 'Postgrad · Architecture · Data · Cyber',
+    },
   ] as Localized[],
 }
 
@@ -91,23 +94,25 @@ export const timeline: TimelineItem[] = [
     id: 'pos-puc',
     type: 'education',
     period: '2025 →',
-    // TODO(jefferson): confirmar se a pós está em andamento e a previsão de conclusão
+    // Informado pelo Jefferson (2026-11-19): PUC-Campinas + PUCPR, em andamento.
+    // TODO(jefferson): previsão de conclusão
     title: {
-      'pt-BR': 'Pós-graduação em Tecnologia da Informação',
-      'en-US': 'Graduate certificate in Information Technology',
+      'pt-BR': 'Pós: Arquitetura de Software, Dados e Cyber',
+      'en-US': 'Postgrad: Software Architecture, Data & Cyber',
     },
     subtitle: {
-      'pt-BR': 'PUC-Campinas · lato sensu',
-      'en-US': 'PUC-Campinas · lato sensu',
+      'pt-BR': 'PUC-Campinas + PUCPR · lato sensu',
+      'en-US': 'PUC-Campinas + PUCPR · lato sensu',
     },
     summary: {
-      'pt-BR': 'Especialização lato sensu em Tecnologia da Informação.',
-      'en-US': 'Lato sensu specialization in Information Technology.',
+      'pt-BR': 'Pós-graduação em Arquitetura de Software, Ciência de Dados e Cybersecurity.',
+      'en-US': 'Graduate studies in Software Architecture, Data Science and Cybersecurity.',
     },
     details: {
       'pt-BR':
-        'Pós-graduação lato sensu em Tecnologia da Informação, iniciada em novembro de 2025.',
-      'en-US': 'Lato sensu graduate program in Information Technology, started in November 2025.',
+        'Pós-graduação lato sensu na PUC-Campinas e na PUCPR, iniciada em novembro de 2025, em três frentes: Arquitetura de Software, para desenhar sistemas que escalam; Ciência de Dados, para decidir com base em dados; e Cybersecurity, para proteger o que vai para produção. É a base técnica do trabalho de FDE.',
+      'en-US':
+        'Lato sensu graduate studies at PUC-Campinas and PUCPR, started in November 2025, across three fronts: Software Architecture, to design systems that scale; Data Science, to make data-driven decisions; and Cybersecurity, to protect what goes to production. It is the technical foundation of my work as an FDE.',
     },
   },
   {
