@@ -105,6 +105,7 @@
       "caption": "Technologist degree in Multiplatform Software Development from Fatec Zona Sul"
     },
     "matrixHint": "↑ scroll: all code · ↓ back",
+    "replayBoot": "Home (replays the intro)",
     "cert": {
       "title": "AWS · Cisco certifications",
       "sub": "Cloud, AI, security and IoT."
@@ -238,7 +239,8 @@
     "play": "PLAY ▶",
     "view": "SEE ↓",
     "chat": "CHAT ↗",
-    "rew": "REW ◀◀"
+    "rew": "REW ◀◀",
+    "replay": "REPLAY ↺"
   },
   "visits": {
     "label": "Visits",

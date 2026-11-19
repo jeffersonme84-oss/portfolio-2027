@@ -105,6 +105,7 @@
       "caption": "Diploma de tecnólogo em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul"
     },
     "matrixHint": "↑ role: tudo em código · ↓ volta",
+    "replayBoot": "Início (toca a abertura de novo)",
     "cert": {
       "title": "Certificações AWS · Cisco",
       "sub": "Nuvem, IA, segurança e IoT."
@@ -238,7 +239,8 @@
     "play": "PLAY ▶",
     "view": "VER ↓",
     "chat": "CHAT ↗",
-    "rew": "REW ◀◀"
+    "rew": "REW ◀◀",
+    "replay": "REPLAY ↺"
   },
   "visits": {
     "label": "Visitas",

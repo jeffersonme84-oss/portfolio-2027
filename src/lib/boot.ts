@@ -20,10 +20,27 @@ function shouldBoot() {
 }
 
 let booting = shouldBoot()
+// Número da "sessão" da tela: muda a cada replay, para o BootLoader montar uma nova.
+let run = booting ? 1 : 0
 if (booting) document.documentElement.classList.add('boot-active')
 
 export function isBooting() {
   return booting
+}
+
+export function getBootRun() {
+  return run
+}
+
+// Toca a tela de carregamento de novo (clique na marca DEFT. da Home). Não faz nada com
+// animações reduzidas ou se ela já estiver na tela.
+export function replayBoot() {
+  if (booting || isReducedMotion()) return false
+  booting = true
+  run += 1
+  document.documentElement.classList.add('boot-active')
+  listeners.forEach((listener) => listener())
+  return true
 }
 
 export function finishBoot() {

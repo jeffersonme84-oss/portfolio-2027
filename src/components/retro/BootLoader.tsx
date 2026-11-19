@@ -1,15 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { useTranslation } from 'react-i18next'
 import { site } from '@/content/site'
 import { useClock } from '@/hooks/useClock'
 import { useLocale } from '@/hooks/useLocale'
-import { finishBoot, isBooting } from '@/lib/boot'
+import { finishBoot, getBootRun, subscribeBoot } from '@/lib/boot'
 import '@/styles/boot.css'
 
 // Tela de carregamento "fita K7" (aprovada pelo Jefferson numa prévia, 2026-11-19):
 // carretéis passando a fita, nome que se decodifica, log de build, contador odômetro e saída com
-// glitch VHS + "TV de tubo desligando". Só na primeira visita e nunca com animações reduzidas
-// (ver src/lib/boot.ts). Clique, Esc ou Enter pulam. Estilos em src/styles/boot.css.
+// glitch VHS + "TV de tubo desligando". Na primeira visita e ao clicar na marca DEFT. da Home;
+// nunca com animações reduzidas (ver src/lib/boot.ts). Clique, Esc ou Enter pulam.
+// Estilos em src/styles/boot.css.
 
 const WORD = 'DEFT'
 const GLYPHS = '01<>/{}[]#$%&*+=;:ABCDEFGHJKLMNPQRSTUVWXYZ'
@@ -24,11 +25,12 @@ function ease(raw: number) {
 }
 
 export function BootLoader() {
-  // Decidido uma vez: a tela continua montada até a animação de saída terminar.
-  const [show] = useState(isBooting)
-  const [gone, setGone] = useState(false)
-  if (!show || gone) return null
-  return <Boot onGone={() => setGone(true)} />
+  // Cada "sessão" (1ª visita ou replay pela marca DEFT.) monta uma tela nova, que continua
+  // montada até a animação de saída terminar.
+  const run = useSyncExternalStore(subscribeBoot, getBootRun)
+  const [goneRun, setGoneRun] = useState(0)
+  if (run === 0 || goneRun === run) return null
+  return <Boot key={run} onGone={() => setGoneRun(run)} />
 }
 
 function Boot({ onGone }: { onGone: () => void }) {

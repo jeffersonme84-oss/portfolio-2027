@@ -11,6 +11,7 @@ import { ThemeToggle } from '@/components/layout/ThemeToggle'
 import { projects } from '@/content/projects'
 import { site } from '@/content/site'
 import { useBootDone } from '@/hooks/useBootDone'
+import { replayBoot } from '@/lib/boot'
 import { useClock } from '@/hooks/useClock'
 import { useLocale } from '@/hooks/useLocale'
 import { useReducedMotion } from '@/hooks/useReducedMotion'
@@ -325,8 +326,18 @@ export function Hero() {
             >
               <span className="sr-only">{t('nav.talk')}</span>
             </ExternalLink>
-            <a href="#inicio" className="deft-hot is-square" style={at(22, 8, 94, 38)}>
-              <span className="sr-only">{t('nav.home')}</span>
+            {/* Marca DEFT. da arte: toca a tela de carregamento de novo (easter egg). Com
+                animações reduzidas, só volta ao início. */}
+            <a
+              href="#inicio"
+              className="deft-hot is-square"
+              data-cursor={t('cursor.replay')}
+              onClick={(event) => {
+                if (replayBoot()) event.preventDefault()
+              }}
+              style={at(22, 8, 94, 38)}
+            >
+              <span className="sr-only">{t('hero.replayBoot')}</span>
             </a>
 
             {/* Topo direito: acento corrigido + relógio de São Paulo. */}
