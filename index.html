@@ -30,8 +30,103 @@
         if (l === 'pt-BR' || l === 'en-US') document.documentElement.lang = l
       } catch (e) {}
     </script>
+    <style>
+      /* Tela de espera em HTML puro: aparece só se o JavaScript demorar (internet lenta) e
+         some quando o site monta (src/main.tsx). Mesmo visual escuro da fita K7. */
+      #preboot {
+        position: fixed;
+        inset: 0;
+        z-index: 101;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        gap: 18px;
+        background: #0b0b09;
+        color: #edeae6;
+        font-family: ui-monospace, 'Cascadia Mono', Consolas, monospace;
+        opacity: 0;
+        animation: preboot-in 0.3s ease-out 0.4s forwards;
+        transition: opacity 0.35s ease;
+      }
+      #preboot.is-gone {
+        opacity: 0 !important;
+        pointer-events: none;
+      }
+      #preboot b {
+        font:
+          900 clamp(64px, 14vw, 132px) / 0.9 system-ui,
+          'Segoe UI',
+          Arial,
+          sans-serif;
+        letter-spacing: -0.05em;
+      }
+      #preboot b i {
+        display: inline-block;
+        width: 0.2em;
+        height: 0.2em;
+        margin-left: 0.05em;
+        background: #d42a20;
+      }
+      #preboot span {
+        font-size: 12px;
+        letter-spacing: 0.28em;
+        color: #8b8b86;
+      }
+      #preboot span::before {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin-right: 10px;
+        border-radius: 50%;
+        background: #d42a20;
+        animation: preboot-rec 1s steps(2) infinite;
+      }
+      #preboot s {
+        width: min(220px, 60vw);
+        height: 3px;
+        overflow: hidden;
+        background: rgb(255 255 255 / 0.1);
+      }
+      #preboot s::after {
+        content: '';
+        display: block;
+        width: 35%;
+        height: 100%;
+        background: #d42a20;
+        animation: preboot-bar 1.1s ease-in-out infinite;
+      }
+      @keyframes preboot-in {
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes preboot-rec {
+        50% {
+          opacity: 0.2;
+        }
+      }
+      @keyframes preboot-bar {
+        from {
+          translate: -100% 0;
+        }
+        to {
+          translate: 300% 0;
+        }
+      }
+      .reduce-motion #preboot,
+      .reduce-motion #preboot * {
+        animation-duration: 0.01s !important;
+        animation-iteration-count: 1 !important;
+      }
+    </style>
   </head>
   <body>
+    <div id="preboot" role="status" aria-label="Carregando">
+      <b>DEFT<i></i></b>
+      <span>▶ PLAY</span>
+      <s></s>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

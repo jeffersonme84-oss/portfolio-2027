@@ -15,3 +15,12 @@ createRoot(document.getElementById('root')!).render(
     {import.meta.env.VITE_VERCEL_ENV && <Analytics />}
   </StrictMode>,
 )
+
+// O site montou: tira a tela de espera do index.html (a fita K7 do BootLoader já está por cima).
+// setTimeout (e não requestAnimationFrame): roda mesmo com a aba em segundo plano.
+window.setTimeout(() => {
+  const preboot = document.getElementById('preboot')
+  if (!preboot) return
+  preboot.classList.add('is-gone')
+  window.setTimeout(() => preboot.remove(), 400)
+}, 0)

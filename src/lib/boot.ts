@@ -4,19 +4,13 @@
 
 import { isReducedMotion } from '@/lib/motion'
 
-export const BOOT_STORAGE_KEY = 'boot-seen'
-
 const listeners = new Set<() => void>()
 
+// Toca sempre que o site é aberto ou recarregado (pedido do Jefferson, 2026-11-19), só na
+// página inicial e nunca com animações reduzidas. Clique, Esc ou Enter pulam.
 function shouldBoot() {
   if (isReducedMotion()) return false
-  if (!['/', '/index.html'].includes(window.location.pathname)) return false
-  try {
-    // Só na primeira visita.
-    return localStorage.getItem(BOOT_STORAGE_KEY) !== '1'
-  } catch {
-    return true
-  }
+  return ['/', '/index.html'].includes(window.location.pathname)
 }
 
 let booting = shouldBoot()
@@ -47,11 +41,6 @@ export function finishBoot() {
   if (!booting) return
   booting = false
   document.documentElement.classList.remove('boot-active')
-  try {
-    localStorage.setItem(BOOT_STORAGE_KEY, '1')
-  } catch {
-    // Sem storage: aparece de novo na próxima visita.
-  }
   listeners.forEach((listener) => listener())
 }
 

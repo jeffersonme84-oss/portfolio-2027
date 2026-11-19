@@ -35,7 +35,7 @@ A regra que mantém o projeto simples: **o fluxo vai de cima para baixo**. Compo
 1. **`index.html`**: um script inline aplica tema, idioma e preferência de animação **antes da primeira pintura** (sem "flash"). Um segundo script, gerado pelo plugin, pré-carrega a arte da Home do tema certo.
 2. **`main.tsx`**: inicia o i18n e renderiza o `App`.
 3. **`App.tsx`**: monta Header, `Hero` (primeira dobra), Footer e os efeitos globais. O restante da página (`BelowFold`: Sobre, Projetos, Habilidades, Depoimentos, Contato) é carregado em um **chunk separado** (`React.lazy`), então a Home aparece sem esperar o JS das outras seções.
-4. **`BootLoader`**: na primeira visita, toca a abertura em fita K7. As animações de entrada da Home esperam o fim dela (`src/lib/boot.ts`).
+4. **`BootLoader`**: toda vez que o site é aberto (e ao clicar na marca DEFT.), toca a abertura em fita K7. Antes do JavaScript chegar, se demorar, o `index.html` mostra uma tela de espera própria (`#preboot`), retirada pelo `main.tsx`. As animações de entrada da Home esperam o fim dela (`src/lib/boot.ts`).
 5. O formulário de contato e o `supabase-js` só carregam quando são necessários.
 
 ## Estado
@@ -50,7 +50,7 @@ Não há biblioteca de estado global: o site não precisa. O estado compartilhad
 | `lib/visits.ts` | total de visitas e quem está online               |
 | `i18n/index.ts` | idioma ativo                                      |
 
-A preferência fica no `localStorage` com chaves fixas (`theme`, `motion`, `lang`, `boot-seen`, `visit-day`). As mesmas chaves são lidas pelo script inline do `index.html`.
+A preferência fica no `localStorage` com chaves fixas (`theme`, `motion`, `lang`, `visit-day`). As mesmas chaves são lidas pelo script inline do `index.html`.
 
 ## Navegação
 
