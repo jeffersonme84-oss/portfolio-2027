@@ -1,0 +1,23 @@
+# Arquivos que NÃO sobem para a Vercel no deploy pela CLI (vercel deploy).
+# O build precisa só do código, de public/ e dos arquivos de configuração.
+node_modules
+dist
+.git
+.vercel
+.env
+.env.*
+!.env.example
+.claude
+.pnpm-store
+docs
+FOTOS
+assets-portfolio
+assets-portfolio.zip
+portfolio-jefferson
+portfolio-jefferson.zip
+posts-linkedin
+demos
+teste-permissao
+supabase/.temp
+supabase/.branches
+*.log

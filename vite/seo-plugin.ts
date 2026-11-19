@@ -53,7 +53,8 @@ function preloadHeroArt() {
 }
 
 export function seo(siteUrl: string): Plugin {
-  const base = siteUrl.replace(/\/$/, '')
+  // trim() também tira espaços e BOM invisível que podem vir colados no valor da variável.
+  const base = siteUrl.trim().replace(/\/$/, '')
   const person = {
     '@context': 'https://schema.org',
     '@type': 'Person',
