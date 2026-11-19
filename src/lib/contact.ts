@@ -2,6 +2,11 @@ import { z } from 'zod'
 import type { Locale } from '@/content/types'
 import { getSupabase } from '@/lib/supabase'
 
+// O zod 4 tenta usar `new Function` para acelerar a validação. A política de segurança (CSP)
+// do site proíbe `eval`, então desligamos esse modo: a validação continua igual, sem erro no
+// console.
+z.config({ jitless: true })
+
 // As mensagens são sufixos de chave i18n (contact.errors.*), traduzidas na tela.
 export const contactSchema = z.object({
   name: z.string().trim().min(1, { error: 'nameRequired' }).max(100, { error: 'nameTooLong' }),

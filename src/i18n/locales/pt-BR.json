@@ -58,8 +58,6 @@
     "backToTop": "Voltar ao topo"
   },
   "hero": {
-    "index": "Índice",
-    "experience": "anos como desenvolvedor",
     "headline": "Sistemas sólidos. Web com propósito.",
     "seeProjects": "Ver projetos",
     "portraitAlt": "Jefferson com jaqueta vermelha e gorro preto, na frente da palavra PORTFÓLIO em vermelho",
@@ -69,7 +67,6 @@
     "intro": "Construo aplicações web, APIs e automações que conectam tecnologia, dados e inteligência artificial, transformando ideias em soluções digitais.",
     "available": "Disponível para freelas",
     "workMode": "São Paulo • Presencial e Remoto",
-    "tagline": "Do banco de dados até a tela.",
     "insideLook": "Ver por dentro",
     "contactBar": "Contatos",
     "whatsappMessage": "Olá Jefferson! Vi seu portfólio e gostaria de conversar sobre um projeto.",
@@ -83,26 +80,6 @@
       "degreeSub": "Software Multiplataforma.",
       "post": "PUC-Campinas + PUCPR",
       "postSub": "Pós: Arquitetura, Dados e Cyber."
-    },
-    "reels": "Girar os carretéis da fita (duplo clique rebobina o nome)",
-    "side": "LADO A",
-    "code": {
-      "learning": "estudando",
-      "ai": "IA",
-      "coffee": "café",
-      "always": "sempre"
-    },
-    "cards": {
-      "educationTitle": "Fatec · Tecnologia",
-      "education": "Formação",
-      "certificationsTitle": "AWS · IA · IoT",
-      "certifications": "Certificações"
-    },
-    "books": "Temas que estudo",
-    "diploma": {
-      "kicker": "Diploma · Tecnólogo",
-      "course": "Desenvolvimento de Software Multiplataforma",
-      "caption": "Diploma de tecnólogo em Desenvolvimento de Software Multiplataforma pela Fatec Zona Sul"
     },
     "matrixHint": "↑ role: tudo em código · ↓ volta",
     "replayBoot": "Início (toca a abertura de novo)",
@@ -118,7 +95,6 @@
     "rec": "REC",
     "timeline": "Linha do tempo",
     "play": "PLAY",
-    "pause": "PAUSE",
     "types": {
       "work": "Experiência",
       "education": "Formação",
@@ -236,7 +212,6 @@
     ]
   },
   "cursor": {
-    "play": "PLAY ▶",
     "view": "VER ↓",
     "chat": "CHAT ↗",
     "rew": "REW ◀◀",

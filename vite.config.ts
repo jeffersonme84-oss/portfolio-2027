@@ -1,73 +1,21 @@
+import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
-import { defineConfig, loadEnv, type Plugin } from 'vite'
-import { activeSocials, site } from './src/content/site'
-import ptBR from './src/i18n/locales/pt-BR.json'
+import { loadEnv } from 'vite'
+import { defineConfig } from 'vitest/config'
+import { seo } from './vite/seo-plugin'
 
-// SEO gerado a partir de src/content/site.ts (sem duplicar dados no index.html):
-// JSON-LD Person, URLs absolutas de Open Graph e, com VITE_SITE_URL definido,
-// canonical, robots.txt com sitemap e sitemap.xml.
-function seo(siteUrl: string): Plugin {
-  const base = siteUrl.replace(/\/$/, '')
-  const person = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: site.name,
-    jobTitle: site.title['pt-BR'],
-    address: { '@type': 'PostalAddress', addressLocality: 'São Paulo', addressCountry: 'BR' },
-    sameAs: activeSocials().map(([, url]) => url),
-    ...(base && { url: base, image: `${base}/og-image.png` }),
-  }
-
-  return {
-    name: 'portfolio-seo',
-    transformIndexHtml(html) {
-      const tags = [
-        `<link rel="preload" as="image" href="${site.hero.background.src}" imagesrcset="${site.hero.background.srcSet}" imagesizes="100vw" fetchpriority="high" />`,
-        `<meta name="description" content="${ptBR.meta.description}" />`,
-        `<meta property="og:title" content="${ptBR.meta.title}" />`,
-        `<meta property="og:description" content="${ptBR.meta.description}" />`,
-        `<meta property="og:image" content="${base}/og-image.png" />`,
-        `<meta name="twitter:title" content="${ptBR.meta.title}" />`,
-        `<meta name="twitter:description" content="${ptBR.meta.description}" />`,
-        `<meta name="twitter:image" content="${base}/og-image.png" />`,
-        `<script type="application/ld+json">${JSON.stringify(person)}</script>`,
-      ]
-      if (base) {
-        tags.push(
-          `<link rel="canonical" href="${base}/" />`,
-          `<meta property="og:url" content="${base}/" />`,
-        )
-      }
-      return html
-        .replace(
-          '<title>Jefferson Moreira Evangelista</title>',
-          `<title>${ptBR.meta.title}</title>`,
-        )
-        .replace('</head>', `    ${tags.join('\n    ')}\n  </head>`)
-    },
-    generateBundle() {
-      const robots = [
-        'User-agent: *',
-        'Allow: /',
-        ...(base ? ['', `Sitemap: ${base}/sitemap.xml`] : []),
-      ]
-      this.emitFile({ type: 'asset', fileName: 'robots.txt', source: `${robots.join('\n')}\n` })
-      if (base) {
-        this.emitFile({
-          type: 'asset',
-          fileName: 'sitemap.xml',
-          source: `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>${base}/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
-</urlset>
-`,
-        })
-      }
-    },
-  }
-}
+// Cabeçalhos de segurança do vercel.json também no `pnpm preview`, para testar localmente
+// o site como ele roda em produção.
+type VercelHeaders = { headers: { source: string; headers: { key: string; value: string }[] }[] }
+const vercel = JSON.parse(readFileSync('./vercel.json', 'utf8')) as VercelHeaders
+const securityHeaders = Object.fromEntries(
+  (vercel.headers.find((rule) => rule.source === '/(.*)')?.headers ?? []).map(({ key, value }) => [
+    key,
+    value,
+  ]),
+)
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
@@ -76,6 +24,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: { '@': path.resolve(__dirname, './src') },
     },
+    preview: { headers: securityHeaders },
     build: {
       rollupOptions: {
         onwarn(warning, warn) {
@@ -85,6 +34,11 @@ export default defineConfig(({ mode }) => {
           warn(warning)
         },
       },
+    },
+    // Testes automatizados (pnpm test): ficam em tests/ e rodam no Node.
+    test: {
+      include: ['tests/**/*.test.ts'],
+      environment: 'node',
     },
   }
 })

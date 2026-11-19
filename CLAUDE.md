@@ -80,10 +80,12 @@ pnpm preview        # pré-visualizar o build
 pnpm lint           # ESLint
 pnpm format         # Prettier
 pnpm typecheck      # tsc --noEmit -p tsconfig.app.json
+pnpm test           # Vitest (tests/*.test.ts)
+pnpm check          # lint + typecheck + test + build
 pnpm exec supabase <cmd>   # CLI do Supabase (devDependency local, sem instalação global)
 ```
 
-Antes de cada commit: `pnpm lint && pnpm typecheck && pnpm build` devem passar.
+Antes de cada commit: `pnpm check` deve passar. Documentação para manutenção: `docs/DEVELOPMENT_GUIDE.md`, `docs/ARCHITECTURE.md`, `docs/DEPLOYMENT.md`, `docs/AUDIT_REPORT.md`.
 
 ## 4. Fluxo de Git e deploy
 
@@ -641,6 +643,19 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | Clique na marca "D DEFT." da Home desktop (`deft-hot is-square`) toca a tela de carregamento de novo (`replayBoot()` em `src/lib/boot.ts`; cursor "REPLAY ↺"); a Home entra outra vez ao fim. Com animações reduzidas, só volta ao início | pedido do Jefferson (easter egg) |
 | Pós-graduação (informada pelo Jefferson): PUC-Campinas + PUCPR, Arquitetura de Software, Ciência de Dados e Cybersecurity, iniciada em nov. 2025; na bio, na etiqueta do Sobre e no item `pos-puc` da trajetória | o site só citava "Tecnologia da Informação · PUC-Campinas" |
 | Home desktop: inclinação 2.5D da cena inteira (`.deft-tilt`) e brilho vermelho que segue o mouse (`.deft-glare`); a foto é um link para Sobre | idem |
+
+**Auditoria de engenharia (2026-11-19, branch `audit/engenharia`)** — relatório em `docs/AUDIT_REPORT.md`
+
+| Decisão | Motivo |
+| --- | --- |
+| CSP gerada no build por `vite/seo-plugin.ts` (meta com hash de cada script inline, sem `eval`; `font-src` aceita `data:`) + cabeçalhos no `vercel.json` (`X-Frame-Options`, `frame-ancestors`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`, `COOP`); `pnpm preview` usa os mesmos cabeçalhos | segurança sem mudar o visual. Script inline novo no `index.html` entra no hash sozinho |
+| Pré-carregamento da arte da Home escolhido pelo tema (script gerado pelo plugin) | a arte escura era baixada também no tema claro |
+| `bootProgress` em `src/lib/bootProgress.ts`, limitado a 0..1 | erro `<circle> r: NaN` no 1º quadro da fita |
+| zod com `jitless: true` | a CSP proíbe `eval` |
+| Vitest 4 (`tests/`): traduções, conteúdo (imagens existem, dois idiomas, slugs), formulário, CSP e fita | proteger edições de conteúdo |
+| Removidos componentes sem uso (CassetteLabel, HeroBooks, HeroDiploma, HeroMug, studying.ts, ui/button, kinetic-matrix, notched-project-card), `site.experienceYears`, `splitName` e 11 chaves de tradução órfãs | código morto; recuperável pelo Git (`6d8009b`) |
+| `vercel.json` com framework/comandos explícitos e cache imutável de `/assets`; `engines.node >=20 <25` | deploy previsível |
+| Endereço sugerido: `deftdev.vercel.app` (nome do projeto na Vercel: `deftdev`); domínio próprio opcional `deft.dev.br` | livres em 2026-11-19; curto e fácil de decorar |
 
 **Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
 

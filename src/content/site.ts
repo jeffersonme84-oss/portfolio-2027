@@ -11,8 +11,6 @@ export const site = {
   } as Localized,
   location: 'São Paulo, BR',
   timeZone: 'America/Sao_Paulo',
-  // Número grande da Home: anos como desenvolvedor full stack (DMANDA, fev. 2022 – nov. 2023).
-  experienceYears: '02',
   email: 'jeff.evangelista2027@icloud.com',
   phoneDisplay: '(11) 96194-1984',
   whatsappUrl: 'https://wa.me/5511961941984',
@@ -39,7 +37,7 @@ export const site = {
     },
     // Mesma arte no modo claro (enviada pelo Jefferson, mesmo tamanho e posições).
     backgroundLight: '/images/hero/home-deft-light.jpg',
-    // Números da Home. Tecnologias = itens técnicos de skills.ts (linguagens, frameworks, bancos,
+    // Números da Home. years = anos como dev (DMANDA, fev. 2022 – nov. 2023). Tecnologias = itens técnicos de skills.ts (linguagens, frameworks, bancos,
     // nuvem, ferramentas, IoT e IA), sem soft skills, design, comercial e idiomas.
     // postAreas = frentes da pós na PUC-Campinas + PUCPR (Arquitetura de Software, Ciência de
     // Dados e Cybersecurity).
@@ -53,9 +51,4 @@ export const site = {
 
 export function activeSocials() {
   return (Object.entries(site.social) as [SocialNetwork, string][]).filter(([, url]) => url !== '')
-}
-
-export function splitName(name: string) {
-  const [first, ...rest] = name.toUpperCase().split(' ')
-  return { first, rest: rest.join(' ') }
 }

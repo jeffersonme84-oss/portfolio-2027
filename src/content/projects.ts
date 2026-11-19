@@ -15,7 +15,7 @@ export type Project = {
   // Micro-texto mono do pôster (ano / tipo).
   year: string
   kind: Localized
-  cover: string // /images/projects/<slug>.webp (placeholders em SVG até as capas reais)
+  cover: string // /images/projects/<slug>.webp (ou .svg enquanto não houver capa real)
   // Fotos para os slides do estudo de caso (na ordem: problema, processo, resultado, extras).
   gallery?: ProjectImage[]
   technologies: SkillKey[]
@@ -30,8 +30,7 @@ export type Project = {
 
 // Conteúdo extraído dos repositórios públicos de github.com/JeffersonEvangelista
 // (README, package.json e linguagens). Só fatos documentados nos repositórios.
-// TODO(jefferson): revisar os textos, descrever a sua parte nos projetos em equipe
-// e trocar as capas (hoje placeholders em SVG).
+// TODO(jefferson): revisar os textos e descrever a sua parte nos projetos em equipe.
 export const projects: Project[] = [
   {
     slug: 'sias-app',

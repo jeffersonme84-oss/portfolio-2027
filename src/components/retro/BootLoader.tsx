@@ -4,6 +4,7 @@ import { site } from '@/content/site'
 import { useClock } from '@/hooks/useClock'
 import { useLocale } from '@/hooks/useLocale'
 import { finishBoot, getBootRun, subscribeBoot } from '@/lib/boot'
+import { bootProgress } from '@/lib/bootProgress'
 import '@/styles/boot.css'
 
 // Tela de carregamento "fita K7" (aprovada pelo Jefferson numa prévia, 2026-11-19):
@@ -16,13 +17,6 @@ const WORD = 'DEFT'
 const GLYPHS = '01<>/{}[]#$%&*+=;:ABCDEFGHJKLMNPQRSTUVWXYZ'
 const DURATION = 2600
 const DIGITS = '0123456789'
-
-// Progresso "humano": acelera, hesita perto de 70% e dispara no fim.
-function ease(raw: number) {
-  if (raw < 0.55) return 0.7 * (raw / 0.55) ** 0.8
-  if (raw < 0.75) return 0.7 + 0.06 * ((raw - 0.55) / 0.2)
-  return 0.76 + 0.24 * (1 - (1 - (raw - 0.75) / 0.25) ** 3)
-}
 
 export function BootLoader() {
   // Cada "sessão" (1ª visita ou replay pela marca DEFT.) monta uma tela nova, que continua
@@ -95,8 +89,8 @@ function Boot({ onGone }: { onGone: () => void }) {
     skip.current = end
 
     const tick = (now: number) => {
-      const raw = Math.min(1, (now - start) / DURATION)
-      const p = ease(raw)
+      const raw = Math.min(1, Math.max(0, (now - start) / DURATION))
+      const p = bootProgress(raw)
       const value = raw >= 1 ? 100 : Math.min(99, Math.floor((p * 100) / 3) * 3)
       const text = String(value).padStart(3, '0')
       cols.forEach((col, i) => (col.style.translate = `0 ${-1.15 * Number(text[i])}em`))
