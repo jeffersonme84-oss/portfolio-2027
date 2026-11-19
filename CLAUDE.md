@@ -485,8 +485,9 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 - Idiomas: `pt-BR` (padrão) e `en-US`.
 - Estética retro (K7, VHS, vinil): no **layout e em interações / easter eggs**, não nas cores.
 - Deploy na Vercel; código versionado no GitHub com Conventional Commits.
-- Repositório: `jeffersonme84-oss/portfolio-2027` (privado), com o projeto na raiz de `Portfolio 2027`. A cópia antiga em `portfolio-jefferson/` (git próprio, 3 commits) fica só no disco, ignorada.
-- Fotos com familiares já estão versionadas: o repositório deve continuar **privado** até a autorização deles.
+- Repositório: `jeffersonme84-oss/portfolio-2027` (público), com o projeto na raiz de `Portfolio 2027`. A cópia antiga em `portfolio-jefferson/` (git próprio, 3 commits) fica só no disco, ignorada.
+- Fotos com familiares já estão versionadas. O repositório está **público** por decisão do Jefferson (2026-11-19), mesmo antes da autorização formal dos familiares.
+- Git neste computador: MinGit portátil em `D:\tools\git\cmd\git.exe` (login no GitHub pelo Git Credential Manager); Node portátil em `D:\tools\node\node.exe`.
 
 **Desvios técnicos (Módulo 0)**
 
