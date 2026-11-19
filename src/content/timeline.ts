@@ -16,6 +16,8 @@ export type TimelineItem = {
   morePhotos?: { src: string; alt: Localized }[]
   // Foto da família que revela a ilustração com 3 cliques (easter egg).
   revealsIllustration?: boolean
+  // Rascunho: o item fica guardado aqui, mas não aparece no site (ex.: texto ainda em Lorem).
+  draft?: boolean
 }
 
 const lorem: Localized = {
@@ -63,7 +65,8 @@ export const about = {
 // Do mais recente para o mais antigo. Fonte: perfil do LinkedIn (out. 2026).
 // Itens parecidos foram agrupados para a trajetória caber em uma tela (pedido do Jefferson);
 // as fotos extras de cada item aparecem como miniaturas no detalhe.
-export const timeline: TimelineItem[] = [
+// Itens com `draft: true` ficam guardados, mas não aparecem no site (filtro no fim do arquivo).
+const allItems: TimelineItem[] = [
   {
     id: 'verisure',
     type: 'work',
@@ -217,8 +220,11 @@ export const timeline: TimelineItem[] = [
     type: 'family',
     period: '∞',
     title: { 'pt-BR': 'Família e valores', 'en-US': 'Family and values' },
-    summary: lorem, // TODO(jefferson): preencher
-    details: loremLong, // TODO(jefferson): preencher (valores, motivação e apoio)
+    // Escondido até o texto real existir (recrutadores não devem ver Lorem ipsum).
+    // TODO(jefferson): escrever summary e details (valores, motivação e apoio) e apagar `draft`.
+    draft: true,
+    summary: lorem,
+    details: loremLong,
     photo: '/images/about/editorial/familia-selfie.webp',
     photoAlt: {
       'pt-BR': 'Selfie de Jefferson com a esposa e a filha',
@@ -243,6 +249,8 @@ export const timeline: TimelineItem[] = [
     ],
   },
 ]
+
+export const timeline: TimelineItem[] = allItems.filter((item) => !item.draft)
 
 // Easter egg: versão em ilustração da família (usada sem alterações).
 export const familyIllustration = '/images/about/ilustracao-familia-easteregg.webp'

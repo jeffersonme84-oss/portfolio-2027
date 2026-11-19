@@ -54,6 +54,11 @@ describe('conteúdo (src/content)', () => {
     expect(problems).toEqual([])
   })
 
+  it('nenhum texto de exemplo (Lorem ipsum) aparece no site', () => {
+    const withLorem = strings(content).filter((text) => /lorem ipsum/i.test(text))
+    expect(withLorem).toEqual([])
+  })
+
   it('slugs dos projetos e ids da trajetória não se repetem', () => {
     const slugs = projects.map((project) => project.slug)
     const ids = timeline.map((item) => item.id)

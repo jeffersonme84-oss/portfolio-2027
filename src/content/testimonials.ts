@@ -10,39 +10,17 @@ export type Testimonial = {
   linkedinUrl?: string
 }
 
-const lorem = (text: string): Localized => ({ 'pt-BR': text, 'en-US': text })
-
-// TODO(jefferson): substituir pelos depoimentos reais (só com autorização de quem escreveu).
-// Com a lista vazia, a seção some da página.
-export const testimonials: Testimonial[] = [
-  {
-    id: 'depoimento-1',
-    name: 'Lorem Ipsum',
-    role: lorem('Lorem ipsum'),
-    company: 'Dolor Sit',
-    text: lorem(
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis lacus vel augue laoreet rutrum faucibus.',
-    ),
-    linkedinUrl: '',
-  },
-  {
-    id: 'depoimento-2',
-    name: 'Dolor Amet',
-    role: lorem('Lorem ipsum'),
-    company: 'Consectetur',
-    text: lorem(
-      'Sed posuere consectetur est at lobortis. Cras justo odio, dapibus ac facilisis in, egestas eget quam.',
-    ),
-    linkedinUrl: '',
-  },
-  {
-    id: 'depoimento-3',
-    name: 'Sit Elit',
-    role: lorem('Lorem ipsum'),
-    company: 'Adipiscing',
-    text: lorem(
-      'Maecenas faucibus mollis interdum. Nullam quis risus eget urna mollis ornare vel eu leo cum sociis.',
-    ),
-    linkedinUrl: '',
-  },
-]
+// TODO(jefferson): adicionar os depoimentos reais (só com autorização de quem escreveu).
+// Com a lista vazia, a seção some da página. Os exemplos em Lorem ipsum foram retirados para
+// não aparecerem para recrutadores (2026-11-19). Modelo de um depoimento:
+//
+//   {
+//     id: 'maria-silva',
+//     name: 'Maria Silva',
+//     role: { 'pt-BR': 'Gerente de Projetos', 'en-US': 'Project Manager' },
+//     company: 'Empresa X',
+//     text: { 'pt-BR': 'Texto do depoimento…', 'en-US': 'Testimonial text…' },
+//     photo: '/images/testimonials/maria-silva.webp', // opcional
+//     linkedinUrl: 'https://www.linkedin.com/in/...', // opcional
+//   },
+export const testimonials: Testimonial[] = []
