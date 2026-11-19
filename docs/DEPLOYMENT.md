@@ -1,5 +1,15 @@
 # Publicação na Vercel
 
+> **Situação atual (19/11/2026):** o site está no ar em **https://deftdev.vercel.app** (projeto `deftdev`), publicado pela Vercel CLI. Para republicar depois de uma mudança:
+>
+> ```bash
+> vercel deploy --prod
+> ```
+>
+> Para publicar sozinho a cada `git push`: instale o app da Vercel no GitHub (https://github.com/apps/vercel/installations/new → só o repositório `portfolio-2027`) e rode `vercel git connect` na pasta do projeto.
+>
+> Observação para Windows: ao cadastrar variáveis pela CLI com `|` no PowerShell, o valor pode ganhar um caractere invisível (BOM). Prefira cadastrar pelo painel da Vercel.
+
 O projeto já está pronto para a Vercel: `vercel.json` define framework (Vite), comandos, pasta de saída, reescrita da SPA e cabeçalhos de segurança. Só faltam as ações que dependem da sua conta.
 
 ## Endereço do site

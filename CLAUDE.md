@@ -657,7 +657,7 @@ Regras: todo efeito animado respeita `prefers-reduced-motion`; nenhum easter egg
 | `vercel.json` com framework/comandos explícitos e cache imutável de `/assets`; `engines.node >=20 <25` | deploy previsível |
 | Endereço sugerido: `deftdev.vercel.app` (nome do projeto na Vercel: `deftdev`); domínio próprio opcional `deft.dev.br` | livres em 2026-11-19; curto e fácil de decorar |
 
-**Status dos módulos:** 0 a 9 concluídos. Módulo 10 concluído, exceto a **publicação na Vercel** (fica para o fim, por decisão do Jefferson) e o checklist que depende de conteúdo real.
+**Status dos módulos:** 0 a 10 concluídos. **Publicado em https://deftdev.vercel.app** (2026-11-19, projeto Vercel `jeffersonme84-oss/deftdev`, deploy pela Vercel CLI com `vercel deploy --prod`; `.vercelignore` evita subir `.env.local`, `docs/` e pastas locais). Pendentes: instalar o app da Vercel no GitHub e rodar `vercel git connect` (deploy automático a cada push), variáveis `VITE_SUPABASE_*` + back-end do Supabase, e o checklist que depende de conteúdo real. Plugin `vercel-plugin@vercel` instalado no Claude Code (escopo de usuário), com o MCP da Vercel.
 
 **Lançamento (passo a passo)**
 1. Supabase (uma vez): `pnpm exec supabase login`, `pnpm exec supabase link --project-ref <ref>`, `pnpm exec supabase db push` (cria `contact_messages` com RLS), `pnpm exec supabase secrets set RESEND_API_KEY=... CONTACT_TO_EMAIL=...` (opcionais: `CONTACT_FROM_EMAIL`, `ALLOWED_ORIGIN`) e `pnpm exec supabase functions deploy send-contact`.
