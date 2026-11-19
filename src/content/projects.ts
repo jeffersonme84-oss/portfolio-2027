@@ -44,7 +44,7 @@ export const projects: Project[] = [
     year: '2024',
     kind: { 'pt-BR': 'Site + app · equipe', 'en-US': 'Web + app · team' },
     cover: '/images/projects/sias-app.webp',
-    // Telas reais do app (github.com/JeffersonEvangelista/SiasApp, pasta img/).
+    // Telas reais do app (github.com/jeffersonme84-oss/SiasApp, pasta img/).
     gallery: [
       {
         src: '/images/projects/sias-login.webp',
@@ -101,7 +101,7 @@ export const projects: Project[] = [
     ],
     technologies: ['reactNative', 'expo', 'typescript', 'supabase', 'firebase', 'gemini'],
     deployUrl: '',
-    githubUrl: 'https://github.com/JeffersonEvangelista/SiasApp',
+    githubUrl: 'https://github.com/jeffersonme84-oss/SiasApp',
     caseStudy: {
       problem: {
         'pt-BR':
@@ -134,7 +134,7 @@ export const projects: Project[] = [
     year: '2024',
     kind: { 'pt-BR': 'IoT', 'en-US': 'IoT' },
     cover: '/images/projects/estacao-esp32.webp',
-    // Simulação no Wokwi (github.com/JeffersonEvangelista/Automacao-em-Esp32-Mqtt-temperatura-, pasta Deft/).
+    // Simulação no Wokwi (github.com/jeffersonme84-oss/estacao-iot-esp32-mqtt, pasta Deft/).
     gallery: [
       {
         src: '/images/projects/esp32-simulacao.webp',
@@ -163,7 +163,7 @@ export const projects: Project[] = [
     ],
     technologies: ['esp32', 'cpp', 'arduino', 'mqtt'],
     deployUrl: '',
-    githubUrl: 'https://github.com/JeffersonEvangelista/Automacao-em-Esp32-Mqtt-temperatura-',
+    githubUrl: 'https://github.com/jeffersonme84-oss/estacao-iot-esp32-mqtt',
     caseStudy: {
       problem: {
         'pt-BR':
@@ -234,7 +234,7 @@ export const projects: Project[] = [
     ],
     technologies: ['android', 'java', 'firebase'],
     deployUrl: '',
-    githubUrl: 'https://github.com/JeffersonEvangelista/App_Nutricionista',
+    githubUrl: 'https://github.com/jeffersonme84-oss/App_Nutricionista',
     caseStudy: {
       problem: {
         'pt-BR':
